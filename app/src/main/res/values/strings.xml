@@ -1,0 +1,162 @@
+<resources>
+    <!--info-->
+    <string name="app_name">CarIn</string>
+    <string name="information">Information</string>
+    <string name="the_company">The Company</string>
+    <string name="address">Rua da Encosta no Centro, N.º 225 Porto, Portugal</string>
+    <string name="phoneNumber">+351 253 459 054 *</string>
+    <string name="email">empresa@empresa.pt</string>
+    <string name="site">www.empresa.com</string>
+    <string name="callcost">*Call costs for national fixed networks.</string>
+    <string name="privacyPolicy">Privacy Policy</string>
+    <string name="textInfo">Your privacy is important to us. It is carins policy to respect your privacy regarding any information we may collect from you across our website, carin, and other sites we own and operate. We only ask for personal information when we really need it to provide a service to you. We do this by fair and lawful means, with your knowledge and consent. We also let you know why we are collecting it and how it will be used.We only retain the information we collect for as long as is necessary to provide the service you have requested. When we store data, we protect it within commercially acceptable means to prevent loss and theft, as well as unauthorised access, disclosure, copying, use or modification.We do not share personally identifiable information publicly or with third parties, except where required by law.Our website may have links to external websites that are not operated by us. Please be aware that we have no control over the content and practices of these sites and cannot accept responsibility for their respective privacy policies.You are free to decline our request for personal information on the understanding that we may not be able to provide some of the services you desire.Your continued use of our website will be considered as acceptance of our practices around privacy and personal information. If you have any questions about how we handle user data and personal information, please contact us.The Google AdSense service we use to serve advertising uses a DoubleClick cookie to serve more relevant adverts across the web and limit the number of times a particular advert is shown to you.For more information about Google AdSense, see the official Google AdSense privacy FAQs.We use adverts to offset the costs of running this site and provide funding for future developments. The behavioural advertising cookies used by this site are designed to ensure that you are provided with the most relevant adverts wherever possible by anonymously tracking your interests and presenting similar things that may be of interest to you.A number of partners advertise on our behalf and affiliate tracking cookies simply allow us to see if our customers have accessed the site via one of our partners sites so that we can credit them appropriately and, where applicable, allow our affiliate partners to offer any promotions that may provide you with the opportunity to make a purchase.User CommitmentThe user undertakes to make appropriate use of the content and information that carin offers on the site and, by way of example but not limited to: A) Not to engage in activities that are illegal or contrary to good faith or public order;B) Not to disseminate propaganda or content of a racist, xenophobic, Bet National or gambling nature, any type of illegal pornography, apology for terrorism or against human rights;C) Not to cause damage to the physical (hardware) and logical (software) systems of carin, its suppliers or third parties, to introduce or disseminate computer viruses or any other hardware or software systems that are capable of causing the aforementioned damage. More informationWe hope this is clear and, as mentioned above, if there is something you are not sure whether you need or not, it is generally safer to leave cookies enabled if you interact with one of the features you use on our website.This policy is effective from 9 January 2024 23:41.</string>
+
+    <!--Home-->
+    <string name="hello">Hello José</string>
+    <string name="numberCars">Number of cars</string>
+    <string name="numberEmployees">Number of employees</string>
+    <string name="numberJourneys">Number of journeys</string>
+    <string name="carsWorkshop">Cars in the workshop</string>
+    <string name="home">Home</string>
+    <string name="route">Routes</string>
+    <string name="vehicles">Vehicles</string>
+    <string name="profile">Profile</string>
+    <string name="newAppointment">New appointment</string>
+    <string name="addRoute">Add route</string>
+    <string name="addVehicle">Add vehicle</string>
+    <string name="addUser">Add user</string>
+
+    <!--Login-->
+    <string name="confirmEmail">Confirm Email</string>
+    <string name="textConfirmEmail">An email will be sent to the address below to recover your password.</string>
+    <string name="send">Send</string>
+    <string name="logIn">Log In</string>
+    <string name="nameEmail">Email</string>
+    <string name="password">Password</string>
+    <string name="forgotPassword">Forgot your password?</string>
+    <string name="enter">Enter</string>
+    <string name="recoverPassword">Recover Password</string>
+    <string name="newPassword">New password</string>
+    <string name="enterPassword">Enter your password</string>
+    <string name="confirmNewPassword">Confirm new password</string>
+    <string name="confirm">Confirm</string>
+
+
+    <!--New Route-->
+    <string name="newRoute">New Route</string>
+    <string name="departure">Departure</string>
+    <string name="enterDeparture">Enter the place of departure</string>
+    <string name="destination">Destination</string>
+    <string name="enterDestination">Enter the place of destination</string>
+    <string name="driver">Driver</string>
+    <string name="departureDate">Departure date</string>
+    <string name="estimatedTimeArrival">Estimated time of arrival</string>
+    <string name="vehicle">Vehicle</string>
+    <string name="register">Register</string>
+
+    <!--New Appointment-->
+    <string name="title">Title</string>
+    <string name="enterTitle">Enter the title</string>
+    <string name="allDay">All Day</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
+    <string name="location">Location</string>
+    <string name="enterLocation">Enter the location</string>
+    <string name="notes">Notes</string>
+    <string name="enterNecessaryNotes">Enter the necessary notes</string>
+    <string name="assignTo">Assign to:</string>
+    <string name="create">Create</string>
+
+    <!--New User-->
+    <string name="new_user">New User</string>
+    <string name="firstName">First Name</string>
+    <string name="enterFirstName">Enter your first name</string>
+    <string name="lastName">Last name</string>
+    <string name="enterLastName">Enter your last name</string>
+    <string name="dateBirth">Date of birth</string>
+    <string name="enterDateBirth">Enter your date of birth</string>
+    <string name="enterEmail">Enter your email</string>
+    <string name="function">Function</string>
+
+    <!--New Vehicle-->
+    <string name="newVehicle">New Vehicle</string>
+    <string name="brand">Brand</string>
+    <string name="enterBrand">Enter the brand</string>
+    <string name="model">Model</string>
+    <string name="enterModel">Enter the model</string>
+    <string name="licensePlate">License Plate</string>
+    <string name="enterLicensePlate">Enter the license plate</string>
+    <string name="vin">Enter the VIN</string>
+    <string name="textVin">VIN</string>
+    <string name="color">Color</string>
+    <string name="enterColor">Enter the color</string>
+    <string name="dateRegistration">Date of registration</string>
+    <string name="dateAcquisition">Date of acquisition</string>
+    <string name="classtext">Class</string>
+    <string name="enterClass">Enter the class</string>
+    <string name="currentkms">Current kms</string>
+    <string name="capacity">Capacity</string>
+    <string name="NºSeats">Nº of seats</string>
+    <string name="typeFuel">Type of fuel</string>
+    <string name="fuel">Fuel</string>
+    <string name="averageConsumption">Average consumption</string>
+    <string name="status">Status</string>
+
+    <!--Routes-->
+    <string name="routes">Routes</string>
+    <string name="inProgress">In Progress</string>
+    <string name="finalised">Finalised</string>
+    <string name="allTodas">All</string>
+    <string name="departureDates">Departure date:</string>
+    <string name="numberRoute">Rota Número</string>
+    <string name="editRoute">Edit Route</string>
+    <string name="save">Save</string>
+    <string name="deleteRoute">Delete Route</string>
+    <string name="messageDelete">Are you sure you want to eliminate the route?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="tripDetails">Trip Details</string>
+    <string name="car">Car</string>
+    <string name="consumption">Consumption</string>
+    <string name="seeMore">See more</string>
+    <string name="name">Name</string>
+    <string name="accidentsRecorded">Accidents recorded</string>
+    <string name="age">Age</string>
+    <string name="roadTolls">Road tolls</string>
+    <string name="others">Others</string>
+    <string name="travellingTime">Travelling time</string>
+    <string name="co2">CO2</string>
+    <string name="kilometres">Kilometres</string>
+    <string name="totalCost">Total cost</string>
+
+    <!--Vehicles-->
+    <string name="all">All</string>
+    <string name="inUse">In use</string>
+    <string name="search">Search ...</string>
+    <string name="editVehicle">Edit Vehicle</string>
+    <string name="deleteVehicle">Delete Vehicle</string>
+    <string name="textDeleteVehicle">Are you sure you want to eliminate the vehicle?</string>
+    <string name="vehicleDetails">Vehicle details</string>
+    <string name="upcomingAppointments">Upcoming appointments</string>
+    <string name="calendar">Calendar</string>
+    <string name="lastDrivers">Last drivers</string>
+
+
+    <!--Users-->
+    <string name="employees">Employees</string>
+    <string name="drivers">Drivers</string>
+    <string name="managers">Managers</string>
+    <string name="administrators">Administrators</string>
+    <string name="totalJourneys">Total journeys</string>
+    <string name="totalKms">Total kms</string>
+    <string name="totalHours">Total hours</string>
+    <string name="details">Details</string>
+    <string name="group">Group</string>
+    <string name="journeys">Journeys</string>
+    <string name="complete">complete</string>
+    <string name="problems">Problems</string>
+    <string name="travelling">travelling</string>
+    <string name="attendance">Attendance</string>
+    <string name="editUser">Edit User</string>
+
+</resources>

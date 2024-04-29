@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:paddingBottom="5dp"
+    tools:context=".activities.HomeActivity">
+
+    <ImageView
+        android:id="@+id/backgroundRectangle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_background_81"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/informationImageView"
+        android:layout_width="120dp"
+        android:layout_height="64dp"
+        android:src="@drawable/route"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/backgroundRectangle"
+        app:layout_constraintBottom_toBottomOf="@id/backgroundRectangle"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/informationTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nova Rota"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/informationImageView"
+        app:layout_constraintTop_toTopOf="@id/informationImageView" />
+
+    <TextView
+        android:id="@+id/rectangle_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_rounded_corner_notifications"
+        android:text="Há x tempo"
+        android:textSize="8sp"
+        android:textColor="@color/colorGrey60"
+        app:layout_constraintStart_toEndOf="@id/informationTextView"
+        app:layout_constraintTop_toTopOf="@id/informationTextView"
+        android:layout_marginStart="90dp"/>
+
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Foi adicionado a uma nova rota para Itália, por Bruno Almeida, com saída a 2 de fevereiro."
+        android:textColor="@color/colorGrey60"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@id/informationImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/informationTextView"
+        android:layout_marginTop="-5dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="10dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toEndOf="@id/informationImageView"
+        app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
+        app:layout_constraintBottom_toBottomOf="@id/backgroundRectangle"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:id="@+id/countryTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Itália"
+            android:textSize="11sp"
+            android:textColor="@color/colorGrey60"
+            android:drawableLeft="@drawable/ic_location_11"
+            android:drawablePadding="4dp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
