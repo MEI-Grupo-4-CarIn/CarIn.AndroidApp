@@ -1,27 +1,43 @@
-name: "CodeQL"
+name: CodeQL
 
 on:
- push:
- pull_request:
+  push:
+  pull_request:
 
 jobs:
- analyze:
-    name: Analyze
+  analyze:
+    name: Analyze with CodeQL
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'java-kotlin' ]
+        language: [kotlin]
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+      uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
 
+    - name: Autobuild
+      run: |
+        ./gradlew build
+
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      uses: github/codeql-action/analyze@v3
+
+    - name: Upload CodeQL results
+      uses: actions/upload-artifact@v2
+      with:
+        name: codeql-results
+        path: ${{ github.workspace }}/codeql-builtin
+
+    - name: Upload build results
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-results
+        path: ${{ github.workspace }}/build

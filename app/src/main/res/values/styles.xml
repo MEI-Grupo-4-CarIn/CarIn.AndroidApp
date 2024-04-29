@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@mipmap/splash_image</item>
+    </style>
+
+    <style name="SpinnerTextStyle">
+        <item name="android:textColor">@color/colorGrey60</item>
+    </style>
+
+    <style name="ProgressBarCustomStyle" parent="Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/custom_progress_bar</item>
+    </style>
+
+
+</resources>

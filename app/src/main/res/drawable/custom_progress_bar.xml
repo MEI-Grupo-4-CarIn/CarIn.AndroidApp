@@ -1,0 +1,18 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Cor da barra de progresso preenchida -->
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <corners android:radius="4dp" /> <!-- Cantos arredondados -->
+                <solid android:color="@color/green" /> <!-- Cor verde -->
+            </shape>
+        </clip>
+    </item>
+    <!-- Cor da barra de progresso não preenchida -->
+    <item android:id="@android:id/background">
+        <shape>
+            <corners android:radius="4dp" /> <!-- Cantos arredondados -->
+            <solid android:color="#CCCCCC" /> <!-- Cor cinza -->
+        </shape>
+    </item>
+</layer-list>

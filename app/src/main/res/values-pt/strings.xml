@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Info-->
+    <string name="app_name">CarIn</string>
+    <string name="information">Informações</string>
+    <string name="the_company">A empresa</string>
+    <string name="address">Rua da Encosta no Centro, N.º 225 Porto, Portugal</string>
+    <string name="phoneNumber">+351 253 459 054 *</string>
+    <string name="email">empresa@empresa.pt</string>
+    <string name="site">www.empresa.com</string>
+    <string name="callcost">*Custo de chamada para rede fixa nacional.</string>
+    <string name="privacyPolicy">Política de Privacidade</string>
+    <string name="textInfo">A sua privacidade é importante para nós. É política do carin respeitar a sua privacidade em relação a qualquer informação sua que possamos coletar no site carin, e outros sites que possuímos e operamos.Solicitamos informações pessoais apenas quando realmente precisamos delas para lhe fornecer um serviço. Fazemo-lo por meios justos e legais, com o seu conhecimento e consentimento. Também informamos por que estamos coletando e como será usado.Apenas retemos as informações coletadas pelo tempo necessário para fornecer o serviço solicitado. Quando armazenamos dados, protegemos dentro de meios comercialmente aceitáveis ​​para evitar perdas e roubos, bem como acesso, divulgação, cópia, uso ou modificação não autorizados.Não compartilhamos informações de identificação pessoal publicamente ou com terceiros, exceto quando exigido por lei.O nosso site pode ter links para sites externos que não são operados por nós. Esteja ciente de que não temos controle sobre o conteúdo e práticas desses sites e não podemos aceitar responsabilidade por suas respectivas políticas de privacidade.Você é livre para recusar a nossa solicitação de informações pessoais, entendendo que talvez não possamos fornecer alguns dos serviços desejados.O uso continuado de nosso site será considerado como aceitação de nossas práticas em torno de privacidade e informações pessoais. Se você tiver alguma dúvida sobre como lidamos com dados do usuário e informações pessoais, entre em contacto connosco.O serviço Google AdSense que usamos para veicular publicidade usa um cookie DoubleClick para veicular anúncios mais relevantes em toda a Web e limitar o número de vezes que um determinado anúncio é exibido para você.Para mais informações sobre o Google AdSense, consulte as FAQs oficiais sobre privacidade do Google AdSense.Utilizamos anúncios para compensar os custos de funcionamento deste site e fornecer financiamento para futuros desenvolvimentos. Os cookies de publicidade comportamental usados ​​por este site foram projetados para garantir que você forneça os anúncios mais relevantes sempre que possível, rastreando anonimamente seus interesses e apresentando coisas semelhantes que possam ser do seu interesse.Vários parceiros anunciam em nosso nome e os cookies de rastreamento de afiliados simplesmente nos permitem ver se nossos clientes acessaram o site através de um dos sites de nossos parceiros, para que possamos creditá-los adequadamente e, quando aplicável, permitir que nossos parceiros afiliados ofereçam qualquer promoção que pode fornecê-lo para fazer uma compra.Compromisso do UsuárioO usuário se compromete a fazer uso adequado dos conteúdos e da informação que o carin oferece no site e com caráter enunciativo, mas não limitativo:A) Não se envolver em atividades que sejam ilegais ou contrárias à boa fé a à ordem pública;B) Não difundir propaganda ou conteúdo de natureza racista, xenofóbica, Bet Nacional ou azar, qualquer tipo de pornografia ilegal, de apologia ao terrorismo ou contra os direitos humanos;C) Não causar danos aos sistemas físicos (hardwares) e lógicos (softwares) do carin, de seus fornecedores ou terceiros, para introduzir ou disseminar vírus informáticos ou quaisquer outros sistemas de hardware ou software que sejam capazes de causar danos anteriormente mencionados.Mais informaçõesEsperemos que esteja esclarecido e, como mencionado anteriormente, se houver algo que você não tem certeza se precisa ou não, geralmente é mais seguro deixar os cookies ativados, caso interaja com um dos recursos que você usa em nosso site.Esta política é efetiva a partir de 9 January 2024 23:41</string>
+
+    <!--Home-->
+    <string name="hello">Olá José</string>
+    <string name="numberCars">Número de carros</string>
+    <string name="numberEmployees">Número de funcionários</string>
+    <string name="numberJourneys">Número de viagens</string>
+    <string name="carsWorkshop">Carros na Oficina</string>
+    <string name="home">Inicío</string>
+    <string name="route">Rotas</string>
+    <string name="vehicles">Veículos</string>
+    <string name="profile">Perfil</string>
+    <string name="newAppointment">Novo Agendamento</string>
+    <string name="addRoute">Adicionar Rota</string>
+    <string name="addVehicle">Adicionar Veículo</string>
+    <string name="addUser">Adicionar Utilizador</string>
+
+    <!--Login-->
+    <string name="confirmEmail">Confirmar Email</string>
+    <string name="textConfirmEmail">Será enviado um email para o endereço abaixo, para recuperar a password.</string>
+    <string name="send">Enviar</string>
+    <string name="logIn">Iniciar Sessão</string>
+    <string name="nameEmail">Email</string>
+    <string name="password">Password</string>
+    <string name="forgotPassword">Esqueceu-se da password?</string>
+    <string name="enter">Entrar</string>
+    <string name="recoverPassword">Recuperar Password</string>
+    <string name="newPassword">Nova password</string>
+    <string name="enterPassword">Insira a sua password</string>
+    <string name="confirmNewPassword">Confirmar nova password</string>
+    <string name="confirm">Confirmar</string>
+
+    <!--New Route-->
+    <string name="newRoute">Nova Rota</string>
+    <string name="departure">Partida</string>
+    <string name="enterDeparture">Insira o local de partida</string>
+    <string name="destination">Destino</string>
+    <string name="enterDestination">Insira o local de destino</string>
+    <string name="driver">Condutor</string>
+    <string name="departureDate">Data de saída</string>
+    <string name="estimatedTimeArrival">Previsão de chegada</string>
+    <string name="vehicle">Veículo</string>
+    <string name="register">Registar</string>
+
+    <!--New Appointment-->
+    <string name="title">Título</string>
+    <string name="enterTitle">Insira o título</string>
+    <string name="allDay">Todo o dia</string>
+    <string name="start">Início</string>
+    <string name="end">Fim</string>
+    <string name="location">Localização</string>
+    <string name="enterLocation">Insira a localização</string>
+    <string name="notes">Notas</string>
+    <string name="enterNecessaryNotes">Insira as notas necessárias</string>
+    <string name="assignTo">Atribuir a:</string>
+    <string name="create">Criar</string>
+
+    <!--New User-->
+    <string name="new_user">Novo Utilizador</string>
+    <string name="firstName">Primeiro nome</string>
+    <string name="enterFirstName">Insira o primeiro nome</string>
+    <string name="lastName">Último nome</string>
+    <string name="enterLastName">Insira o último nome</string>
+    <string name="dateBirth">Data</string>
+    <string name="enterDateBirth">Insira a data de nascimento</string>
+    <string name="enterEmail">Insira o email</string>
+    <string name="function">Função</string>
+
+    <!--New Vehicle-->
+    <string name="newVehicle">Novo Veículo</string>
+    <string name="brand">Marca</string>
+    <string name="enterBrand">Insira a marca</string>
+    <string name="model">Modelo</string>
+    <string name="enterModel">Insira o Modelo</string>
+    <string name="licensePlate">Matrícula</string>
+    <string name="enterLicensePlate">Insira a Matrícula</string>
+    <string name="vin">Insira o VIN</string>
+    <string name="textVin">VIN</string>
+    <string name="color">Cor</string>
+    <string name="enterColor">Insira a cor</string>
+    <string name="dateRegistration">Data de Registo</string>
+    <string name="dateAcquisition">Data de Aquisição</string>
+    <string name="classtext">Classe</string>
+    <string name="enterClass">Insira a classe</string>
+    <string name="currentkms">Kms Atuais</string>
+    <string name="capacity">Capacidade</string>
+    <string name="NºSeats">Nº de lugares</string>
+    <string name="typeFuel">Tipo de Combustível</string>
+    <string name="fuel">Combustível</string>
+    <string name="averageConsumption">Consumo Médio</string>
+    <string name="status">Estado</string>
+
+    <!--Routes-->
+    <string name="routes">Rotas</string>
+    <string name="inProgress">A decorrer</string>
+    <string name="finalised">Concluídas</string>
+    <string name="allTodas">Todas</string>
+    <string name="departureDates">Data de saída:</string>
+    <string name="numberRoute">Rota Número</string>
+    <string name="editRoute">Editar Rota</string>
+    <string name="save">Guardar</string>
+    <string name="deleteRoute">Eliminar Rota</string>
+    <string name="messageDelete">Tem a certeza de que pretende eliminar a rota?</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="tripDetails">Detalhes da viagem</string>
+    <string name="car">Carro</string>
+    <string name="consumption">Consumo</string>
+    <string name="seeMore">Ver mais</string>
+    <string name="name">Nome</string>
+    <string name="accidentsRecorded">Acidentes registados</string>
+    <string name="age">Idade</string>
+    <string name="roadTolls">Portagens</string>
+    <string name="others">Outros</string>
+    <string name="travellingTime">Tempo de viagem</string>
+    <string name="co2">CO2</string>
+    <string name="kilometres">Quilómetros</string>
+    <string name="totalCost">Custo total</string>
+
+    <!--Vehicles-->
+    <string name="all">Todos</string>
+    <string name="inUse">Em Uso</string>
+    <string name="search">Pesquisar ...</string>
+    <string name="editVehicle">Editar Veículo</string>
+    <string name="deleteVehicle">Eliminar Veículo</string>
+    <string name="textDeleteVehicle">Tem a certeza de que pretende eliminar o veículo?</string>
+    <string name="vehicleDetails">Detalhes do veículo</string>
+    <string name="upcomingAppointments">Próximos agendamentos</string>
+    <string name="calendar">Calendário</string>
+    <string name="lastDrivers">Últimos Condutores</string>
+
+    <!--Users-->
+    <string name="employees">Funcionários</string>
+    <string name="drivers">Condutores</string>
+    <string name="managers">Gestores</string>
+    <string name="administrators">Administradores</string>
+    <string name="totalJourneys">Total viagens</string>
+    <string name="totalKms">Total kms</string>
+    <string name="totalHours">Total horas</string>
+    <string name="details">Detalhes</string>
+    <string name="group">Grupo</string>
+    <string name="journeys">Viagens</string>
+    <string name="complete">completas</string>
+    <string name="problems">Problemas</string>
+    <string name="travelling">em viagem</string>
+    <string name="attendance">Assiduidade</string>
+    <string name="editUser">Editar Utilizador</string>
+
+
+</resources>

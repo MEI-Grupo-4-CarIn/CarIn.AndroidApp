@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="85dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:paddingBottom="5dp"
+    android:layout_marginBottom="5dp">
+
+    <ImageView
+        android:id="@+id/backgroundRectangle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/item_background"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/carImageView"
+        android:layout_width="54dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:src="@mipmap/splash_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/brandTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="-20dp"
+        android:text="Marca e Modelo"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/carImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/carImageView" />
+
+    <TextView
+        android:id="@+id/licensePlateTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="XXXX-XX"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintStart_toEndOf="@id/carImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/brandTextView" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toEndOf="@id/carImageView"
+        app:layout_constraintTop_toBottomOf="@id/licensePlateTextView"
+        app:layout_constraintBottom_toBottomOf="@id/backgroundRectangle">
+
+        <TextView
+            android:id="@+id/fuelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/colorPrimary"
+            android:text="Gasolina"
+            android:drawableLeft="@drawable/ic_fuel"
+            android:drawablePadding="4dp"/>
+
+        <TextView
+            android:id="@+id/consumptionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/colorPrimary"
+            android:text="XX km/l"
+            android:drawableLeft="@drawable/ic_consumption"
+            android:drawablePadding="4dp"/>
+
+        <TextView
+            android:id="@+id/autonomyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/colorPrimary"
+            android:text="XXX km"
+            android:drawableLeft="@drawable/ic_km"
+            android:drawablePadding="4dp"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
