@@ -14,6 +14,16 @@ class NotificationAdapter(
 ) :
     RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
 
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
+    private var listener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_notifications, parent, false)
@@ -27,6 +37,10 @@ class NotificationAdapter(
         holder.rectangle_text.text = "${notification.temp}"
         holder.descriptionTextView.text = "${notification.description}"
         holder.countryTextView.text = "${notification.country}"
+
+        holder.itemView.setOnClickListener {
+            listener?.onItemClick(position)
+        }
     }
 
     override fun getItemCount(): Int {

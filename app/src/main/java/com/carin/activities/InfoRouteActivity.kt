@@ -58,8 +58,7 @@ class InfoRouteActivity : AppCompatActivity() {
 
         val btnYes = dialogView.findViewById<Button>(R.id.btnYes)
         btnYes.setOnClickListener {
-            // Lógica para eliminar
-            // Implemente aqui a lógica para deletar a rota
+
             dialog.dismiss()
         }
 

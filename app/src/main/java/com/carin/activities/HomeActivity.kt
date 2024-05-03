@@ -3,13 +3,16 @@ package com.carin.activities
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
@@ -37,16 +40,22 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerView1)
+        val recyclerView1: RecyclerView = findViewById(R.id.recyclerView1)
 
-        recyclerView.addItemDecoration(ItemSpacingDecoration(10))
+        recyclerView1.addItemDecoration(ItemSpacingDecoration(10))
 
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-
+        recyclerView1.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         notifications = getNotifications()
 
         adapter = HomeNotificationAdapter(notifications)
-        recyclerView.adapter = adapter
+        recyclerView1.adapter = adapter
+
+        adapter.setOnItemClickListener(object : HomeNotificationAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val intent = Intent(this@HomeActivity, InfoRouteActivity::class.java)
+                startActivity(intent)
+            }
+        })
 
         val recyclerView2: RecyclerView = findViewById(R.id.recyclerView)
 
@@ -70,6 +79,13 @@ class HomeActivity : AppCompatActivity() {
         adapterscheduling = SchedulingHomeAdapter(schedulings)
         recyclerView3.adapter = adapterscheduling
 
+        adapterscheduling.setOnItemClickListener(object : SchedulingHomeAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val intent = Intent(this@HomeActivity, InfoSchedulingActivity::class.java)
+                startActivity(intent)
+            }
+        })
+
         val recyclerView4: RecyclerView = findViewById(R.id.recyclerView4)
 
         recyclerView4.addItemDecoration(ItemSpacingDecoration(10))
@@ -81,6 +97,13 @@ class HomeActivity : AppCompatActivity() {
         adapterEmployee = EmployeesHomeAdapter(employees)
         recyclerView4.adapter = adapterEmployee
 
+        adapterEmployee.setOnItemClickListener(object : EmployeesHomeAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val intent = Intent(this@HomeActivity, InfoUserActivity::class.java)
+                startActivity(intent)
+            }
+        })
+
         val imageViewInfo = findViewById<ImageView>(R.id.imageViewInfo)
 
         imageViewInfo.setOnClickListener {
@@ -88,7 +111,7 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val buttonVehicle: ImageView = findViewById(R.id.buttonVehicle)
+        val buttonVehicle = findViewById<ImageView>(R.id.buttonVehicle)
 
         buttonVehicle.setOnClickListener {
         val intent = Intent(this, VehicleActivity::class.java)
@@ -111,6 +134,14 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val moreSchedulings: TextView = findViewById(R.id.textViewSeeMore)
+
+        moreSchedulings.setOnClickListener {
+            val intent = Intent(this, CalendarActivity::class.java)
+            overridePendingTransition(R.animator.slide_in_right, R.animator.slide_out_left)
+            startActivity(intent)
+        }
+
         val buttonRoute: ImageView = findViewById(R.id.buttonRoute)
 
         buttonRoute.setOnClickListener {
@@ -125,6 +156,16 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val overlay = View(this)
+        overlay.apply {
+            layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            setBackgroundColor(Color.parseColor("#DD000000"))
+            visibility = View.INVISIBLE
+        }
+
+        val constraintLayout = findViewById<ConstraintLayout>(R.id.main)
+        constraintLayout.addView(overlay)
+
         val buttonMore = findViewById<ImageView>(R.id.buttonMore)
         val layoutNewAppointment = findViewById<RelativeLayout>(R.id.layoutNewAppointment)
         val layoutAddRoute = findViewById<RelativeLayout>(R.id.layoutAddRoute)
@@ -132,6 +173,7 @@ class HomeActivity : AppCompatActivity() {
         val layoutAddUser = findViewById<RelativeLayout>(R.id.layoutAddUser)
 
         buttonMore.setOnClickListener {
+                        overlay.visibility = if (isRotated) View.INVISIBLE else View.VISIBLE
             if (isRotated) {
                 val rotateAnimator = ObjectAnimator.ofFloat(buttonMore, "rotation", 45f, 0f)
                     .apply {
@@ -139,8 +181,13 @@ class HomeActivity : AppCompatActivity() {
                         interpolator = AccelerateDecelerateInterpolator()
                     }
 
+                val fadeOutAnimator = ObjectAnimator.ofFloat(overlay, "alpha", 0.5f, 0f)
+                    .apply {
+                        duration = 500
+                    }
+
                 val animatorSet = AnimatorSet()
-                animatorSet.play(rotateAnimator)
+                animatorSet.playTogether(rotateAnimator, fadeOutAnimator)
                 animatorSet.start()
 
                 layoutNewAppointment.visibility = View.INVISIBLE
@@ -154,8 +201,13 @@ class HomeActivity : AppCompatActivity() {
                         interpolator = AccelerateDecelerateInterpolator()
                     }
 
+                val fadeInAnimator = ObjectAnimator.ofFloat(overlay, "alpha", 0f, 0.5f)
+                    .apply {
+                        duration = 500
+                    }
+
                 val animatorSet = AnimatorSet()
-                animatorSet.play(rotateAnimator)
+                animatorSet.playTogether(rotateAnimator, fadeInAnimator)
                 animatorSet.start()
 
                 layoutNewAppointment.visibility = View.VISIBLE
@@ -185,7 +237,9 @@ class HomeActivity : AppCompatActivity() {
         layoutNewAppointment.setOnClickListener {
             val intent = Intent(this, NewSchedulingActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.animator.slide_up, 0)
         }
+
 
     }
 

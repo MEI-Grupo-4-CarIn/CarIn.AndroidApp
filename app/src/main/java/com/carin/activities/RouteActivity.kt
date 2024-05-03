@@ -10,32 +10,21 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
-import com.carin.adapter.RouteAdapter
 
 
 class RouteActivity : AppCompatActivity() {
 
     private var isRotated = false
-    private lateinit var adapter: RouteAdapter
-    private lateinit var routes: List<RouteActivity.Route>
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_route)
 
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-
-        recyclerView.addItemDecoration(ItemSpacingDecoration(5))
-
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-        routes = getRoutes()
-
-        adapter = RouteAdapter(routes)
-        recyclerView.adapter = adapter
+        if(savedInstanceState == null){
+            supportFragmentManager.beginTransaction()
+                .add(R.id.container, MainFragmentRoute())
+                .commitNow()
+        }
 
         val iconImageView: ImageView = findViewById(R.id.iconImageView)
 
@@ -49,6 +38,7 @@ class RouteActivity : AppCompatActivity() {
         buttonRoute.setOnClickListener {
             val intent = Intent(this, RouteActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         val buttonVehicle: ImageView = findViewById(R.id.buttonVehicle)
@@ -135,17 +125,5 @@ class RouteActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-    private fun getRoutes(): List<Route> {
-
-        val routes = mutableListOf<Route>()
-        routes.add(Route("Porto","Luxembourg", "Bruno Ferreira", "19H10m", "12 Fevereiro", "INFINITY Vision Qe", "1896km"))
-        routes.add(Route("Porto","Luxembourg", "Bruno Ferreira", "19H10m", "12 Fevereiro", "INFINITY Vision Qe", "1896km"))
-        routes.add(Route("Porto","Luxembourg", "Bruno Ferreira", "19H10m", "12 Fevereiro", "INFINITY Vision Qe", "1896km"))
-        routes.add(Route("Porto","Luxembourg", "Bruno Ferreira", "19H10m", "12 Fevereiro", "INFINITY Vision Qe", "1896km"))
-        routes.add(Route("Porto","Luxembourg", "Bruno Ferreira", "19H10m", "12 Fevereiro", "INFINITY Vision Qe", "1896km"))
-
-        return routes
-    }
-    data class Route(val origin: String, val destination: String,  val driver: String, val hours: String, val departureDate: String, val vehicle: String, val km: String)
-
 }
+

@@ -13,6 +13,10 @@
         android:theme="@style/Theme.CarIn"
         tools:targetApi="31" >
         <activity
+            android:name=".activities.CalendarActivity"
+            android:exported="true">
+        </activity>
+         <activity
             android:name=".activities.NotificationActivity"
             android:exported="true">
         </activity>
@@ -45,6 +49,10 @@
             android:exported="true">
         </activity>
         <activity
+            android:name=".activities.InfoSchedulingActivity"
+            android:exported="true">
+        </activity>
+        <activity
             android:name=".activities.RouteActivity"
             android:exported="true">
         </activity>
@@ -71,11 +79,7 @@
         <activity
             android:name=".activities.HomeActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            </activity>
         <activity
             android:name=".activities.InfoActivity"
             android:exported="true" >
@@ -86,6 +90,10 @@
         </activity>
         <activity
             android:name=".activities.ConfirmPasswordActivity"
+            android:exported="true" >
+        </activity>
+        <activity
+            android:name=".activities.RegisterActivity"
             android:exported="true" >
         </activity>
         <activity

@@ -13,6 +13,16 @@ class RouteInfoAdapter(
 ) :
     RecyclerView.Adapter<RouteInfoAdapter.RouteInfoViewHolder>() {
 
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
+    private var listener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouteInfoViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_routes, parent, false)
@@ -27,6 +37,10 @@ class RouteInfoAdapter(
         holder.brandTextView.text = "${route.brand}"
         holder.hourTextView.text = "${route.hour}"
         holder.kmTextView.text = "${route.km}"
+
+        holder.itemView.setOnClickListener {
+            listener?.onItemClick(position)
+        }
     }
 
     override fun getItemCount(): Int {

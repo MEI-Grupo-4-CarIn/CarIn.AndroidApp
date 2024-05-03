@@ -11,32 +11,23 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
-import com.carin.adapter.VehicleAdapter
 
 
 class VehicleActivity : AppCompatActivity() {
 
     private var isRotated = false
-    private lateinit var adapter: VehicleAdapter
-    private lateinit var vehicles: List<Vehicle>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_vehicle)
 
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-
-        recyclerView.addItemDecoration(ItemSpacingDecoration(5))
-
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-        vehicles = getVehicles()
-
-        adapter = VehicleAdapter(vehicles)
-        recyclerView.adapter = adapter
+        if(savedInstanceState == null){
+            supportFragmentManager.beginTransaction()
+                .add(R.id.container, MainFragmentVehicle())
+                .commitNow()
+        }
 
         val iconImageView: ImageView = findViewById(R.id.iconImageView)
 
@@ -130,21 +121,6 @@ class VehicleActivity : AppCompatActivity() {
 
 
     }
-    private fun getVehicles(): List<Vehicle> {
-
-        val vehicles = mutableListOf<Vehicle>()
-        vehicles.add(Vehicle(R.drawable.ic_vehicle_blue, "INFINITY Vision Qe","AB-89-UD", "Elétrico", "5.7 L/100km", "150kms"))
-        vehicles.add(Vehicle(R.drawable.ic_vehicle_blue, "INFINITY Vision Qe","AB-89-UD", "Elétrico", "5.7 L/100km", "150kms"))
-        vehicles.add(Vehicle(R.drawable.ic_vehicle_blue, "INFINITY Vision Qe","AB-89-UD", "Elétrico", "5.7 L/100km", "150kms"))
-        vehicles.add(Vehicle(R.drawable.ic_vehicle_blue, "INFINITY Vision Qe","AB-89-UD", "Elétrico", "5.7 L/100km", "150kms"))
-        vehicles.add(Vehicle(R.drawable.ic_vehicle_blue, "INFINITY Vision Qe","AB-89-UD", "Elétrico", "5.7 L/100km", "150kms"))
-        vehicles.add(Vehicle(R.drawable.ic_vehicle_blue, "INFINITY Vision Qe","AB-89-UD", "Elétrico", "5.7 L/100km", "150kms"))
-        vehicles.add(Vehicle(R.drawable.ic_vehicle_blue, "INFINITY Vision Qe","AB-89-UD", "Elétrico", "5.7 L/100km", "150kms"))
-        vehicles.add(Vehicle(R.drawable.ic_vehicle_blue, "INFINITY Vision Qe","AB-89-UD", "Elétrico", "5.7 L/100km", "150kms"))
-
-        return vehicles
-    }
-    data class Vehicle(val imageResource: Int, val brand: String,  val licenseplate: String, val fuel: String, val consumption: String, val autonomy: String)
 }
 
 class ItemSpacingDecoration(private val spacing: Int) : RecyclerView.ItemDecoration() {

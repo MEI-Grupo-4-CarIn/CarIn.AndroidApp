@@ -13,6 +13,16 @@ class SchedulingAdapter(
 ) :
     RecyclerView.Adapter<SchedulingAdapter.SchedulingViewHolder>() {
 
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
+    private var listener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SchedulingViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_scheduling, parent, false)
@@ -25,6 +35,9 @@ class SchedulingAdapter(
         holder.text1ViewText.text = "${scheduling.inf}"
         holder.otherTextView.text = "${scheduling.otherHour}"
 
+        holder.itemView.setOnClickListener {
+            listener?.onItemClick(position)
+        }
     }
 
     override fun getItemCount(): Int {

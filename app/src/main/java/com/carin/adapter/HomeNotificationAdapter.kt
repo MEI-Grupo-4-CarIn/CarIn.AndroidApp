@@ -14,6 +14,16 @@ class HomeNotificationAdapter(
 ) :
     RecyclerView.Adapter<HomeNotificationAdapter.NotificationViewHolder>() {
 
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
+    private var listener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_home_notifications, parent, false)
@@ -26,6 +36,10 @@ class HomeNotificationAdapter(
         holder.text1.text = "${notification.notificationType}"
         holder.text_icon.text = "${notification.country}"
         holder.rectangle_text.text = "${notification.temp}"
+
+        holder.itemView.setOnClickListener {
+            listener?.onItemClick(position)
+        }
     }
 
     override fun getItemCount(): Int {

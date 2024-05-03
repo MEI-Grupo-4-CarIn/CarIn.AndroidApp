@@ -18,6 +18,13 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        val buttonRegister: Button = findViewById(R.id.buttonRegister)
+
+        buttonRegister.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
+
         val buttonLogin = findViewById<Button>(R.id.buttonLogin)
         buttonLogin.setOnClickListener {
             val enteredEmail = findViewById<EditText>(R.id.editTextEmail).text.toString()
@@ -26,6 +33,7 @@ class LoginActivity : AppCompatActivity() {
             if (enteredEmail == email && enteredPassword == password) {
                 val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
+                finish()
             } else {
                 val errorMessage = if (isDeviceInEnglish()) {
                     "Incorrect email or password!"
@@ -37,7 +45,7 @@ class LoginActivity : AppCompatActivity() {
         }
         val textViewForgotPassword = findViewById<TextView>(R.id.textViewForgotPassword)
         textViewForgotPassword.setOnClickListener {
-            val intent = Intent(this, RecoverPasswordActivity::class.java)
+            val intent = Intent(this, ConfirmPasswordActivity::class.java)
             startActivity(intent)
         }
     }

@@ -11,11 +11,11 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.activities.InfoVehicleActivity
-import com.carin.activities.VehicleActivity
+import com.carin.activities.VehicleFragment
 import java.io.ByteArrayOutputStream
 
 class VehicleAdapter(
-    private val vehicles: List<VehicleActivity.Vehicle>) :
+    private val vehicles: List<VehicleFragment.Vehicle>) :
     RecyclerView.Adapter<VehicleAdapter.VehicleViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VehicleViewHolder {
