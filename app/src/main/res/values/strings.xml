@@ -40,6 +40,7 @@
     <string name="enterPassword">Enter your password</string>
     <string name="confirmNewPassword">Confirm new password</string>
     <string name="confirm">Confirm</string>
+    <string name="securityCode">Security Code</string>
 
 
     <!--New Route-->
@@ -66,6 +67,7 @@
     <string name="enterNecessaryNotes">Enter the necessary notes</string>
     <string name="assignTo">Assign to:</string>
     <string name="create">Create</string>
+    <string name="appointment">Appointment</string>
 
     <!--New User-->
     <string name="new_user">New User</string>
@@ -158,5 +160,11 @@
     <string name="travelling">travelling</string>
     <string name="attendance">Attendance</string>
     <string name="editUser">Edit User</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+
+    <!--Calendar-->
+    <string name="today">Today</string>
+    <string name="upcomingEvents">Upcoming events</string>
 
 </resources>

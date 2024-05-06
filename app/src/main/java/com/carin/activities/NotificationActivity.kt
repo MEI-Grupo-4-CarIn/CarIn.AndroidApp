@@ -29,6 +29,13 @@ class NotificationActivity : AppCompatActivity() {
         adapter = NotificationAdapter(notifications)
         recyclerView.adapter = adapter
 
+        adapter.setOnItemClickListener(object : NotificationAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val intent = Intent(this@NotificationActivity, InfoRouteActivity::class.java)
+                startActivity(intent)
+            }
+        })
+
         val backNotification: ImageView = findViewById(R.id.iconImageView)
 
         backNotification.setOnClickListener {

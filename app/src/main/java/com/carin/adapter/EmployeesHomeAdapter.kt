@@ -13,6 +13,16 @@ class EmployeesHomeAdapter(
     private val employees: List<HomeActivity.Employee>) :
     RecyclerView.Adapter<EmployeesHomeAdapter.EmployeeHomeViewHolder>() {
 
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
+    private var listener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmployeeHomeViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_home_employees, parent, false)
@@ -29,6 +39,10 @@ class EmployeesHomeAdapter(
         holder.journeys.text = "${employee.journeys}"
         holder.hours.text = "${employee.hours}"
         holder.kms.text = "${employee.kms}"
+
+        holder.itemView.setOnClickListener {
+            listener?.onItemClick(position)
+        }
     }
 
     override fun getItemCount(): Int {

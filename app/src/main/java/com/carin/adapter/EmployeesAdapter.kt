@@ -11,11 +11,11 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.activities.InfoUserActivity
-import com.carin.activities.UserActivity
+import com.carin.activities.UserFragment
 import java.io.ByteArrayOutputStream
 
 class EmployeesAdapter(
-    private val employees: List<UserActivity.Employee>) :
+    private val employees: List<UserFragment.Employee>) :
     RecyclerView.Adapter<EmployeesAdapter.EmployeeViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmployeeViewHolder {

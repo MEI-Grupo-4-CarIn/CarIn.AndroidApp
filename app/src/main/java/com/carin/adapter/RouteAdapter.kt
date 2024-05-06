@@ -1,15 +1,18 @@
 package com.carin.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
-import com.carin.activities.RouteActivity
+import com.carin.activities.InfoRouteActivity
+import com.carin.activities.RouteFragment
 
 class RouteAdapter(
-    private val routes: List<RouteActivity.Route>
+    private val routes: List<RouteFragment.Route>
 ) :
     RecyclerView.Adapter<RouteAdapter.RouteViewHolder>() {
 
@@ -42,7 +45,15 @@ class RouteAdapter(
         val departureDateTextView: TextView = itemView.findViewById(R.id.departureDateTextView)
         val vehicleTextView: TextView = itemView.findViewById(R.id.vehicleTextView)
         val kmTextView: TextView = itemView.findViewById(R.id.kmTextView)
+        val backgroundRectangleImageView: FrameLayout = itemView.findViewById(R.id.backgroundRectangle)
 
+        init {
+            backgroundRectangleImageView.setOnClickListener {
+                val context = itemView.context
+                val intent = Intent(context, InfoRouteActivity::class.java)
+                context.startActivity(intent)
+            }
+        }
 
     }
 

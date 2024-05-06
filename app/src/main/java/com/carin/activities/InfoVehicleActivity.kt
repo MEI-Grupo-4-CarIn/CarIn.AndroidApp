@@ -32,6 +32,14 @@ class InfoVehicleActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info_vehicle)
 
+        val moreSchedulings: TextView = findViewById(R.id.textViewSeeMore)
+
+        moreSchedulings.setOnClickListener {
+            val intent = Intent(this, CalendarActivity::class.java)
+            overridePendingTransition(R.animator.slide_in_right, R.animator.slide_out_left)
+            startActivity(intent)
+        }
+
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         recyclerView.addItemDecoration(ItemSpacingDecoration(10))
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -39,6 +47,13 @@ class InfoVehicleActivity : AppCompatActivity() {
         schedulings = getSchedulings()
         adapter = SchedulingAdapter(schedulings)
         recyclerView.adapter = adapter
+
+        adapter.setOnItemClickListener(object : SchedulingAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val intent = Intent(this@InfoVehicleActivity, InfoSchedulingActivity::class.java)
+                startActivity(intent)
+            }
+        })
 
         val recyclerView1: RecyclerView = findViewById(R.id.recyclerView1)
         recyclerView1.addItemDecoration(ItemSpacingDecoration(10))
@@ -49,6 +64,13 @@ class InfoVehicleActivity : AppCompatActivity() {
         adapterUser = UserAdapter(users)
         recyclerView1.adapter = adapterUser
 
+        adapterUser.setOnItemClickListener(object : UserAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val intent = Intent(this@InfoVehicleActivity, InfoUserActivity::class.java)
+                startActivity(intent)
+            }
+        })
+
         val recyclerView2: RecyclerView = findViewById(R.id.recyclerView2)
         recyclerView2.addItemDecoration(ItemSpacingDecoration(10))
 
@@ -57,6 +79,13 @@ class InfoVehicleActivity : AppCompatActivity() {
         routesinfo = getRoutes()
         adapterRoute = RouteInfoAdapter(routesinfo)
         recyclerView2.adapter = adapterRoute
+
+        adapterRoute.setOnItemClickListener(object : RouteInfoAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val intent = Intent(this@InfoVehicleActivity, InfoRouteActivity::class.java)
+                startActivity(intent)
+            }
+        })
 
 
         val informationText: TextView = findViewById(R.id.informationText)

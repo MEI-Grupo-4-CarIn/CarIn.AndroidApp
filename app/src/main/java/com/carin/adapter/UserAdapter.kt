@@ -13,6 +13,16 @@ class UserAdapter(
     private val users: List<InfoVehicleActivity.User>) :
     RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
+    private var listener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_drivers, parent, false)
@@ -25,6 +35,9 @@ class UserAdapter(
         holder.firstNameViewTime.text = "${user.firstName}"
         holder.lastNameViewTime.text = "${user.lastName}"
 
+        holder.itemView.setOnClickListener {
+            listener?.onItemClick(position)
+        }
     }
 
     override fun getItemCount(): Int {

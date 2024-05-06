@@ -7,23 +7,39 @@
     android:layout_height="match_parent"
     android:background="#ffff"
     tools:context=".activities.LoginActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/ImgRelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/myImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/login"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="-11dp"/>
+        <View
+            android:id="@+id/ellipse_37"
+            android:background="@drawable/ellipse_colorsecundary"
+            android:layout_marginEnd="-100dp"
+            android:layout_marginTop="-57dp"
+            android:layout_width="match_parent"
+            android:layout_height="305dp" />
+
+
+        <View
+            android:id="@+id/ellipse_36"
+            android:layout_width="453dp"
+            android:layout_height="448dp"
+            android:layout_marginStart="-109dp"
+            android:layout_marginTop="-127dp"
+            android:background="@drawable/ellipse_colorprimary" />
 
         <TextView
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/logIn"
             android:textColor="#FFFFFF"
@@ -100,8 +116,8 @@
 
     <Button
         android:id="@+id/buttonLogin"
-        android:layout_width="381dp"
-        android:layout_height="52dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:text="@string/enter"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
@@ -112,18 +128,32 @@
         android:layout_marginEnd="16dp"
         android:backgroundTint="@color/colorSecundary"/>
 
-    <ImageView
-        android:id="@+id/imageCarin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/splash_image"
+    <Button
+        android:id="@+id/buttonRegister"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/register"
+        android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="60dp"/>
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/colorSecundary"/>
 
+        <ImageView
+            android:id="@+id/imageCarin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/splash_image"
+            android:layout_marginTop="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-
+    </LinearLayout>
+    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
