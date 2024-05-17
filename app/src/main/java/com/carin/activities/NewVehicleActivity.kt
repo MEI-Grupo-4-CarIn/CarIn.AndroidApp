@@ -30,6 +30,7 @@ class NewVehicleActivity : AppCompatActivity() {
         iconImageView.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.animator.slide_down, 0)
         }
     }
 

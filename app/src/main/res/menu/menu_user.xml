@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/edit"
+        android:title="Edit"
+        android:icon="@drawable/ic_edit"/>
+    <item
+        android:id="@+id/logOut"
+        android:title="Log Out"
+        android:icon="@drawable/ic_logout"/>
+</menu>

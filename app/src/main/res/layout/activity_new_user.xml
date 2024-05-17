@@ -42,8 +42,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
         android:src="@drawable/ic_download"
-        android:scaleType="centerInside"
-        android:padding="40dp"/>
+        android:scaleType="centerInside"/>
 
     <RelativeLayout
         android:id="@+id/relativeLayout"

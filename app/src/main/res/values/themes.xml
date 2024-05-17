@@ -1,11 +1,12 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+<resources>
+
     <style name="Base.Theme.CarIn" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:fontFamily">@font/poppins_regular</item>
         <item name="fontFamily">@font/poppins_regular</item>
+        <item name="android:itemBackground">@color/white</item>
     </style>
 
-    <style name="Theme.CarIn" parent="Base.Theme.CarIn" />
+    <style name="Theme.CarIn" parent="Base.Theme.CarIn"></style>
+
 </resources>

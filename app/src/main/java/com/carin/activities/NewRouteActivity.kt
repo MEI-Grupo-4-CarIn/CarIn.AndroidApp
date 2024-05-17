@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import com.carin.R
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -15,7 +16,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
-import com.carin.R
 import java.util.Calendar
 
 class NewRouteActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -54,6 +54,7 @@ class NewRouteActivity : AppCompatActivity(), OnMapReadyCallback {
         iconImageView.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.animator.slide_down, 0)
         }
     }
 

@@ -74,7 +74,7 @@
         android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <include layout="@layout/menu_layout"/>
+        <include layout="@layout/menu_route_layout"/>
 
     </LinearLayout>
 

@@ -73,7 +73,7 @@
         android:layout_gravity="bottom"
         android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent">
-        <include layout="@layout/menu_layout"/>
+        <include layout="@layout/menu_profile_layout"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
