@@ -1,0 +1,136 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/backgroundRectangle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/item_background"
+    android:paddingBottom="5dp"
+    android:layout_marginBottom="5dp">
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/itemLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/originTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:textSize="18sp"
+        android:textColor="@color/colorPrimary"/>
+
+    <TextView
+        android:id="@+id/destinationTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"/>
+
+    <TextView
+        android:id="@+id/driverNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:textSize="15sp"
+        android:textColor="@color/colorPrimary"
+        android:drawableLeft="@drawable/ic_person_blue"
+        android:drawablePadding="8dp"/>
+
+    <TextView
+        android:id="@+id/hoursTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:textSize="15sp"
+        android:textColor="@color/colorPrimary"
+        android:drawableLeft="@drawable/ic_watch"
+        android:drawablePadding="8dp"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="end"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp">
+
+            <TextView
+                android:id="@+id/departureDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/departureDateTextView"
+                android:textSize="13sp"
+                android:text="@string/departureDates"
+                android:textColor="@color/colorPrimary"
+                android:layout_alignParentTop="true"/>
+
+            <ProgressBar
+                android:id="@+id/timeProgressBar"
+                style="@style/ProgressBarCustomStyle"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginStart="175dp"
+                android:layout_below="@id/departureDateTextView"
+                android:progress="50"
+                android:max="100"/>
+
+            <TextView
+                android:id="@+id/percursoTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/timeProgressBar"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/colorPrimary"
+                android:text="Em percurso"
+                android:textSize="12sp"/>
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/vehicleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="16dp"
+            android:textSize="15sp"
+            android:textColor="@color/colorPrimary"
+            android:drawableLeft="@drawable/ic_vehicle_blue"
+            android:drawablePadding="8dp"/>
+
+        <TextView
+            android:id="@+id/kmTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="16dp"
+            android:textSize="15sp"
+            android:textColor="@color/colorPrimary"
+            android:drawableLeft="@drawable/ic_km"
+            android:drawablePadding="8dp"/>
+    </LinearLayout>
+
+</FrameLayout>
