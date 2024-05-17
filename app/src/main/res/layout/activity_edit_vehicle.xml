@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".activities.NewVehicleActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iconImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_close"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewNewVehicle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/editVehicle"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/iconImageView"
+            app:layout_constraintHorizontal_bias="0.6"/>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@id/textViewNewVehicle">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/brand"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginStart="20dp"
+                android:textSize="16dp"/>
+
+            <EditText
+                android:id="@+id/editTextBrand"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="16dp"
+                android:inputType="text"
+
+                android:drawablePadding="8dp"
+                android:padding="10dp"
+                android:background="@drawable/edit_text_custom_background"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/model"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="90dp"
+                android:textSize="16dp"/>
+
+            <EditText
+                android:id="@+id/editTextModel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editTextBrand"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="16dp"
+                android:drawablePadding="8dp"
+                android:padding="10dp"
+                android:inputType="text"
+                android:background="@drawable/edit_text_custom_background"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/licensePlate"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="180dp"
+                android:textSize="16dp"/>
+
+            <EditText
+                android:id="@+id/editTextRegistration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editTextModel"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="16dp"
+                android:drawablePadding="8dp"
+                android:padding="10dp"
+                android:inputType="text"
+                android:background="@drawable/edit_text_custom_background"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/textVin"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="270dp"
+                android:textSize="16dp"/>
+
+            <EditText
+                android:id="@+id/editTextVIN"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editTextRegistration"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="16dp"
+                android:drawablePadding="8dp"
+                android:padding="10dp"
+                android:inputType="text"
+                android:background="@drawable/edit_text_custom_background"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/color"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="360dp"
+                android:textSize="16sp"/>
+
+            <EditText
+                android:id="@+id/editTextColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editTextVIN"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="16dp"
+                android:drawablePadding="8dp"
+                android:padding="10dp"
+                android:inputType="text"
+                android:background="@drawable/edit_text_custom_background"/>
+
+            <LinearLayout
+                android:id="@+id/fiveLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_below="@id/editTextColor">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="1"
+                    app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dateRegistration"
+                        android:textSize="15sp"
+                        android:textColor="@color/colorPrimary"/>
+
+                    <EditText
+                        android:id="@+id/editTextDateRegister"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_custom_background"
+                        android:focusable="false"
+                        android:gravity="center_horizontal"
+                        android:padding="10dp"
+                        app:layout_constraintTop_toBottomOf="@id/relativeLayout" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    app:layout_constraintTop_toBottomOf="@+id/fourLinearLayout">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dateAcquisition"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="15sp" />
+
+
+                    <EditText
+                        android:id="@+id/editTextDateAcquisition"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_custom_background"
+                        android:focusable="false"
+                        android:gravity="center_horizontal"
+                        android:padding="10dp"
+                        app:layout_constraintTop_toBottomOf="@id/editTextDateRegister" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/classtext"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="537dp"
+                android:textSize="16sp"/>
+
+            <EditText
+                android:id="@+id/editTextClass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fiveLinearLayout"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="16dp"
+                android:drawablePadding="8dp"
+                android:padding="10dp"
+                android:inputType="text"
+                android:background="@drawable/edit_text_custom_background"/>
+
+            <LinearLayout
+                android:id="@+id/sixLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_below="@id/editTextClass">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="1"
+                    app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/currentkms"
+                        android:textSize="15sp"
+                        android:textColor="@color/colorPrimary"/>
+
+                    <EditText
+                        android:id="@+id/kms"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_custom_background"
+                        android:textColor="@color/gray"
+                        android:focusable="false"
+                        android:gravity="center_horizontal"
+                        android:padding="10dp"
+                        app:layout_constraintTop_toBottomOf="@id/relativeLayout" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    app:layout_constraintTop_toBottomOf="@+id/fourLinearLayout">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/capacity"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="15sp" />
+
+
+                    <EditText
+                        android:id="@+id/capacity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_custom_background"
+                        android:textColor="@color/gray"
+                        android:focusable="false"
+                        android:gravity="center_horizontal"
+                        android:padding="10dp"
+                        app:layout_constraintTop_toBottomOf="@id/editTextDateRegister" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/typeFuel"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="715dp"
+                android:textSize="16sp"/>
+
+            <EditText
+                android:id="@+id/editTextTypeFuel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sixLinearLayout"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="16dp"
+                android:drawablePadding="8dp"
+                android:padding="10dp"
+                android:inputType="text"
+                android:background="@drawable/edit_text_custom_background"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/averageConsumption"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="805dp"
+                android:textSize="16sp"/>
+
+            <EditText
+                android:id="@+id/editTextAvgConsumption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editTextTypeFuel"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="16dp"
+                android:drawablePadding="8dp"
+                android:padding="10dp"
+                android:inputType="text"
+                android:background="@drawable/edit_text_custom_background"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/status"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="895dp"
+                android:textSize="16sp"/>
+
+            <EditText
+                android:id="@+id/editTextState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editTextAvgConsumption"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="60dp"
+                android:layout_marginEnd="16dp"
+                android:drawablePadding="8dp"
+                android:padding="10dp"
+                android:inputType="text"
+                android:background="@drawable/edit_text_custom_background"/>
+        </RelativeLayout>
+        <Button
+            android:id="@+id/buttonRegister"
+            android:layout_width="381dp"
+            android:layout_height="52dp"
+            android:text="@string/save"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/colorSecundary"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

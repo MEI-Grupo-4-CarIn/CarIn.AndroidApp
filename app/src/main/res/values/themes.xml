@@ -1,0 +1,12 @@
+<resources>
+
+    <style name="Base.Theme.CarIn" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="fontFamily">@font/poppins_regular</item>
+        <item name="android:itemBackground">@color/white</item>
+    </style>
+
+    <style name="Theme.CarIn" parent="Base.Theme.CarIn"></style>
+
+</resources>
