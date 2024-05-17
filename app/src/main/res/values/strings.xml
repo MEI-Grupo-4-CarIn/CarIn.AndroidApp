@@ -41,6 +41,7 @@
     <string name="confirmNewPassword">Confirm new password</string>
     <string name="confirm">Confirm</string>
     <string name="securityCode">Security Code</string>
+    <string name="logOut">Log Out</string>
 
 
     <!--New Route-->
@@ -79,6 +80,9 @@
     <string name="enterDateBirth">Enter your date of birth</string>
     <string name="enterEmail">Enter your email</string>
     <string name="function">Function</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="chooseTheOption">Choose the option</string>
 
     <!--New Vehicle-->
     <string name="newVehicle">New Vehicle</string>

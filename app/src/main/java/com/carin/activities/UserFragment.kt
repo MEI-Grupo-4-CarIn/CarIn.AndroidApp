@@ -1,6 +1,7 @@
 package com.carin.activities
 
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +31,18 @@ class UserFragment : Fragment() {
 
         recyclerView.addItemDecoration(ItemSpacingDecoration(5))
 
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        val displayMetrics = DisplayMetrics()
+        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val screenWidth = displayMetrics.widthPixels
+
+// Definindo o tamanho médio de cada item (você pode ajustar conforme necessário)
+        val itemWidth = resources.getDimensionPixelSize(R.dimen.item_width)
+
+// Calculando o número de colunas com base no tamanho da tela
+        val spanCount = screenWidth / itemWidth
+
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), spanCount)
+
 
         employees = getEmployees()
 

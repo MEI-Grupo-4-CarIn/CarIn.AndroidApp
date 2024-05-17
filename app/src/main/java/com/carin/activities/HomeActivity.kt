@@ -221,17 +221,20 @@ class HomeActivity : AppCompatActivity() {
         layoutAddUser.setOnClickListener {
             val intent = Intent(this, NewUserActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.animator.slide_up, 0)
         }
 
 
         layoutAddVehicle.setOnClickListener {
             val intent = Intent(this, NewVehicleActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.animator.slide_up, 0)
         }
 
         layoutAddRoute.setOnClickListener {
             val intent = Intent(this, NewRouteActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.animator.slide_up, 0)
         }
 
         layoutNewAppointment.setOnClickListener {
@@ -259,8 +262,8 @@ class HomeActivity : AppCompatActivity() {
 
         val latestInformations = mutableListOf<LatestInformation>()
         latestInformations.add(LatestInformation(R.drawable.ic_check, "Rota Concluída","Bruno Joaquim concluiu a viagem até Itália."))
-        latestInformations.add(LatestInformation(R.drawable.ic_check, "Rota Concluída","Bruno Joaquim concluiu a viagem até Itália."))
-        latestInformations.add(LatestInformation(R.drawable.ic_check, "Rota Concluída","Bruno Joaquim concluiu a viagem até Itália."))
+        latestInformations.add(LatestInformation(R.drawable.ic_check, "Rota Concluída","Bruno Joaquim concluiu a viagem até Itália e voltou para Portugal."))
+        latestInformations.add(LatestInformation(R.drawable.ic_check, "Rota Concluída","Bruno Joaquim concluiu a viagem até Itália.Bruno Joaquim concluiu a viagem até Itália.Bruno Joaquim concluiu a viagem até Itália."))
         latestInformations.add(LatestInformation(R.drawable.ic_check, "Rota Concluída","Bruno Joaquim concluiu a viagem até Itália."))
 
         return latestInformations

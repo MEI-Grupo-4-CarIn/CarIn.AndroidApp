@@ -5,13 +5,20 @@ import android.animation.ObjectAnimator
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ImageSpan
+import android.view.ContextThemeWrapper
+import android.view.Menu
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.carin.R
 
 class InfoUserActivity : AppCompatActivity() {
@@ -26,17 +33,51 @@ class InfoUserActivity : AppCompatActivity() {
                 .add(R.id.container, MainFragmentUserInfo())
                 .commitNow()
         }
+
+        val optionsIcon = findViewById<ImageView>(R.id.optionsIcon)
+        optionsIcon.setOnClickListener { view ->
+
+            val popupMenu = PopupMenu(ContextThemeWrapper(this, R.style.PopupMenu), view)
+
+            val editItem = popupMenu.menu.add(Menu.NONE, R.id.edit, Menu.NONE, "Edit")
+            val logoutItem = popupMenu.menu.add(Menu.NONE, R.id.logOut, Menu.NONE, "Log Out")
+
+            val editIcon = ContextCompat.getDrawable(this, R.drawable.ic_edit)
+            editIcon?.setBounds(0, 0, editIcon.intrinsicWidth, editIcon.intrinsicHeight)
+            val editIconSpan = editIcon?.let { ImageSpan(it, ImageSpan.ALIGN_BOTTOM) }
+            val editItemTitle = SpannableString(" ${getString(R.string.edit)}")
+            editItemTitle.setSpan(editIconSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            editItem.title = editItemTitle
+
+            val logoutIcon = ContextCompat.getDrawable(this, R.drawable.ic_logout)
+            logoutIcon?.setBounds(0, 0, logoutIcon.intrinsicWidth, logoutIcon.intrinsicHeight)
+            val logoutIconSpan = logoutIcon?.let { ImageSpan(it, ImageSpan.ALIGN_BOTTOM) }
+            val logoutItemTitle = SpannableString(" ${getString(R.string.logOut)}")
+            logoutItemTitle.setSpan(logoutIconSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            logoutItem.title = logoutItemTitle
+
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.edit -> {
+                        startActivity(Intent(this, EditUserActivity::class.java))
+                        true
+                    }
+                    R.id.logOut -> {
+                        startActivity(Intent(this, LoginActivity::class.java))
+                        finish()
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popupMenu.show()
+        }
+
+
         val iconImageView: ImageView = findViewById(R.id.iconImage)
 
         iconImageView.setOnClickListener {
             val intent = Intent(this, UserActivity::class.java)
-            startActivity(intent)
-        }
-
-        val iconEditImageView: ImageView = findViewById(R.id.optionsIcon)
-
-        iconEditImageView.setOnClickListener {
-            val intent = Intent(this, EditUserActivity::class.java)
             startActivity(intent)
         }
 
@@ -149,7 +190,5 @@ class InfoUserActivity : AppCompatActivity() {
             val intent = Intent(this, NewSchedulingActivity::class.java)
             startActivity(intent)
         }
-
     }
-
 }

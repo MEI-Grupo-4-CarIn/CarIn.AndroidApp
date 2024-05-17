@@ -154,51 +154,71 @@
                 android:inputType="text"
                 android:background="@drawable/edit_text_custom_background"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dateRegistration"
-                android:textColor="@color/colorPrimary"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="450dp"
-                android:textSize="16sp"/>
+            <LinearLayout
+                android:id="@+id/fiveLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_below="@id/editTextColor">
 
-            <EditText
-                android:id="@+id/editTextDateRegister"
-                android:layout_width="170dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/editTextColor"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginEnd="16dp"
-                android:gravity="center_horizontal"
-                android:drawablePadding="8dp"
-                android:padding="10dp"
-                android:background="@drawable/edit_text_custom_background"
-                android:focusable="false"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="1"
+                    app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dateAcquisition"
-                android:textColor="@color/colorPrimary"
-                android:layout_marginEnd="40dp"
-                android:layout_marginTop="450dp"
-                android:textSize="16sp"
-                android:layout_alignParentEnd="true"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dateRegistration"
+                        android:textSize="15sp"
+                        android:textColor="@color/colorPrimary"/>
 
-            <EditText
-                android:id="@+id/editTextDateAcquisition"
-                android:layout_width="170dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/editTextDateRegister"
-                android:layout_marginTop="-50dp"
-                android:layout_marginEnd="16dp"
-                android:gravity="center_horizontal"
-                android:padding="10dp"
-                android:background="@drawable/edit_text_custom_background"
-                android:focusable="false"
-                android:layout_alignParentEnd="true"/>
+                    <EditText
+                        android:id="@+id/editTextDateRegister"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_custom_background"
+                        android:focusable="false"
+                        android:gravity="center_horizontal"
+                        android:padding="10dp"
+                        app:layout_constraintTop_toBottomOf="@id/relativeLayout" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    app:layout_constraintTop_toBottomOf="@+id/fourLinearLayout">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dateAcquisition"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="15sp" />
+
+
+                    <EditText
+                        android:id="@+id/editTextDateAcquisition"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_custom_background"
+                        android:focusable="false"
+                        android:gravity="center_horizontal"
+                        android:padding="10dp"
+                        app:layout_constraintTop_toBottomOf="@id/editTextDateRegister" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -213,7 +233,7 @@
                 android:id="@+id/editTextClass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/editTextDateRegister"
+                android:layout_below="@id/fiveLinearLayout"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="40dp"
                 android:layout_marginEnd="16dp"
@@ -222,50 +242,73 @@
                 android:inputType="text"
                 android:background="@drawable/edit_text_custom_background"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/currentkms"
-                android:textColor="@color/colorPrimary"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="630dp"
-                android:textSize="16dp"/>
+            <LinearLayout
+                android:id="@+id/sixLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_below="@id/editTextClass">
 
-            <EditText
-                android:id="@+id/editTextKms"
-                android:layout_width="170dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/editTextClass"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginEnd="16dp"
-                android:gravity="center_horizontal"
-                android:drawablePadding="8dp"
-                android:padding="10dp"
-                android:background="@drawable/edit_text_custom_background"
-                android:focusable="false"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="1"
+                    app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/capacity"
-                android:textColor="@color/colorPrimary"
-                android:layout_marginEnd="90dp"
-                android:layout_marginTop="630dp"
-                android:textSize="16sp"
-                android:layout_alignParentEnd="true"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/currentkms"
+                        android:textSize="15sp"
+                        android:textColor="@color/colorPrimary"/>
 
-            <EditText
-                android:layout_width="170dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/editTextKms"
-                android:layout_marginTop="-50dp"
-                android:layout_marginEnd="16dp"
-                android:gravity="center_horizontal"
-                android:padding="10dp"
-                android:background="@drawable/edit_text_custom_background"
-                android:focusable="false"
-                android:layout_alignParentEnd="true"/>
+                    <EditText
+                        android:id="@+id/kms"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_custom_background"
+                        android:textColor="@color/gray"
+                        android:focusable="false"
+                        android:gravity="center_horizontal"
+                        android:padding="10dp"
+                        app:layout_constraintTop_toBottomOf="@id/relativeLayout" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    app:layout_constraintTop_toBottomOf="@+id/fourLinearLayout">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/capacity"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="15sp" />
+
+
+                    <EditText
+                        android:id="@+id/capacity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_custom_background"
+                        android:textColor="@color/gray"
+                        android:focusable="false"
+                        android:gravity="center_horizontal"
+                        android:padding="10dp"
+                        app:layout_constraintTop_toBottomOf="@id/editTextDateRegister" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -280,7 +323,7 @@
                 android:id="@+id/editTextTypeFuel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/editTextKms"
+                android:layout_below="@id/sixLinearLayout"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="40dp"
                 android:layout_marginEnd="16dp"

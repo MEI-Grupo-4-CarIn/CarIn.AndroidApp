@@ -42,6 +42,7 @@
     <string name="confirmNewPassword">Confirmar nova password</string>
     <string name="confirm">Confirmar</string>
     <string name="securityCode">Código de Segurança</string>
+    <string name="logOut">Terminar Sessão</string>
 
     <!--New Route-->
     <string name="newRoute">Nova Rota</string>
@@ -79,6 +80,9 @@
     <string name="enterDateBirth">Insira a data de nascimento</string>
     <string name="enterEmail">Insira o email</string>
     <string name="function">Função</string>
+    <string name="gallery">Galeria</string>
+    <string name="camera">Câmera</string>
+    <string name="chooseTheOption">Escolha a opção</string>
 
     <!--New Vehicle-->
     <string name="newVehicle">Novo Veículo</string>
@@ -165,7 +169,6 @@
     <!--Calendar-->
     <string name="today">Hoje</string>
     <string name="upcomingEvents">Próximos eventos</string>
-
 
 
 </resources>
