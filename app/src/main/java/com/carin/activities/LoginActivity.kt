@@ -55,9 +55,17 @@ class LoginActivity : AppCompatActivity() {
     private fun performLogin(email: String, password: String) {
 
         if (email == defaultEmail && password == defaultPassword) {
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-            finish()
+            val user = UserAuth(
+                userId = 1,
+                email = "teste@example.com",
+                firstName = "Test",
+                lastName = "User",
+                token = "fake-token",
+                refreshToken = "fake-refresh-token",
+                expiresIn = 123
+            )
+            saveUserInfo(user)
+            navigateToHome()
         } else {
             val retrofit = Retrofit.Builder()
                 .baseUrl(BuildConfig.BASE_URL)
@@ -105,7 +113,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun navigateToHome() {
-        val intent = Intent(this, HomeActivity::class.java)
+        val intent = Intent(this@LoginActivity, HomeActivity::class.java)
         startActivity(intent)
         finish()
     }
