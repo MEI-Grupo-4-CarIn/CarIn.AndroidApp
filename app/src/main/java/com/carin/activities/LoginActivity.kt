@@ -7,12 +7,24 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.carin.BuildConfig
 import com.carin.R
+import com.carin.data.models.auth.UserAuth
+import com.carin.data.models.request.AuthLoginRequest
+import com.carin.data.models.response.AuthLoginResponse
+import com.carin.data.remote.AuthService
+import com.carin.utils.Utils
+import com.google.gson.Gson
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class LoginActivity : AppCompatActivity() {
 
-    private val email = "teste@example.com"
-    private val password = "senha123"
+    private val defaultEmail = "teste@example.com"
+    private val defaultPassword = "senha123"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,24 +42,72 @@ class LoginActivity : AppCompatActivity() {
             val enteredEmail = findViewById<EditText>(R.id.editTextEmail).text.toString()
             val enteredPassword = findViewById<EditText>(R.id.editTextPassword).text.toString()
 
-            if (enteredEmail == email && enteredPassword == password) {
-                val intent = Intent(this, HomeActivity::class.java)
-                startActivity(intent)
-                finish()
-            } else {
-                val errorMessage = if (isDeviceInEnglish()) {
-                    "Incorrect email or password!"
-                } else {
-                    "Email ou senha incorretos!"
-                }
-                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
-            }
+            performLogin(enteredEmail, enteredPassword)
         }
+
         val textViewForgotPassword = findViewById<TextView>(R.id.textViewForgotPassword)
         textViewForgotPassword.setOnClickListener {
             val intent = Intent(this, ConfirmPasswordActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun performLogin(email: String, password: String) {
+
+        if (email == defaultEmail && password == defaultPassword) {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            val retrofit = Retrofit.Builder()
+                .baseUrl(BuildConfig.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+            val authService = retrofit.create(AuthService::class.java)
+            val call = authService.login(AuthLoginRequest(email, password))
+
+            call.enqueue(object : Callback<AuthLoginResponse> {
+                override fun onResponse(call: Call<AuthLoginResponse>, response: Response<AuthLoginResponse>) {
+                    if (response.isSuccessful) {
+                        val authResponse = response.body()
+                        if (authResponse != null) {
+                            val user = UserAuth(
+                                userId = 1,
+                                email = "test@example.com",
+                                firstName = "Test",
+                                lastName = "User",
+                                token = authResponse.token,
+                                refreshToken = authResponse.refreshToken,
+                                expiresIn = authResponse.expiresIn
+                            )
+                            saveUserInfo(user)
+                            navigateToHome()
+                        }
+                    } else {
+                        Toast.makeText(this@LoginActivity, "Login failed", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<AuthLoginResponse>, t: Throwable) {
+                    Toast.makeText(this@LoginActivity, "An error occurred", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+    }
+
+    private fun saveUserInfo(user: UserAuth) {
+        val sharedPreferences = Utils.getSharedPreferences(this)
+        val editor = sharedPreferences.edit()
+        val gson = Gson()
+        val userJson = gson.toJson(user)
+        editor.putString("user", userJson)
+        editor.apply()
+    }
+
+    private fun navigateToHome() {
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun isDeviceInEnglish(): Boolean {
