@@ -16,7 +16,7 @@
     <string name="hello">Olá %1$s</string>
     <string name="numberCars">Número de carros</string>
     <string name="numberEmployees">Número de funcionários</string>
-    <string name="numberJourneys">Número de viagens</string>
+    <string name="numberJourneys">Número de rotas</string>
     <string name="carsWorkshop">Carros na Oficina</string>
     <string name="home">Inicío</string>
     <string name="route">Rotas</string>
@@ -138,7 +138,7 @@
     <!--Vehicles-->
     <string name="all">Todos</string>
     <string name="inUse">Em Uso</string>
-    <string name="search">Pesquisar ...</string>
+    <string name="search">Pesquisar...</string>
     <string name="editVehicle">Editar Veículo</string>
     <string name="deleteVehicle">Eliminar Veículo</string>
     <string name="textDeleteVehicle">Tem a certeza de que pretende eliminar o veículo?</string>
@@ -169,6 +169,9 @@
     <!--Calendar-->
     <string name="today">Hoje</string>
     <string name="upcomingEvents">Próximos eventos</string>
+    <string name="no_results">Sem resultados</string>
+    <string name="network_error">Erro de rede, por favor verifique a sua conexão</string>
+    <string name="scroll_to_top">Rolar para cima</string>
 
 
 </resources>

@@ -10,6 +10,17 @@ playServicesMaps = "18.2.0"
 roomCommon = "2.6.1"
 retrofit = "2.11.0"
 converterGson = "2.11.0"
+jjwtJackson = "0.12.5"
+jjwt = "0.12.5"
+jjwtApi = "0.12.5"
+jjwtImpl = "0.12.5"
+jacksonModuleKotlin = "2.17.1"
+sqliteKtx = "2.4.0"
+roomKtx = "2.6.1"
+lifecycleViewmodelKtx = "2.8.0"
+loggingInterceptor = "5.0.0-alpha.14"
+roomCompiler = "2.6.1"
+blurview = "1.6.6"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version = "1.13.1" }
@@ -24,6 +35,17 @@ play-services-maps = { group = "com.google.android.gms", name = "play-services-m
 androidx-room-common = { group = "androidx.room", name = "room-common", version.ref = "roomCommon" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "converterGson" }
+jjwt-jackson = { group = "io.jsonwebtoken", name = "jjwt-jackson", version.ref = "jjwtJackson" }
+jjwt = { group = "io.jsonwebtoken", name = "jjwt", version.ref = "jjwt" }
+jjwt-api = { group = "io.jsonwebtoken", name = "jjwt-api", version.ref = "jjwtApi" }
+jjwt-impl = { group = "io.jsonwebtoken", name = "jjwt-impl", version.ref = "jjwtImpl" }
+jackson-module-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin", version.ref = "jacksonModuleKotlin" }
+androidx-sqlite-ktx = { group = "androidx.sqlite", name = "sqlite-ktx", version.ref = "sqliteKtx" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "loggingInterceptor" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCompiler" }
+blurview = { group = "com.eightbitlab", name = "blurview", version.ref = "blurview" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

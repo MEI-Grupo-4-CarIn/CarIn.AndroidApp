@@ -15,7 +15,7 @@
     <string name="hello">Hello %1$s</string>
     <string name="numberCars">Number of cars</string>
     <string name="numberEmployees">Number of employees</string>
-    <string name="numberJourneys">Number of journeys</string>
+    <string name="numberJourneys">Number of routes</string>
     <string name="carsWorkshop">Cars in the workshop</string>
     <string name="home">Home</string>
     <string name="route">Routes</string>
@@ -138,7 +138,7 @@
     <!--Vehicles-->
     <string name="all">All</string>
     <string name="inUse">In use</string>
-    <string name="search">Search ...</string>
+    <string name="search">Search...</string>
     <string name="editVehicle">Edit Vehicle</string>
     <string name="deleteVehicle">Delete Vehicle</string>
     <string name="textDeleteVehicle">Are you sure you want to eliminate the vehicle?</string>
@@ -170,5 +170,8 @@
     <!--Calendar-->
     <string name="today">Today</string>
     <string name="upcomingEvents">Upcoming events</string>
+    <string name="no_results">No results</string>
+    <string name="network_error">Network error, please check your connection</string>
+    <string name="scroll_to_top">Scroll to top</string>
 
 </resources>

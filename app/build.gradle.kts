@@ -1,5 +1,6 @@
 plugins {
     id("com.google.secrets_gradle_plugin") version "0.5"
+    id("kotlin-kapt")
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
 }
@@ -24,7 +25,7 @@ android {
 
     buildTypes {
         getByName("debug") {
-            buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:5001\"")
+            buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:5143\"")
         }
         getByName("release") {
             isMinifyEnabled = false
@@ -52,9 +53,17 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.play.services.maps)
-    implementation(libs.androidx.room.common)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+    implementation(libs.jjwt.jackson)
+    implementation(libs.jjwt.api)
+    implementation(libs.jjwt.impl)
+    implementation(libs.jackson.module.kotlin)
+    implementation(libs.androidx.sqlite.ktx)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.logging.interceptor)
+    "kapt"(libs.androidx.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

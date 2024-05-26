@@ -36,7 +36,7 @@
             android:exported="true">
         </activity>
         <activity
-            android:name=".activities.UserActivity"
+            android:name=".activities.UsersListActivity"
             android:exported="true">
         </activity>
         <activity
