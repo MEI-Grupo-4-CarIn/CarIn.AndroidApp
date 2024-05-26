@@ -1,4 +1,4 @@
-package com.carin.activities
+package com.carin.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,12 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
+import com.carin.activities.ItemSpacingDecoration
 import com.carin.adapter.VehicleAdapter
 
 class VehicleFragment : Fragment() {
 
     private lateinit var adapter: VehicleAdapter
-    private lateinit var vehicles: List<VehicleFragment.Vehicle>
+    private lateinit var vehicles: List<Vehicle>
 
     override fun onCreateView(
         inflater: LayoutInflater,

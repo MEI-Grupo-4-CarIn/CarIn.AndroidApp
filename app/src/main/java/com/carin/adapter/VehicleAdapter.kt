@@ -11,7 +11,7 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.activities.InfoVehicleActivity
-import com.carin.activities.VehicleFragment
+import com.carin.fragments.VehicleFragment
 import java.io.ByteArrayOutputStream
 
 class VehicleAdapter(

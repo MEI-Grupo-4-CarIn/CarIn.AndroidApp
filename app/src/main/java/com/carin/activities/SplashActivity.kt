@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.carin.R
+import com.carin.utils.AuthUtils
 
 class SplashActivity : AppCompatActivity() {
 
@@ -15,9 +16,17 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash_screen)
 
         Handler().postDelayed({
-            val mainIntent = Intent(this@SplashActivity, LoginActivity::class.java)
-            startActivity(mainIntent)
-            finish()
+            if (AuthUtils.isAuthenticated(this))
+            {
+                val mainIntent = Intent(this@SplashActivity, HomeActivity::class.java)
+                startActivity(mainIntent)
+                finish()
+            }
+            else {
+                val mainIntent = Intent(this@SplashActivity, LoginActivity::class.java)
+                startActivity(mainIntent)
+                finish()
+            }
         }, SPLASH_DISPLAY_LENGTH)
     }
 }

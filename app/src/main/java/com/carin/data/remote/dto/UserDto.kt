@@ -9,8 +9,8 @@ data class UserDto(
     @SerializedName("lastName")val lastName: String,
     @SerializedName("email")val email: String,
     @SerializedName("birthDate")val birthDate: String,
-    @SerializedName("roleId")val roleId: Role,
+    @SerializedName("role")val role: Role,
     @SerializedName("status")val status: Boolean,
-    @SerializedName("createdAt")val createdAt: String,
-    @SerializedName("updatedAt")val updatedAt: String
+    @SerializedName("creationDateUtc")val creationDateUtc: String,
+    @SerializedName("lastUpdateDateUtc")val lastUpdateDateUtc: String?
 )
