@@ -13,7 +13,8 @@ import com.carin.data.models.auth.UserAuth
 import com.carin.data.models.request.AuthLoginRequest
 import com.carin.data.models.response.AuthLoginResponse
 import com.carin.data.remote.AuthService
-import com.carin.utils.Utils
+import com.carin.domain.enums.Role
+import com.carin.utils.AuthUtils
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
@@ -55,16 +56,13 @@ class LoginActivity : AppCompatActivity() {
     private fun performLogin(email: String, password: String) {
 
         if (email == defaultEmail && password == defaultPassword) {
-            val user = UserAuth(
-                userId = 1,
-                email = "teste@example.com",
-                firstName = "Test",
-                lastName = "User",
-                token = "fake-token",
-                refreshToken = "fake-refresh-token",
-                expiresIn = 123
+            val user = AuthLoginResponse(
+                "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJlbWFpbCI6ImFkbWluQGVtYWlsLmNvbSIsImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJBZG1pbiIsInJvbGUiOiIxIiwiZXhwIjoxNzE2NTU5ODE4LCJpc3MiOiJBdXRoLk1pY3JvU2VydmljZSIsImF1ZCI6IkF1dGguTWljcm9TZXJ2aWNlIn0.UrQhmJ_taTs_escgDgJloJlbYnxuQWFft_Gn1u8VtTbYHmc_nbQ5ggirE7z3jnPdHxaGG11epMDvKs7ub08BooclgesPmxjFjGStVGtGRqt8Mz8G1oaSGqyxqo4C4z6x4UQMGVL-sWdFW8Hh5w_0NJJD26hNrooEIFQo0dMOIkA7g-bf9e0E1mxX2BJO8IWaLgQSF377ayXvIogPfaGg8o_4BmDtXofCC6YAK_AGTgOJTeP5K-1ubbVSmE-_k0RjvLiLg3rYGvDUKhMYNv9awrNRlk_4g9kN5mj7OEYBzIhZkyEkpJsbniZ0GwIE3ZIIrwhfDfzQiAPrSMm0LhyGTg",
+                "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9",
+                600
             )
-            saveUserInfo(user)
+
+            AuthUtils.saveUserOnSharedPreferences(this@LoginActivity, user)
             navigateToHome()
         } else {
             val retrofit = Retrofit.Builder()
@@ -77,19 +75,14 @@ class LoginActivity : AppCompatActivity() {
             call.enqueue(object : Callback<AuthLoginResponse> {
                 override fun onResponse(call: Call<AuthLoginResponse>, response: Response<AuthLoginResponse>) {
                     if (response.isSuccessful) {
-                        val authResponse = response.body()
-                        if (authResponse != null) {
-                            val user = UserAuth(
-                                userId = 1,
-                                email = "test@example.com",
-                                firstName = "Test",
-                                lastName = "User",
-                                token = authResponse.token,
-                                refreshToken = authResponse.refreshToken,
-                                expiresIn = authResponse.expiresIn
-                            )
-                            saveUserInfo(user)
-                            navigateToHome()
+                        try {
+                            val authResponse = response.body()
+                            if (authResponse != null) {
+                                AuthUtils.saveUserOnSharedPreferences(this@LoginActivity, authResponse)
+                                navigateToHome()
+                            }
+                        } catch (e: Exception) {
+                            Toast.makeText(this@LoginActivity, "An error occurred", Toast.LENGTH_SHORT).show()
                         }
                     } else {
                         Toast.makeText(this@LoginActivity, "Login failed", Toast.LENGTH_SHORT).show()
@@ -101,15 +94,6 @@ class LoginActivity : AppCompatActivity() {
                 }
             })
         }
-    }
-
-    private fun saveUserInfo(user: UserAuth) {
-        val sharedPreferences = Utils.getSharedPreferences(this)
-        val editor = sharedPreferences.edit()
-        val gson = Gson()
-        val userJson = gson.toJson(user)
-        editor.putString("user", userJson)
-        editor.apply()
     }
 
     private fun navigateToHome() {

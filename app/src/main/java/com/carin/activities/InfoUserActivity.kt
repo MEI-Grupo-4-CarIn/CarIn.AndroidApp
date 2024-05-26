@@ -20,6 +20,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.carin.R
+import com.carin.fragments.MainFragmentUserInfo
+import com.carin.utils.AuthUtils
 
 class InfoUserActivity : AppCompatActivity() {
 
@@ -63,6 +65,7 @@ class InfoUserActivity : AppCompatActivity() {
                         true
                     }
                     R.id.logOut -> {
+                        AuthUtils.clearUserOnSharedPreferences(this)
                         startActivity(Intent(this, LoginActivity::class.java))
                         finish()
                         true
@@ -77,7 +80,7 @@ class InfoUserActivity : AppCompatActivity() {
         val iconImageView: ImageView = findViewById(R.id.iconImage)
 
         iconImageView.setOnClickListener {
-            val intent = Intent(this, UserActivity::class.java)
+            val intent = Intent(this, UsersListActivity::class.java)
             startActivity(intent)
         }
 

@@ -20,9 +20,7 @@ import com.carin.adapter.EmployeesHomeAdapter
 import com.carin.adapter.HomeNotificationAdapter
 import com.carin.adapter.LatestInformationAdapter
 import com.carin.adapter.SchedulingHomeAdapter
-import com.carin.data.models.auth.UserAuth
-import com.carin.utils.Utils
-import com.google.gson.Gson
+import com.carin.utils.AuthUtils
 
 class HomeActivity : AppCompatActivity() {
 
@@ -44,12 +42,8 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         val helloTextView: TextView = findViewById(R.id.textViewHello)
-        val userInfo = Utils.getSharedPreferences(this)
-        val jsonString = userInfo.getString("user", "")
-
-        val gson = Gson()
-        val userAuth = gson.fromJson(jsonString, UserAuth::class.java)
-        val helloText = getString(R.string.hello, userAuth.firstName)
+        val userAuth = AuthUtils.getUserAuth(this)
+        val helloText = getString(R.string.hello, userAuth?.firstName)
         helloTextView.text = helloText
 
         val recyclerView1: RecyclerView = findViewById(R.id.recyclerView1)
@@ -133,7 +127,7 @@ class HomeActivity : AppCompatActivity() {
         val moreUsers: TextView = findViewById(R.id.textViewSeeMore3)
 
         moreUsers.setOnClickListener {
-            val intent = Intent(this, UserActivity::class.java)
+            val intent = Intent(this, UsersListActivity::class.java)
             overridePendingTransition(R.animator.slide_in_right, R.animator.slide_out_left)
             startActivity(intent)
         }
