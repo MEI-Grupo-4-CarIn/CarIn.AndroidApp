@@ -50,8 +50,8 @@ class UsersListActivity : AppCompatActivity() {
         val factory = UsersViewModelFactory(userRepository)
         viewModel = ViewModelProvider(this, factory)[UsersViewModel::class.java]
 
-        // Set up the search action listener
         searchEditText.setOnEditorActionListener { _, actionId, _ ->
+            // Close the keyboard when the search button is clicked
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 performSearch(searchEditText.text.toString())
                 searchEditText.clearFocus()
@@ -70,7 +70,7 @@ class UsersListActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 searchJob?.cancel()
                 searchJob = lifecycleScope.launch {
-                    delay(500) // Delay for debounce, adjust as needed
+                    delay(500)
                     s?.let {
                         performSearch(it.toString())
                     }

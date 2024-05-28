@@ -32,8 +32,8 @@ class MainFragmentRoute : Fragment() {
         val currentLocale = Locale.getDefault()
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             val currentLabel = when (currentLocale.language) {
-                "pt" -> TypeRoute.values()[position].labelPt
-                else -> TypeRoute.values()[position].labelEn
+                "pt" -> TypeRoute.entries[position].labelPt
+                else -> TypeRoute.entries[position].labelEn
             }
             tab.text = currentLabel
         }.attach()
@@ -42,7 +42,7 @@ class MainFragmentRoute : Fragment() {
 }
 
 class NewFragmentTypeAdapter(fragment: Fragment) : FragmentStateAdapter(fragment){
-    override fun getItemCount(): Int = TypeRoute.values().size
+    override fun getItemCount(): Int = TypeRoute.entries.size
 
     override fun createFragment(position: Int): Fragment {
         return RouteFragment()
