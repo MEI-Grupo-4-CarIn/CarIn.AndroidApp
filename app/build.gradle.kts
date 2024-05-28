@@ -19,21 +19,13 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildFeatures {
-        buildConfig = true
-    }
-
     buildTypes {
-        getByName("debug") {
-            buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:5143\"")
-        }
-        getByName("release") {
+        release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("String", "BASE_URL", "\"http://release.api.base.url\"")
         }
     }
     compileOptions {
