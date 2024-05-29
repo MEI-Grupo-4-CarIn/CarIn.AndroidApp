@@ -124,41 +124,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linear_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintTop_toBottomOf="@id/relativeLayout">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="162dp"
-                android:layout_weight="1"
-                android:background="@drawable/custom_rounded_corner"
-                android:gravity="start"
-                android:layout_marginEnd="3dp"
-                android:padding="5dp"
-                android:textStyle="bold"
-                android:textColor="@color/colorPrimary"
-                android:text="Localização dos veículos" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="162dp"
-                android:layout_weight="1"
-                android:layout_marginStart="3dp"
-                android:background="@drawable/custom_rounded_corner"
-                android:gravity="start"
-                android:textStyle="bold"
-                android:padding="5dp"
-                android:textColor="@color/colorPrimary"
-                android:text="Estado dos veículos" />
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/secondLineLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -167,7 +132,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/linear_layout"/>
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout"/>
 
         <LinearLayout
             android:id="@+id/fourLinearLayout"
@@ -187,7 +152,7 @@
                 <TextView
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:text="Notificações"
+                    android:text="@string/notifications"
                     android:textSize="15sp"
                     android:textColor="@color/colorPrimary"
                     android:textStyle="bold"
@@ -226,7 +191,7 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <LinearLayout
-            android:id="@+id/thirdLineLinearLayout"
+            android:id="@+id/sixthLineLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -235,6 +200,56 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintTop_toBottomOf="@+id/recyclerView1"/>
+
+        <LinearLayout
+            android:id="@+id/linearLayout6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/sixthLineLinearLayout">
+
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="@string/account_approvals"
+                android:textSize="15sp"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:layout_marginStart="16dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sixthLineLinearLayout">
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout6"/>
+
+        <LinearLayout
+            android:id="@+id/thirdLineLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/rectangle_shape"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerView6"/>
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -248,7 +263,7 @@
             <TextView
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:text="Últimas Informações"
+                android:text="@string/latest_information"
                 android:textSize="15sp"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
@@ -314,7 +329,7 @@
                 <TextView
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:text="Agendamentos para hoje"
+                    android:text="@string/bookings_for_today"
                     android:textSize="15sp"
                     android:textColor="@color/colorPrimary"
                     android:textStyle="bold"

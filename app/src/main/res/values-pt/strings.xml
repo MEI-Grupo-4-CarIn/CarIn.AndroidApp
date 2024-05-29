@@ -26,6 +26,10 @@
     <string name="addRoute">Adicionar Rota</string>
     <string name="addVehicle">Adicionar Veículo</string>
     <string name="addUser">Adicionar Utilizador</string>
+    <string name="notifications">Notificações</string>
+    <string name="account_approvals">Aprovações de Conta</string>
+    <string name="latest_information">Últimas Informações</string>
+    <string name="bookings_for_today">Agendamentos para hoje</string>
 
     <!--Login-->
     <string name="confirmEmail">Confirmar Email</string>
@@ -76,7 +80,7 @@
     <string name="enterFirstName">Insira o primeiro nome</string>
     <string name="lastName">Último nome</string>
     <string name="enterLastName">Insira o último nome</string>
-    <string name="dateBirth">Data</string>
+    <string name="dateBirth">Data de Nascimento</string>
     <string name="enterDateBirth">Insira a data de nascimento</string>
     <string name="enterEmail">Insira o email</string>
     <string name="function">Função</string>
