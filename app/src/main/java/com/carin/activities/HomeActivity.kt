@@ -16,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
+import com.carin.adapter.ApprovalAdapter
 import com.carin.adapter.EmployeesHomeAdapter
 import com.carin.adapter.HomeNotificationAdapter
 import com.carin.adapter.LatestInformationAdapter
@@ -29,6 +30,9 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var adapterInformation: LatestInformationAdapter
     private lateinit var latestInformations: List<LatestInformation>
+
+    private lateinit var adapterApproval: ApprovalAdapter
+    private lateinit var approvals: List<Approval>
 
     private lateinit var adapterscheduling: SchedulingHomeAdapter
     private lateinit var schedulings: List<Schedulings>
@@ -56,6 +60,24 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         })
+
+        val recyclerView6: RecyclerView = findViewById(R.id.recyclerView6)
+
+        recyclerView6.addItemDecoration(ItemSpacingDecoration(10))
+
+        recyclerView6.layoutManager = LinearLayoutManager(this)
+
+        approvals = getApproval()
+
+        adapterApproval = ApprovalAdapter(approvals)
+        recyclerView6.adapter = adapterApproval
+
+        recyclerView6.setHasFixedSize(true)
+        val itemHeight = resources.getDimensionPixelSize(R.dimen.item_height)
+        val recyclerViewHeight = itemHeight * 4
+        val layoutParam = recyclerView6.layoutParams
+        layoutParam.height = recyclerViewHeight
+        recyclerView6.layoutParams = layoutParam
 
         val recyclerView2: RecyclerView = findViewById(R.id.recyclerView)
 
@@ -258,12 +280,33 @@ class HomeActivity : AppCompatActivity() {
     }
     data class Notification(val imageResource: Int, val notificationType: String,  val country: String, val temp: String)
 
+
+    private fun getApproval(): List<Approval> {
+
+        val approvals = mutableListOf<Approval>()
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+
+        return approvals
+    }
+    data class Approval(val fullname: String,  val role: String)
+
     private fun getLatestInformation(): List<LatestInformation> {
 
         val latestInformations = mutableListOf<LatestInformation>()
         latestInformations.add(LatestInformation(R.drawable.ic_check, "Rota Concluída","Bruno Joaquim concluiu a viagem até Itália."))
-        latestInformations.add(LatestInformation(R.drawable.ic_check, "Rota Concluída","Bruno Joaquim concluiu a viagem até Itália e voltou para Portugal."))
-        latestInformations.add(LatestInformation(R.drawable.ic_check, "Rota Concluída","Bruno Joaquim concluiu a viagem até Itália.Bruno Joaquim concluiu a viagem até Itália.Bruno Joaquim concluiu a viagem até Itália."))
+        latestInformations.add(LatestInformation(R.drawable.ic_error, "Rota Concluída","Bruno Joaquim concluiu a viagem até Itália e voltou para Portugal."))
+        latestInformations.add(LatestInformation(R.drawable.ic_error, "Rota Concluída","Bruno Joaquim concluiu a viagem até Itália.Bruno Joaquim concluiu a viagem até Itália.Bruno Joaquim concluiu a viagem até Itália."))
         latestInformations.add(LatestInformation(R.drawable.ic_check, "Rota Concluída","Bruno Joaquim concluiu a viagem até Itália."))
 
         return latestInformations

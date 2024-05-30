@@ -13,6 +13,9 @@ playServicesMaps = "18.2.0"
 androidImageCropper = "prefix infimum version for "
 composePreviewRenderer = "0.0.1-alpha01"
 
+playServicesLocation = "21.2.0"
+playServicesPlaces = "17.0.0"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -25,6 +28,8 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 android-image-cropper = { group = "edmodo", name = "android-image-cropper", version.ref = "androidImageCropper" }
 compose-preview-renderer = { group = "com.android.tools.compose", name = "compose-preview-renderer", version.ref = "composePreviewRenderer" }
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+play-services-places = { group = "com.google.android.gms", name = "play-services-places", version.ref = "playServicesPlaces" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

@@ -145,7 +145,7 @@
             android:id="@+id/imageCarin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@mipmap/splash_image"
+            android:src="@drawable/logo"
             android:layout_marginTop="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
