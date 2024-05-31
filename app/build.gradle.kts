@@ -56,6 +56,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.logging.interceptor)
     implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.play.services.location)
+    implementation(libs.play.services.places)
     "kapt"(libs.androidx.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

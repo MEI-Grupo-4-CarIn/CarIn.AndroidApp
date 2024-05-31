@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintHeight_default="wrap"
+    app:layout_constrainedHeight="true">
+
+    <LinearLayout
+        android:id="@+id/greenRectangle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_green_rectangle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rafael Campos de Azevedo"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginStart="16dp" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Condutor"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginStart="16dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <Button
+                android:id="@+id/button_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="0.5"
+                android:backgroundTint="@color/colorSecundary"
+                android:drawablePadding="8dp"
+                android:text="✔"
+                android:textAllCaps="false"
+                android:padding="8dp"/>
+
+
+            <Button
+                android:id="@+id/button_cross"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="0.5"
+                android:backgroundTint="@color/colorBlue30"
+                android:drawablePadding="8dp"
+                android:text="✖"
+                android:textAllCaps="false"
+                android:padding="8dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

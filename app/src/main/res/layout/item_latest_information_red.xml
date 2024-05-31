@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintHeight_default="wrap"
+    app:layout_constrainedHeight="true">
+
+    <LinearLayout
+        android:id="@+id/greenRectangle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_red_rectangle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_error"
+            app:layout_constraintStart_toStartOf="@id/greenRectangle"
+            app:layout_constraintTop_toTopOf="@id/greenRectangle"
+            app:layout_constraintBottom_toBottomOf="@id/greenRectangle"
+            android:layout_marginStart="16dp"
+            android:layout_gravity="center_vertical"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rota Concluída"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintStart_toEndOf="@id/icon"
+                app:layout_constraintTop_toTopOf="@id/greenRectangle"
+                app:layout_constraintBottom_toTopOf="@id/textView2"
+                android:layout_marginStart="16dp" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bruno Joaquim concluiu a viagem até Itália."
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintStart_toEndOf="@id/icon"
+                app:layout_constraintTop_toBottomOf="@id/textView1"
+                app:layout_constraintBottom_toBottomOf="@id/greenRectangle"
+                android:layout_marginStart="16dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
