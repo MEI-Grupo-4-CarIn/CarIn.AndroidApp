@@ -1,4 +1,4 @@
-package com.carin.activities
+package com.carin.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,12 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
+import com.carin.activities.ItemSpacingDecoration
 import com.carin.adapter.RouteAdapter
 
 class RouteFragment : Fragment() {
 
     private lateinit var adapter: RouteAdapter
-    private lateinit var route : List<RouteFragment.Route>
+    private lateinit var route : List<Route>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,14 +40,14 @@ class RouteFragment : Fragment() {
     }
 
 
-    private fun getRoutes(): List<RouteFragment.Route> {
+    private fun getRoutes(): List<Route> {
 
-        val routes = mutableListOf<RouteFragment.Route>()
-        routes.add(RouteFragment.Route("Porto","Luxembourg", "Bruno Ferreira", "19H10m", "12 Fevereiro", "INFINITY Vision Qe", "1896km"))
-        routes.add(RouteFragment.Route("Porto","Luxembourg", "Bruno Ferreira", "19H10m", "12 Fevereiro", "INFINITY Vision Qe", "1896km"))
-        routes.add(RouteFragment.Route("Porto","Luxembourg", "Bruno Ferreira", "19H10m", "12 Fevereiro", "INFINITY Vision Qe", "1896km"))
-        routes.add(RouteFragment.Route("Porto","Luxembourg", "Bruno Ferreira", "19H10m", "12 Fevereiro", "INFINITY Vision Qe", "1896km"))
-        routes.add(RouteFragment.Route("Porto","Luxembourg", "Bruno Ferreira", "19H10m", "12 Fevereiro", "INFINITY Vision Qe", "1896km"))
+        val routes = mutableListOf<Route>()
+        routes.add(Route("Porto","Luxembourg", "Bruno Ferreira", "19H10m", "12 Fevereiro", "INFINITY Vision Qe", "1896km"))
+        routes.add(Route("Porto","Luxembourg", "Bruno Ferreira", "19H10m", "12 Fevereiro", "INFINITY Vision Qe", "1896km"))
+        routes.add(Route("Porto","Luxembourg", "Bruno Ferreira", "19H10m", "12 Fevereiro", "INFINITY Vision Qe", "1896km"))
+        routes.add(Route("Porto","Luxembourg", "Bruno Ferreira", "19H10m", "12 Fevereiro", "INFINITY Vision Qe", "1896km"))
+        routes.add(Route("Porto","Luxembourg", "Bruno Ferreira", "19H10m", "12 Fevereiro", "INFINITY Vision Qe", "1896km"))
 
         return routes
     }

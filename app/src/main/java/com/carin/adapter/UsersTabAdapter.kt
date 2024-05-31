@@ -11,35 +11,49 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.activities.InfoUserActivity
-import com.carin.activities.UserFragment
+import com.carin.domain.models.UserModel
 import java.io.ByteArrayOutputStream
 
-class EmployeesAdapter(
-    private val employees: List<UserFragment.Employee>) :
-    RecyclerView.Adapter<EmployeesAdapter.EmployeeViewHolder>() {
+class UsersTabAdapter(private var users: MutableList<UserModel>) : RecyclerView.Adapter<UsersTabAdapter.UserViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmployeeViewHolder {
+    private val userIds = mutableSetOf<Int>()
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_users, parent, false)
-        return EmployeeViewHolder(view)
+        return UserViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: EmployeeViewHolder, position: Int) {
-        val employee = employees[position]
-        holder.imageView.setImageResource(employee.imageResource)
-        holder.textView1.text = "${employee.name}"
-        holder.textView2.text = "${employee.email}"
+    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
+        val user = users[position]
+        holder.imageView.setImageResource(user.imageResource)
+        holder.textView1.text = "${user.firstName} ${user.lastName}"
+        holder.textView2.text = "${user.email}"
     }
 
-    override fun getItemCount(): Int {
-        return employees.size
+    override fun getItemCount(): Int = users.size
+
+    fun updateUsers(newUsers: List<UserModel>) {
+        users.clear()
+        userIds.clear()
+        addUsersToAdapter(newUsers)
     }
 
-    class EmployeeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    fun appendUsers(newUsers: List<UserModel>) {
+        addUsersToAdapter(newUsers)
+    }
+
+    private fun addUsersToAdapter(newUsers: List<UserModel>) {
+        val filteredUsers = newUsers.filter { userIds.add(it.id) }
+        users.addAll(filteredUsers)
+        notifyDataSetChanged()
+    }
+
+    class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.imageView)
         val textView1: TextView = itemView.findViewById(R.id.textView1)
         val textView2: TextView = itemView.findViewById(R.id.textView2)
-        val backgroundRectangleImageView: ImageView = itemView.findViewById(R.id.backgroundRectangle)
+        private val backgroundRectangleImageView: ImageView = itemView.findViewById(R.id.backgroundRectangle)
         init {
             backgroundRectangleImageView.setOnClickListener {
                 val context = itemView.context

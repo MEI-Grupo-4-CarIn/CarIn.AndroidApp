@@ -1,4 +1,4 @@
-package com.carin.activities
+package com.carin.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,8 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.carin.R
-import com.carin.fragments.UserInfoFragment
-import com.carin.model.TypeInfoUser
+import com.carin.domain.enums.TypeInfoUser
 import com.google.android.material.tabs.TabLayoutMediator
 import java.util.Locale
 

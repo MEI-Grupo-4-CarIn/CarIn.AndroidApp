@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.activities.InfoRouteActivity
-import com.carin.activities.RouteFragment
+import com.carin.fragments.RouteFragment
 
 class RouteAdapter(
     private val routes: List<RouteFragment.Route>
