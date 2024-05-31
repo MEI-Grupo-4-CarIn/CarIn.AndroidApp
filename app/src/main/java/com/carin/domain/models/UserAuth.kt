@@ -1,4 +1,4 @@
-package com.carin.data.models.auth
+package com.carin.domain.models
 
 import com.carin.domain.enums.Role
 import java.util.Date

@@ -31,7 +31,7 @@ object NetworkModule {
             .build()
     }
 
-    val anotherService: AuthService by lazy {
+    val authService: AuthService by lazy {
         createRetrofit("http://10.0.2.2:5143/").create(AuthService::class.java)
     }
 

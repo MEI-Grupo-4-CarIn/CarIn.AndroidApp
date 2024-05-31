@@ -47,6 +47,9 @@ class UsersViewModel(private val repository: UserRepository) : ViewModel() {
         viewModelScope.launch {
             repository.getUsersList(_searchQuery.value, role, page, perPage).collect { result ->
                 when (result) {
+                    is Resource.Loading -> {
+                        _uiState.value = UsersListState.Loading(role)
+                    }
                     is Resource.Success -> {
                         if (result.data.isNullOrEmpty()) {
                             hasMoreData = false
@@ -59,9 +62,6 @@ class UsersViewModel(private val repository: UserRepository) : ViewModel() {
                     }
                     is Resource.Error -> {
                         _uiState.value = UsersListState.Error(result.message ?: "Unknown error")
-                    }
-                    is Resource.Loading -> {
-                        _uiState.value = UsersListState.Loading(role)
                     }
                 }
             }
@@ -77,6 +77,9 @@ class UsersViewModel(private val repository: UserRepository) : ViewModel() {
         viewModelScope.launch {
             repository.getUsersList(_searchQuery.value, role, currentPage, perPage).collect { result ->
                 when (result) {
+                    is Resource.Loading -> {
+                        _uiState.value = UsersListState.Loading(role)
+                    }
                     is Resource.Success -> {
                         if (result.data.isNullOrEmpty()) {
                             hasMoreData = false
@@ -92,9 +95,6 @@ class UsersViewModel(private val repository: UserRepository) : ViewModel() {
                     }
                     is Resource.Error -> {
                         _uiState.value = UsersListState.Error(result.message ?: "Unknown error")
-                    }
-                    is Resource.Loading -> {
-                        _uiState.value = UsersListState.Loading(role)
                     }
                 }
                 isLoadingMore = false
