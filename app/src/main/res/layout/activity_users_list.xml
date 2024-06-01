@@ -20,8 +20,8 @@
 
     <TextView
         android:id="@+id/usersTextView"
-        android:layout_width="151dp"
-        android:layout_height="28dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="40dp"
         android:text="@string/employees"
@@ -29,7 +29,8 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/parentLinearLayout"/>
 
     <LinearLayout
         android:id="@+id/parentLinearLayout"
