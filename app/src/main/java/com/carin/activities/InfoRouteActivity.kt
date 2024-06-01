@@ -23,7 +23,7 @@ class InfoRouteActivity : AppCompatActivity() {
 
         val iconImageView = findViewById<ImageView>(R.id.iconImageView)
         iconImageView.setOnClickListener {
-            startActivity(Intent(this, RouteActivity::class.java))
+            startActivity(Intent(this, RoutesListActivity::class.java))
         }
 
         val optionsIcon = findViewById<ImageView>(R.id.optionsIcon)

@@ -17,7 +17,6 @@ class MainFragmentRoute : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.route_fragment_main, container, false)
     }
 
@@ -45,7 +44,7 @@ class NewFragmentTypeAdapter(fragment: Fragment) : FragmentStateAdapter(fragment
     override fun getItemCount(): Int = TypeRoute.entries.size
 
     override fun createFragment(position: Int): Fragment {
-        return RouteFragment()
+        return RoutesTabFragment()
     }
 }
 

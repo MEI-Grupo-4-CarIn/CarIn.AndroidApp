@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.activities.ItemSpacingDecoration
-import com.carin.adapter.RouteAdapter
+import com.carin.adapter.RoutesTabAdapter
 
-class RouteFragment : Fragment() {
+class RoutesTabFragment : Fragment() {
 
-    private lateinit var adapter: RouteAdapter
+    private lateinit var adapter: RoutesTabAdapter
     private lateinit var route : List<Route>
 
     override fun onCreateView(
@@ -35,7 +35,7 @@ class RouteFragment : Fragment() {
 
         route = getRoutes()
 
-        adapter = RouteAdapter(route)
+        adapter = RoutesTabAdapter(route)
         recyclerView.adapter = adapter
     }
 

@@ -9,12 +9,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.activities.InfoRouteActivity
-import com.carin.fragments.RouteFragment
+import com.carin.fragments.RoutesTabFragment
 
-class RouteAdapter(
-    private val routes: List<RouteFragment.Route>
-) :
-    RecyclerView.Adapter<RouteAdapter.RouteViewHolder>() {
+class RoutesTabAdapter(private val routes: List<RoutesTabFragment.Route>) : RecyclerView.Adapter<RoutesTabAdapter.RouteViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouteViewHolder {
         val view = LayoutInflater.from(parent.context)

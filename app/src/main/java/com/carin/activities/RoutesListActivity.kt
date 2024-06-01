@@ -14,12 +14,11 @@ import com.carin.R
 import com.carin.fragments.MainFragmentRoute
 
 
-class RouteActivity : AppCompatActivity() {
+class RoutesListActivity : AppCompatActivity() {
 
-    private var isRotated = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_route)
+        setContentView(R.layout.activity_routes_list)
 
         if(savedInstanceState == null){
             supportFragmentManager.beginTransaction()
@@ -28,41 +27,35 @@ class RouteActivity : AppCompatActivity() {
         }
 
         val iconImageView: ImageView = findViewById(R.id.iconImageView)
-
         iconImageView.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
 
         val buttonRoute: ImageView = findViewById(R.id.buttonRoute)
-
         buttonRoute.setOnClickListener {
-            val intent = Intent(this, RouteActivity::class.java)
+            val intent = Intent(this, RoutesListActivity::class.java)
             startActivity(intent)
             finish()
         }
 
         val buttonVehicle: ImageView = findViewById(R.id.buttonVehicle)
-
         buttonVehicle.setOnClickListener {
             val intent = Intent(this, VehicleActivity::class.java)
             startActivity(intent)
         }
 
         val buttonHome: ImageView = findViewById(R.id.buttonHome)
-
         buttonHome.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
 
         val buttonPerson: ImageView = findViewById(R.id.buttonPerson)
-
         buttonPerson.setOnClickListener {
             val intent = Intent(this, InfoUserActivity::class.java)
             startActivity(intent)
         }
-
 
         val buttonMore = findViewById<ImageButton>(R.id.buttonMore)
         val layoutNewAppointment = findViewById<RelativeLayout>(R.id.layoutNewAppointment)
@@ -71,45 +64,26 @@ class RouteActivity : AppCompatActivity() {
         val layoutAddUser = findViewById<RelativeLayout>(R.id.layoutAddUser)
 
         buttonMore.setOnClickListener {
-            if (isRotated) {
-                val rotateAnimator = ObjectAnimator.ofFloat(buttonMore, "rotation", 45f, 0f)
-                    .apply {
-                        duration = 500
-                        interpolator = AccelerateDecelerateInterpolator()
-                    }
+            val rotateAnimator = ObjectAnimator.ofFloat(buttonMore, "rotation", 0f, 45f)
+                .apply {
+                    duration = 500
+                    interpolator = AccelerateDecelerateInterpolator()
+                }
 
-                val animatorSet = AnimatorSet()
-                animatorSet.play(rotateAnimator)
-                animatorSet.start()
+            val animatorSet = AnimatorSet()
+            animatorSet.play(rotateAnimator)
+            animatorSet.start()
 
-                layoutNewAppointment.visibility = View.INVISIBLE
-                layoutAddRoute.visibility = View.INVISIBLE
-                layoutAddVehicle.visibility = View.INVISIBLE
-                layoutAddUser.visibility = View.INVISIBLE
-            } else {
-                val rotateAnimator = ObjectAnimator.ofFloat(buttonMore, "rotation", 0f, 45f)
-                    .apply {
-                        duration = 500
-                        interpolator = AccelerateDecelerateInterpolator()
-                    }
-
-                val animatorSet = AnimatorSet()
-                animatorSet.play(rotateAnimator)
-                animatorSet.start()
-
-                layoutNewAppointment.visibility = View.VISIBLE
-                layoutAddRoute.visibility = View.VISIBLE
-                layoutAddVehicle.visibility = View.VISIBLE
-                layoutAddUser.visibility = View.VISIBLE
-            }
-            isRotated = !isRotated
+            layoutNewAppointment.visibility = View.VISIBLE
+            layoutAddRoute.visibility = View.VISIBLE
+            layoutAddVehicle.visibility = View.VISIBLE
+            layoutAddUser.visibility = View.VISIBLE
         }
 
         layoutAddUser.setOnClickListener {
             val intent = Intent(this, NewUserActivity::class.java)
             startActivity(intent)
         }
-
 
         layoutAddVehicle.setOnClickListener {
             val intent = Intent(this, NewVehicleActivity::class.java)
