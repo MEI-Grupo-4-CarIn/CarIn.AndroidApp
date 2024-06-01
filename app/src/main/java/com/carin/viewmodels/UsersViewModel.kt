@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.carin.data.repositories.UserRepository
-import com.carin.domain.enums.Role
+import com.carin.domain.enums.UserType
 import com.carin.utils.Resource
 import com.carin.viewmodels.events.UsersListEvent
 import com.carin.viewmodels.states.UsersListState
@@ -20,10 +20,18 @@ class UsersViewModel(private val repository: UserRepository) : ViewModel() {
     val searchQuery: LiveData<String?> get() = _searchQuery
 
     private val perPage = 10
-    private var currentPage = 1
-    private var currentRole: Role? = null
-    private var isLoadingMore = false
-    private var hasMoreData = true
+    private var currentPage = mutableMapOf<UserType, Int>()
+    private var isLoadingMore = mutableMapOf<UserType, Boolean>()
+    private var hasMoreData = mutableMapOf<UserType, Boolean>()
+
+    init {
+        // Initialize default values for all userTypes
+        UserType.entries.forEach { userType ->
+            currentPage[userType] = 1
+            isLoadingMore[userType] = false
+            hasMoreData[userType] = true
+        }
+    }
 
     fun onEvent(event: UsersListEvent) {
         when (event) {
@@ -31,73 +39,82 @@ class UsersViewModel(private val repository: UserRepository) : ViewModel() {
                 _searchQuery.value = event.searchQuery
             }
             is UsersListEvent.LoadUsers -> {
-                loadUsers(event.role, event.page)
+                loadUsers(event.userType, event.page)
             }
             is UsersListEvent.LoadMoreUsers -> {
-                loadMoreUsers(event.role)
+                loadMoreUsers(event.userType)
             }
         }
     }
 
-    private fun loadUsers(role: Role?, page: Int = 1) {
-        currentRole = role
-        currentPage = page
-        hasMoreData = true
+    private fun loadUsers(userType: UserType, page: Int = 1) {
+        userType.let { type ->
+            currentPage[type] = page
+            hasMoreData[type] = true
 
-        viewModelScope.launch {
-            repository.getUsersList(_searchQuery.value, role, page, perPage).collect { result ->
-                when (result) {
-                    is Resource.Loading -> {
-                        _uiState.value = UsersListState.Loading(role)
-                    }
-                    is Resource.Success -> {
-                        if (result.data.isNullOrEmpty()) {
-                            hasMoreData = false
+            viewModelScope.launch {
+                repository.getUsersList(_searchQuery.value, UserType.toRole(type), page, perPage).collect { result ->
+                    when (result) {
+                        is Resource.Loading -> {
+                            _uiState.value = UsersListState.Loading(type)
                         }
-                        _uiState.value = UsersListState.Success(
-                            users = result.data ?: emptyList(),
-                            role = role,
-                            isAppending = false
-                        )
-                    }
-                    is Resource.Error -> {
-                        _uiState.value = UsersListState.Error(result.message ?: "Unknown error")
+                        is Resource.Success -> {
+                            if (result.data.isNullOrEmpty()) {
+                                hasMoreData[type] = false
+                            }
+                            _uiState.value = UsersListState.Success(
+                                users = result.data ?: emptyList(),
+                                userType = type,
+                                isAppending = false
+                            )
+                        }
+                        is Resource.Error -> {
+                            _uiState.value = UsersListState.Error(result.message ?: "Unknown error")
+                        }
                     }
                 }
             }
         }
     }
 
-    private fun loadMoreUsers(role: Role?) {
-        if (isLoadingMore || !hasMoreData) return
+    private fun loadMoreUsers(userType: UserType) {
+        userType.let { type ->
+            if (isLoadingMore[type] == true || hasMoreData[type] == false) return
 
-        isLoadingMore = true
-        currentPage++
+            isLoadingMore[type] = true
+            currentPage[type] = currentPage[type]?.plus(1) ?: 1
 
-        viewModelScope.launch {
-            repository.getUsersList(_searchQuery.value, role, currentPage, perPage).collect { result ->
-                when (result) {
-                    is Resource.Loading -> {
-                        _uiState.value = UsersListState.Loading(role)
-                    }
-                    is Resource.Success -> {
-                        if (result.data.isNullOrEmpty()) {
-                            hasMoreData = false
+            viewModelScope.launch {
+                try {
+                    repository.getUsersList(_searchQuery.value, UserType.toRole(type), currentPage[type] ?: 1, perPage).collect { result ->
+                        when (result) {
+                            is Resource.Loading -> {
+                                _uiState.value = UsersListState.Loading(type)
+                            }
+                            is Resource.Success -> {
+                                if (result.data.isNullOrEmpty() || result.data.size < perPage) {
+                                    hasMoreData[type] = false
+                                }
+                                val currentData =
+                                    (_uiState.value as? UsersListState.Success)?.users?.toMutableList()
+                                        ?: mutableListOf()
+
+                                result.data?.let { currentData.addAll(it) }
+                                _uiState.value = UsersListState.Success(
+                                    users = currentData,
+                                    userType = type,
+                                    isAppending = true
+                                )
+                            }
+                            is Resource.Error -> {
+                                _uiState.value =
+                                    UsersListState.Error(result.message ?: "Unknown error")
+                            }
                         }
-                        val currentData = (_uiState.value as? UsersListState.Success)?.users?.toMutableList() ?: mutableListOf()
-
-                        result.data?.let { currentData.addAll(it) }
-                        _uiState.value = UsersListState.Success(
-                            users = currentData,
-                            role = role,
-                            isAppending = true
-                        )
                     }
-                    is Resource.Error -> {
-                        _uiState.value = UsersListState.Error(result.message ?: "Unknown error")
-                    }
+                } finally {
+                    isLoadingMore[type] = false
                 }
-                isLoadingMore = false
             }
         }
     }

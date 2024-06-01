@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.adapter.UsersTabAdapter
-import com.carin.domain.enums.Role
-import com.carin.domain.enums.TypeUsers
+import com.carin.domain.enums.UserType
 import com.carin.viewmodels.UsersViewModel
 import com.carin.viewmodels.events.UsersListEvent
 import com.carin.viewmodels.states.UsersListState
@@ -22,14 +21,16 @@ class UsersTabFragment : Fragment() {
 
     private lateinit var adapter: UsersTabAdapter
     private lateinit var viewModel: UsersViewModel
-    private var currentRole: Role? = null
-    private var dataLoaded = false
+    private lateinit var currentUserType: UserType
     private lateinit var emptyTextView: TextView
     private lateinit var errorTextView: TextView
     private lateinit var progressBar: ProgressBar
+    private var dataLoaded = false
+    private var currentPage = 1
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.user_fragment, container, false)
@@ -54,16 +55,15 @@ class UsersTabFragment : Fragment() {
         viewModel.uiState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UsersListState.Loading -> {
-                    if (state.role == currentRole) {
+                    if (state.userType == currentUserType) {
                         progressBar.visibility = View.VISIBLE
                         errorTextView.visibility = View.GONE
+                        emptyTextView.visibility = View.GONE
                     }
                 }
                 is UsersListState.Success -> {
-                    if (state.role == currentRole) {
-                        progressBar.visibility = View.GONE
+                    if (state.userType == currentUserType) {
                         errorTextView.visibility = View.GONE
-
 
                         if (state.users.isEmpty() && !state.isAppending) {
                             emptyTextView.visibility = View.VISIBLE
@@ -78,41 +78,48 @@ class UsersTabFragment : Fragment() {
                                 adapter.updateUsers(state.users)
                         }
 
+                        progressBar.visibility = View.GONE
                         dataLoaded = true
                     }
                 }
                 is UsersListState.Error -> {
-                    progressBar.visibility = View.GONE
+                    emptyTextView.visibility = View.GONE
                     errorTextView.visibility = View.VISIBLE
+                    progressBar.visibility = View.GONE
                 }
             }
         }
 
         viewModel.searchQuery.observe(viewLifecycleOwner) {
             // Reload data based on the new search query
-            viewModel.onEvent(UsersListEvent.LoadUsers(currentRole))
+            viewModel.onEvent(UsersListEvent.LoadUsers(currentUserType))
         }
 
         // Add scroll listener to the RecyclerView
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                // Load more items when the user scrolls to the bottom
-                if (!recyclerView.canScrollVertically(1)) {
-                    viewModel.onEvent(UsersListEvent.LoadMoreUsers(currentRole))
+                val layoutManager = recyclerView.layoutManager as GridLayoutManager
+                val totalItemCount = layoutManager.itemCount
+                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+
+                if (!recyclerView.canScrollVertically(1)
+                    && lastVisibleItemPosition >= totalItemCount - 2)
+                {
+                    viewModel.onEvent(UsersListEvent.LoadMoreUsers(currentUserType))
+                    currentPage++
                 }
             }
         })
 
-        // Get the role from arguments and convert it to Role
-        val typeUser = arguments?.getSerializable("role") as? TypeUsers
-        currentRole = typeUser?.let { TypeUsers.toRole(it) }
+        currentUserType = (arguments?.getSerializable("userType") as? UserType)!!
     }
 
     override fun onResume() {
         super.onResume()
         if (!dataLoaded)
-            viewModel.onEvent(UsersListEvent.LoadUsers(currentRole))
+            viewModel.onEvent(UsersListEvent.LoadUsers(currentUserType))
     }
 }

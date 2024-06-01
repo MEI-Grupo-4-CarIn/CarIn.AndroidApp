@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.carin.R
-import com.carin.domain.enums.TypeUsers
+import com.carin.domain.enums.UserType
 import com.google.android.material.tabs.TabLayoutMediator
 import java.util.Locale
 
@@ -31,8 +31,8 @@ class MainUsersListFragment : Fragment() {
         val currentLocale = Locale.getDefault()
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             val currentLabel = when (currentLocale.language) {
-                "pt" -> TypeUsers.entries[position].labelPt
-                else -> TypeUsers.entries[position].labelEn
+                "pt" -> UserType.entries[position].labelPt
+                else -> UserType.entries[position].labelEn
             }
             tab.text = currentLabel
         }.attach()
@@ -41,12 +41,12 @@ class MainUsersListFragment : Fragment() {
 }
 
 class UsersFragmentTypeAdapter(fragment: Fragment) : FragmentStateAdapter(fragment){
-    override fun getItemCount(): Int = TypeUsers.entries.size
+    override fun getItemCount(): Int = UserType.entries.size
 
     override fun createFragment(position: Int): Fragment {
         val fragment = UsersTabFragment()
         fragment.arguments = Bundle().apply {
-            putSerializable("role", TypeUsers.entries[position])
+            putSerializable("userType", UserType.entries[position])
         }
 
         return fragment

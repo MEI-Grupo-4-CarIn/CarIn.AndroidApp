@@ -46,6 +46,8 @@ interface UserDao {
             args.add(role.roleId)
         }
 
+        queryBuilder.append(" ORDER BY id DESC")
+
         val offset = (page - 1) * perPage
         queryBuilder.append(" LIMIT ? OFFSET ?")
         args.add(perPage)
