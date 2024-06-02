@@ -10,6 +10,7 @@ import com.carin.domain.enums.UserType
 import com.carin.utils.Resource
 import com.carin.viewmodels.events.UsersListEvent
 import com.carin.viewmodels.states.UsersListState
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class UsersViewModel(private val repository: UserRepository) : ViewModel() {
@@ -23,6 +24,8 @@ class UsersViewModel(private val repository: UserRepository) : ViewModel() {
     private var currentPage = mutableMapOf<UserType, Int>()
     private var isLoadingMore = mutableMapOf<UserType, Boolean>()
     private var hasMoreData = mutableMapOf<UserType, Boolean>()
+
+    private var loadMoreJob: Job? = null
 
     init {
         // Initialize default values for all userTypes
@@ -59,17 +62,18 @@ class UsersViewModel(private val repository: UserRepository) : ViewModel() {
                             _uiState.value = UsersListState.Loading(type)
                         }
                         is Resource.Success -> {
-                            if (result.data.isNullOrEmpty()) {
+                            if (!result.waitForRemote && (result.data.isNullOrEmpty()  || result.data.size < perPage)) {
                                 hasMoreData[type] = false
                             }
                             _uiState.value = UsersListState.Success(
                                 users = result.data ?: emptyList(),
                                 userType = type,
+                                isEmpty = result.data.isNullOrEmpty(),
                                 isAppending = false
                             )
                         }
                         is Resource.Error -> {
-                            _uiState.value = UsersListState.Error(result.message ?: "Unknown error")
+                            _uiState.value = UsersListState.Error(type, result.message ?: "Unknown error")
                         }
                     }
                 }
@@ -79,12 +83,16 @@ class UsersViewModel(private val repository: UserRepository) : ViewModel() {
 
     private fun loadMoreUsers(userType: UserType) {
         userType.let { type ->
-            if (isLoadingMore[type] == true || hasMoreData[type] == false) return
+            if (isLoadingMore[type] == true
+                || hasMoreData[type] == false
+                || loadMoreJob?.isActive == true) {
+                return
+            }
 
             isLoadingMore[type] = true
             currentPage[type] = currentPage[type]?.plus(1) ?: 1
 
-            viewModelScope.launch {
+            loadMoreJob = viewModelScope.launch {
                 try {
                     repository.getUsersList(_searchQuery.value, UserType.toRole(type), currentPage[type] ?: 1, perPage).collect { result ->
                         when (result) {
@@ -92,23 +100,21 @@ class UsersViewModel(private val repository: UserRepository) : ViewModel() {
                                 _uiState.value = UsersListState.Loading(type)
                             }
                             is Resource.Success -> {
-                                if (result.data.isNullOrEmpty() || result.data.size < perPage) {
+                                if (!result.waitForRemote && result.data.isNullOrEmpty()) {
                                     hasMoreData[type] = false
                                 }
-                                val currentData =
-                                    (_uiState.value as? UsersListState.Success)?.users?.toMutableList()
-                                        ?: mutableListOf()
+                                val currentData = (_uiState.value as? UsersListState.Success)?.users?.toMutableList() ?: mutableListOf()
 
                                 result.data?.let { currentData.addAll(it) }
                                 _uiState.value = UsersListState.Success(
                                     users = currentData,
                                     userType = type,
+                                    isEmpty = result.data.isNullOrEmpty(),
                                     isAppending = true
                                 )
                             }
                             is Resource.Error -> {
-                                _uiState.value =
-                                    UsersListState.Error(result.message ?: "Unknown error")
+                                _uiState.value = UsersListState.Error(type, result.message ?: "Unknown error")
                             }
                         }
                     }

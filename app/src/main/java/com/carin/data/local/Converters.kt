@@ -9,11 +9,13 @@ import java.util.Locale
 class Converters {
     @TypeConverter
     fun fromRole(role: Role?): Int? {
+    fun roleToInt(role: Role?): Int? {
         return role?.roleId
     }
 
     @TypeConverter
     fun toRole(roleId: Int?): Role? {
+    fun intToRole(roleId: Int?): Role? {
         return roleId?.let { Role.fromId(it) }
     }
 

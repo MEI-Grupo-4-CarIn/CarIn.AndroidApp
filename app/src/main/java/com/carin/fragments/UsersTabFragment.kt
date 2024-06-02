@@ -1,6 +1,8 @@
 package com.carin.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +28,6 @@ class UsersTabFragment : Fragment() {
     private lateinit var errorTextView: TextView
     private lateinit var progressBar: ProgressBar
     private var dataLoaded = false
-    private var currentPage = 1
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,7 +66,7 @@ class UsersTabFragment : Fragment() {
                     if (state.userType == currentUserType) {
                         errorTextView.visibility = View.GONE
 
-                        if (state.users.isEmpty() && !state.isAppending) {
+                        if (state.isEmpty && !state.isAppending) {
                             emptyTextView.visibility = View.VISIBLE
                             recyclerView.visibility = View.GONE
                         } else {
@@ -83,9 +84,11 @@ class UsersTabFragment : Fragment() {
                     }
                 }
                 is UsersListState.Error -> {
-                    emptyTextView.visibility = View.GONE
-                    errorTextView.visibility = View.VISIBLE
-                    progressBar.visibility = View.GONE
+                    if (state.userType == currentUserType) {
+                        emptyTextView.visibility = View.GONE
+                        errorTextView.visibility = View.VISIBLE
+                        progressBar.visibility = View.GONE
+                    }
                 }
             }
         }
@@ -95,22 +98,25 @@ class UsersTabFragment : Fragment() {
             viewModel.onEvent(UsersListEvent.LoadUsers(currentUserType))
         }
 
-        // Add scroll listener to the RecyclerView
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            private val handler = Handler(Looper.getMainLooper())
+            private var runnable: Runnable? = null
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                val layoutManager = recyclerView.layoutManager as GridLayoutManager
-                val totalItemCount = layoutManager.itemCount
-                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+                runnable?.let { handler.removeCallbacks(it) }
+                runnable = Runnable {
+                    val layoutManager = recyclerView.layoutManager as GridLayoutManager
+                    val totalItemCount = layoutManager.itemCount
+                    val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
 
-                if (!recyclerView.canScrollVertically(1)
-                    && lastVisibleItemPosition >= totalItemCount - 2)
-                {
-                    viewModel.onEvent(UsersListEvent.LoadMoreUsers(currentUserType))
-                    currentPage++
+                    if (!recyclerView.canScrollVertically(1)
+                        && lastVisibleItemPosition >= totalItemCount - 2) {
+                        viewModel.onEvent(UsersListEvent.LoadMoreUsers(currentUserType))
+                    }
                 }
+                handler.postDelayed(runnable!!, 300)
             }
         })
 

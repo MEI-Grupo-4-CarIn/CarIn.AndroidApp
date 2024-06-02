@@ -94,11 +94,11 @@
                 android:layout_height="10dp"
                 android:layout_marginStart="175dp"
                 android:layout_below="@id/departureDateTextView"
-                android:progress="50"
+                android:progress="0"
                 android:max="100" />
 
             <TextView
-                android:id="@+id/percursoTextView"
+                android:id="@+id/statusTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/timeProgressBar"

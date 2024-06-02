@@ -35,7 +35,7 @@ object AuthUtils {
         refreshToken: String
     ): Flow<Boolean>  {
         return flow {
-            val authService = NetworkModule.authService
+            val authService = NetworkModule.provideAuthService(context)
 
             try {
                 val response = authService.refreshToken(AuthRefreshTokenRequest(refreshToken)).execute()
@@ -87,7 +87,7 @@ object AuthUtils {
         password: String
     ): Flow<Resource<Boolean>> {
         return flow {
-            val authService = NetworkModule.authService
+            val authService = NetworkModule.provideAuthService(context)
 
             try {
                 val response = authService.login(AuthLoginRequest(email, password)).execute()

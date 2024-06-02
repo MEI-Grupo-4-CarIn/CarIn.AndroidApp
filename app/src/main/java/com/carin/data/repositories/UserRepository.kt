@@ -31,14 +31,17 @@ class UserRepository(
             emit(Resource.Loading())
 
             val localUsers = userDao.getListOfUsers(search, role, page, perPage)
-            if (localUsers.isNotEmpty())
-                emit(Resource.Success(
-                    data = localUsers.map { it.toUserModel() }
-                ))
-
             val isToFetchRemote = localUsers.isEmpty()
                     || localUsers.size < perPage
                     || localUsers.first().localLastUpdateDateUtc < Date(System.currentTimeMillis() - 15.minutes.inWholeMilliseconds)
+            if (localUsers.isNotEmpty()) {
+                emit(
+                    Resource.Success(
+                        data = localUsers.map { it.toUserModel() },
+                        waitForRemote = isToFetchRemote
+                    )
+                )
+            }
 
             if (isToFetchRemote) {
                 val remoteUsers = try {
@@ -60,14 +63,19 @@ class UserRepository(
 
                 remoteUsers?.let { userDtoList ->
                     val userEntities = userDtoList.map { it.toUserEntity() }
-                    userDao.insertUsers(userEntities)
-                    emit(Resource.Success(
-                        data = userDao.getListOfUsers(search, role, page, perPage).map { it.toUserModel() }
-                    ))
+                    userDao.upsertUsers(userEntities)
+
+                    emit(
+                        Resource.Success(
+                        data =  userDao.getListOfUsers(search, role, page, perPage).map { it.toUserModel() }
+                        )
+                    )
                 }
 
-                if (remoteUsers.isNullOrEmpty() && localUsers.isEmpty())
+                if (remoteUsers.isNullOrEmpty() && localUsers.isEmpty()) {
                     emit(Resource.Success(data = emptyList()))
+                }
+
             }
         }.flowOn(Dispatchers.IO)
     }

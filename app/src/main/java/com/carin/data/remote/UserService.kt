@@ -4,6 +4,7 @@ import com.carin.data.remote.dto.UserDto
 import com.carin.domain.enums.Role
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface UserService {
@@ -14,4 +15,7 @@ interface UserService {
         @Query("page") page: Int? = null,
         @Query("per_page") perPage: Int? = null
     ): Call<List<UserDto>>
+
+    @GET("/api/users/{id}")
+    fun getUserById(@Path("id") id: Int): Call<UserDto>
 }
