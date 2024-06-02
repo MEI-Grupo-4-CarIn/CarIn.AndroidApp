@@ -2,6 +2,7 @@ package com.carin.di
 
 import android.content.Context
 import com.carin.data.remote.AuthService
+import com.carin.data.remote.RouteService
 import com.carin.data.remote.UserService
 import com.carin.utils.AuthInterceptor
 import com.google.gson.Gson
@@ -44,6 +45,8 @@ object NetworkModule {
         return createRetrofit("http://10.0.2.2:5143/", context).create(UserService::class.java)
     }
 
+    fun provideRouteService(context: Context): RouteService {
+        return createRetrofit("http://10.0.2.2:3001/", context).create(RouteService::class.java)
     }
 
 }
