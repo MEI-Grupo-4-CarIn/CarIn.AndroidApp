@@ -6,6 +6,7 @@ import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.carin.R
 import com.carin.utils.AuthUtils
+import kotlinx.coroutines.runBlocking
 
 class SplashActivity : AppCompatActivity() {
 
@@ -16,11 +17,19 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash_screen)
 
         Handler().postDelayed({
-            if (AuthUtils.isAuthenticated(this))
-            {
-                val mainIntent = Intent(this@SplashActivity, HomeActivity::class.java)
-                startActivity(mainIntent)
-                finish()
+            val userAuth = AuthUtils.getUserAuth(this)
+            if (userAuth != null) {
+                if (!AuthUtils.isAuthenticated(this)) {
+                    runBlocking {
+                        AuthUtils.refreshTokenBlocking(this@SplashActivity, userAuth.refreshToken)
+                    }
+
+                    if (AuthUtils.isAuthenticated(this)) {
+                        val mainIntent = Intent(this@SplashActivity, HomeActivity::class.java)
+                        startActivity(mainIntent)
+                        finish()
+                    }
+                }
             }
             else {
                 val mainIntent = Intent(this@SplashActivity, LoginActivity::class.java)

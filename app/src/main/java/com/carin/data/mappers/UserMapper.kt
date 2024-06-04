@@ -3,7 +3,6 @@ package com.carin.data.mappers
 import com.carin.R
 import com.carin.data.local.entities.UserEntity
 import com.carin.data.remote.dto.UserDto
-import com.carin.domain.enums.Role
 import com.carin.domain.models.UserModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -17,7 +16,7 @@ fun UserEntity.toUserModel(): UserModel {
         lastName = lastName,
         email = email,
         birthDate = birthDate,
-        role = Role.entries.first { it.roleId == roleId },
+        role = roleId,
         status = status,
         creationDateUtc = creationDateUtc,
         lastUpdateDateUtc = lastUpdateDateUtc
@@ -32,7 +31,7 @@ fun UserDto.toUserEntity(): UserEntity {
         lastName = lastName,
         email = email,
         birthDate = dateFormatter.parse(birthDate) ?: Date(),
-        roleId = role.roleId,
+        roleId = role,
         status = status,
         creationDateUtc = dateFormatter.parse(creationDateUtc) ?: Date(),
         lastUpdateDateUtc = lastUpdateDateUtc?.let { dateFormatter.parse(it) },

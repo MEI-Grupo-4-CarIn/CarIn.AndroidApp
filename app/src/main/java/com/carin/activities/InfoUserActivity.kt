@@ -106,7 +106,7 @@ class InfoUserActivity : AppCompatActivity() {
         val buttonRoute: ImageView = findViewById(R.id.buttonRoute)
 
         buttonRoute.setOnClickListener {
-            val intent = Intent(this, RouteActivity::class.java)
+            val intent = Intent(this, RoutesListActivity::class.java)
             startActivity(intent)
             finish()
         }

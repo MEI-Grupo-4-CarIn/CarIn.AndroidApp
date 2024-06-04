@@ -1,7 +1,10 @@
 package com.carin.di
 
+import android.content.Context
 import com.carin.data.remote.AuthService
+import com.carin.data.remote.RouteService
 import com.carin.data.remote.UserService
+import com.carin.utils.AuthInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -19,24 +22,31 @@ object NetworkModule {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
-    private val okHttpClient: OkHttpClient = OkHttpClient.Builder()
-        .addInterceptor(loggingInterceptor)
-        .build()
+    private fun createOkHttpClient(context: Context): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .addInterceptor(AuthInterceptor(context))
+            .build()
+    }
 
-    private fun createRetrofit(baseUrl: String): Retrofit {
+    private fun createRetrofit(baseUrl: String, context: Context): Retrofit {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
-            .client(okHttpClient)
+            .client(createOkHttpClient(context))
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 
-    val authService: AuthService by lazy {
-        createRetrofit("http://10.0.2.2:5143/").create(AuthService::class.java)
+    fun provideAuthService(context: Context): AuthService {
+        return createRetrofit("http://10.0.2.2:5143/", context).create(AuthService::class.java)
     }
 
-    val userService: UserService by lazy {
-        createRetrofit("http://10.0.2.2:5143/").create(UserService::class.java)
+    fun provideUserService(context: Context): UserService {
+        return createRetrofit("http://10.0.2.2:5143/", context).create(UserService::class.java)
+    }
+
+    fun provideRouteService(context: Context): RouteService {
+        return createRetrofit("http://10.0.2.2:3001/", context).create(RouteService::class.java)
     }
 
 }

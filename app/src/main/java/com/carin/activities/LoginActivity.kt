@@ -1,6 +1,5 @@
 package com.carin.activities
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -9,18 +8,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.work.Constraints
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import com.carin.R
 import com.carin.data.remote.dto.auth.AuthTokenDto
 import com.carin.utils.AuthUtils
 import com.carin.utils.Resource
-import com.carin.workers.RefreshTokenWorker
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
 
 class LoginActivity : AppCompatActivity() {
 
@@ -71,7 +63,6 @@ class LoginActivity : AppCompatActivity() {
                         is Resource.Success -> {
                             if (result.data == true) {
                                 navigateToHome()
-                                scheduleTokenRefreshWorker(this@LoginActivity)
                             }
                         }
                         is Resource.Error -> {
@@ -88,21 +79,5 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this@LoginActivity, HomeActivity::class.java)
         startActivity(intent)
         finish()
-    }
-
-    private fun scheduleTokenRefreshWorker(context: Context) {
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .build()
-
-        val refreshTokenWorkRequest = PeriodicWorkRequestBuilder<RefreshTokenWorker>(6, TimeUnit.MINUTES)
-            .setConstraints(constraints)
-            .build()
-
-        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-            "RefreshTokenWorker",
-            ExistingPeriodicWorkPolicy.UPDATE,
-            refreshTokenWorkRequest
-        )
     }
 }

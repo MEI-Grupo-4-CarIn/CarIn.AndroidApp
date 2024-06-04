@@ -159,7 +159,7 @@ class InfoVehicleActivity : AppCompatActivity() {
 
         val textViewSeeMore3: TextView = findViewById(R.id.textViewSeeMore3)
         textViewSeeMore3.setOnClickListener {
-            val intent = Intent(this, RouteActivity::class.java)
+            val intent = Intent(this, RoutesListActivity::class.java)
             startActivity(intent)
         }
     }
