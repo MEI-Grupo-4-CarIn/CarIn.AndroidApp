@@ -4,6 +4,7 @@ import android.content.Context
 import com.carin.data.remote.AuthService
 import com.carin.data.remote.RouteService
 import com.carin.data.remote.UserService
+import com.carin.data.remote.VehicleService
 import com.carin.utils.AuthInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -38,15 +39,19 @@ object NetworkModule {
     }
 
     fun provideAuthService(context: Context): AuthService {
-        return createRetrofit("http://10.0.2.2:5143/", context).create(AuthService::class.java)
+        return createRetrofit("http://13.50.63.152:9000/", context).create(AuthService::class.java)
     }
 
     fun provideUserService(context: Context): UserService {
-        return createRetrofit("http://10.0.2.2:5143/", context).create(UserService::class.java)
+        return createRetrofit("http://13.50.63.152:9000/", context).create(UserService::class.java)
     }
 
     fun provideRouteService(context: Context): RouteService {
-        return createRetrofit("http://10.0.2.2:3001/", context).create(RouteService::class.java)
+        return createRetrofit("http://13.50.63.152:9000/", context).create(RouteService::class.java)
+    }
+
+    fun provideVehicleService(context: Context): VehicleService {
+        return createRetrofit("http://13.50.63.152:9000/", context).create(VehicleService::class.java)
     }
 
 }

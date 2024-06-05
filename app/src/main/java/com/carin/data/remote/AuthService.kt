@@ -8,10 +8,10 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface AuthService {
-    @POST("api/auth/login")
+    @POST("/auth/login")
     fun login(@Body loginRequest: AuthLoginRequest): Call<AuthTokenDto>
 
-    @POST("api/auth/refreshToken")
+    @POST("/auth/refreshToken")
     fun refreshToken(@Body refreshTokenRequest: AuthRefreshTokenRequest): Call<AuthTokenDto>
 
 }

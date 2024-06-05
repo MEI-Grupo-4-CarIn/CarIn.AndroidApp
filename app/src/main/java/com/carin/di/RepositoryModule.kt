@@ -4,6 +4,7 @@ import android.content.Context
 import com.carin.data.local.AppDatabase
 import com.carin.data.repositories.RouteRepository
 import com.carin.data.repositories.UserRepository
+import com.carin.data.repositories.VehicleRepository
 
 object RepositoryModule {
     fun provideUserRepository(context: Context): UserRepository {
@@ -18,5 +19,11 @@ object RepositoryModule {
         val routeService = NetworkModule.provideRouteService(context)
         val userService = NetworkModule.provideUserService(context)
         return RouteRepository(routeDao, userDao, routeService, userService)
+    }
+
+    fun provideVehicleRepository(context: Context): VehicleRepository {
+        val vehicleDao = AppDatabase.invoke(context).vehicleDao()
+        val vehicleService = NetworkModule.provideVehicleService(context)
+        return VehicleRepository(vehicleDao, vehicleService)
     }
 }

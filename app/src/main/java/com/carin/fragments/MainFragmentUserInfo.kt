@@ -48,7 +48,8 @@ class UserInfoFragmentTypeAdapter(fragment: Fragment) : FragmentStateAdapter(fra
         return when (position) {
             0 -> UserInfoFragment()
             1 -> UserRouteFragment()
-            else -> UserInfoFragment()
+            else -> throw IllegalArgumentException("Invalid position: $position")
         }
     }
+
 }
