@@ -8,7 +8,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface UserService {
-    @GET("/api/users")
+    @GET("/users")
     fun getUsers(
         @Query("search") search: String? = null,
         @Query("role") role: Role? = null,
@@ -16,6 +16,6 @@ interface UserService {
         @Query("per_page") perPage: Int? = null
     ): Call<List<UserDto>>
 
-    @GET("/api/users/{id}")
+    @GET("/users/{id}")
     fun getUserById(@Path("id") id: Int): Call<UserDto>
 }

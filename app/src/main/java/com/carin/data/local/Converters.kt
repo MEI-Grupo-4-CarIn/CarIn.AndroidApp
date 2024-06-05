@@ -1,8 +1,10 @@
 package com.carin.data.local
 
 import androidx.room.TypeConverter
+import com.carin.domain.enums.FuelType
 import com.carin.domain.enums.Role
 import com.carin.domain.enums.RouteStatus
+import com.carin.domain.enums.VehicleStatus
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -52,5 +54,25 @@ class Converters {
     @TypeConverter
     fun doublesToString(list: List<Double>?): String? {
         return list?.joinToString(",")
+    }
+
+    @TypeConverter
+    fun fuelTypeToInt(fuelType: FuelType?): Int? {
+        return fuelType?.fuelTypeId
+    }
+
+    @TypeConverter
+    fun intToFuelType(fuelTypeId: Int?): FuelType? {
+        return fuelTypeId?.let { FuelType.fromId(it) }
+    }
+
+    @TypeConverter
+    fun vehicleStatusToInt(vehicleStatus: VehicleStatus?): Int? {
+        return vehicleStatus?.statusId
+    }
+
+    @TypeConverter
+    fun intToVehicleStatus(statusId: Int?): VehicleStatus? {
+        return statusId?.let { VehicleStatus.fromId(it) }
     }
 }

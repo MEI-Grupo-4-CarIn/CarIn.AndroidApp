@@ -11,12 +11,14 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.activities.InfoVehicleActivity
-import com.carin.fragments.VehicleFragment
+import com.carin.domain.models.UserModel
+import com.carin.domain.models.VehicleModel
+import com.carin.fragments.VehiclesTabFragment
 import java.io.ByteArrayOutputStream
 
-class VehicleAdapter(
-    private val vehicles: List<VehicleFragment.Vehicle>) :
-    RecyclerView.Adapter<VehicleAdapter.VehicleViewHolder>() {
+class VehiclesTabAdapter(private val vehicles: MutableList<VehicleModel>) : RecyclerView.Adapter<VehiclesTabAdapter.VehicleViewHolder>() {
+
+    private val vehiclesIds = mutableSetOf<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VehicleViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -27,15 +29,29 @@ class VehicleAdapter(
     override fun onBindViewHolder(holder: VehicleViewHolder, position: Int) {
         val vehicle = vehicles[position]
         holder.carImageView.setImageResource(vehicle.imageResource)
-        holder.brandTextView.text = "${vehicle.brand}"
-        holder.licensePlateTextView.text = "${vehicle.licenseplate}"
-        holder.fuelTextView.text = "${vehicle.fuel}"
-        holder.consumptionTextView.text = "${vehicle.consumption}"
-        holder.autonomyTextView.text = "${vehicle.autonomy}"
+        holder.brandTextView.text = vehicle.brand
+        holder.licensePlateTextView.text = vehicle.licensePlate
+        holder.fuelTextView.text = vehicle.fuelType.description
+        holder.consumptionTextView.text = "${vehicle.averageFuelConsumption}"
+        holder.autonomyTextView.text = "${vehicle.kms}"
     }
 
-    override fun getItemCount(): Int {
-        return vehicles.size
+    override fun getItemCount(): Int = vehicles.size
+
+    fun updateVehicles(newVehicles: List<VehicleModel>) {
+        vehicles.clear()
+        vehiclesIds.clear()
+        addVehiclesToAdapter(newVehicles)
+    }
+
+    fun appendVehicles(newVehicles: List<VehicleModel>) {
+        addVehiclesToAdapter(newVehicles)
+    }
+
+    private fun addVehiclesToAdapter(newVehicles: List<VehicleModel>) {
+        val filteredVehicles = newVehicles.filter { vehiclesIds.add(it.id) }
+        vehicles.addAll(filteredVehicles)
+        notifyDataSetChanged()
     }
 
     class VehicleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

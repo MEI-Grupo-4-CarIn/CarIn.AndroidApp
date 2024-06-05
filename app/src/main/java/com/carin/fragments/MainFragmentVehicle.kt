@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.carin.R
-import com.carin.domain.enums.TypeVehicle
+import com.carin.domain.enums.VehicleType
 import com.google.android.material.tabs.TabLayoutMediator
 import java.util.Locale
 
@@ -32,8 +32,8 @@ class MainFragmentVehicle : Fragment() {
         val currentLocale = Locale.getDefault()
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             val currentLabel = when (currentLocale.language) {
-                "pt" -> TypeVehicle.values()[position].labelPt
-                else -> TypeVehicle.values()[position].labelEn
+                "pt" -> VehicleType.entries[position].labelPt
+                else -> VehicleType.entries[position].labelEn
             }
             tab.text = currentLabel
         }.attach()
@@ -42,9 +42,14 @@ class MainFragmentVehicle : Fragment() {
 }
 
 class FragmentTypeAdapter(fragment: Fragment) : FragmentStateAdapter(fragment){
-    override fun getItemCount(): Int = TypeVehicle.values().size
+    override fun getItemCount(): Int = VehicleType.entries.size
 
     override fun createFragment(position: Int): Fragment {
-        return VehicleFragment()
+        val fragment = VehiclesTabFragment()
+        fragment.arguments = Bundle().apply {
+            putSerializable("vehicleType", VehicleType.entries[position])
+        }
+
+        return fragment
     }
 }
