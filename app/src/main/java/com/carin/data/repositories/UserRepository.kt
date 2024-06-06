@@ -1,11 +1,14 @@
 package com.carin.data.repositories
 
 import com.carin.data.local.daos.UserDao
+import com.carin.data.mappers.toAuthRegisterRequest
 import com.carin.data.mappers.toUserEntity
 import com.carin.data.mappers.toUserModel
+import com.carin.data.remote.AuthService
 import com.carin.data.remote.UserService
 import com.carin.domain.enums.Role
 import com.carin.domain.models.UserModel
+import com.carin.domain.models.UserRegisterModel
 import com.carin.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -18,14 +21,15 @@ import kotlin.time.Duration.Companion.minutes
 
 class UserRepository(
     private val userDao: UserDao,
-    private val userService: UserService
+    private val userService: UserService,
+    private val authService: AuthService
 ) {
 
     suspend fun getUsersList(
         search: String?,
         role: Role?,
         page: Int = 1,
-        perPage: Int = 10
+        perPage: Int = 50
     ): Flow<Resource<List<UserModel>>> {
         return flow {
             emit(Resource.Loading())
@@ -44,11 +48,13 @@ class UserRepository(
             }
 
             if (isToFetchRemote) {
+                emit(Resource.Loading())
                 val remoteUsers = try {
                     val response = userService.getUsers(search, role, page, perPage).execute()
                     if (response.isSuccessful) {
                         response.body()
                     } else {
+                        emit(Resource.Error(response.message()))
                         null
                     }
                 } catch(e: IOException) {
@@ -67,7 +73,7 @@ class UserRepository(
 
                     emit(
                         Resource.Success(
-                        data =  userDao.getListOfUsers(search, role, page, perPage).map { it.toUserModel() }
+                            data =  userDao.getListOfUsers(search, role, page, perPage).map { it.toUserModel() }
                         )
                     )
                 }
@@ -76,6 +82,36 @@ class UserRepository(
                     emit(Resource.Success(data = emptyList()))
                 }
 
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun registerUser(userRegisterModel: UserRegisterModel): Flow<Resource<Boolean>> {
+        return flow {
+            emit(Resource.Loading())
+            val remoteUser = try {
+                val response = authService.register(userRegisterModel.toAuthRegisterRequest()).execute()
+                if (response.isSuccessful) {
+                    response.body()
+                } else {
+                    emit(Resource.Error("Couldn't register user: " + response.message()))
+                    null
+                }
+            } catch(e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't register user"))
+                null
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't register user"))
+                null
+            }
+
+            remoteUser?.let { authRegisterDto ->
+                val userEntity = authRegisterDto.toUserEntity()
+                userDao.insertUser(userEntity)
+
+                emit(Resource.Success(true))
             }
         }.flowOn(Dispatchers.IO)
     }

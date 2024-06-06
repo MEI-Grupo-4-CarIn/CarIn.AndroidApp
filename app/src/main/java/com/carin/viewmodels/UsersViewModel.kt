@@ -20,7 +20,7 @@ class UsersViewModel(private val repository: UserRepository) : ViewModel() {
     private val _searchQuery = MutableLiveData<String?>()
     val searchQuery: LiveData<String?> get() = _searchQuery
 
-    private val perPage = 10
+    private val perPage = 50
     private var currentPage = mutableMapOf<UserType, Int>()
     private var isLoadingMore = mutableMapOf<UserType, Boolean>()
     private var hasMoreData = mutableMapOf<UserType, Boolean>()

@@ -9,19 +9,22 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.carin.R
-import com.carin.data.remote.dto.auth.AuthTokenDto
 import com.carin.utils.AuthUtils
 import com.carin.utils.Resource
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
 
-    private val defaultEmail = "teste@example.com"
-    private val defaultPassword = "senha123"
+    private lateinit var emailEditText: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        emailEditText = findViewById(R.id.editTextEmail)
+        intent.getStringExtra("email")?.let {
+            emailEditText.setText(it)
+        }
 
         val buttonRegister: Button = findViewById(R.id.buttonRegister)
 
@@ -32,10 +35,12 @@ class LoginActivity : AppCompatActivity() {
 
         val buttonLogin = findViewById<Button>(R.id.buttonLogin)
         buttonLogin.setOnClickListener {
-            val enteredEmail = findViewById<EditText>(R.id.editTextEmail).text.toString()
+            val enteredEmail = emailEditText.text.toString()
             val enteredPassword = findViewById<EditText>(R.id.editTextPassword).text.toString()
 
-            performLogin(enteredEmail, enteredPassword)
+            if (validateInputs(enteredEmail, enteredPassword)) {
+                performLogin(enteredEmail, enteredPassword)
+            }
         }
 
         val textViewForgotPassword = findViewById<TextView>(R.id.textViewForgotPassword)
@@ -46,30 +51,18 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun performLogin(email: String, password: String) {
-
-        if (email == defaultEmail && password == defaultPassword) {
-            val user = AuthTokenDto(
-                "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJlbWFpbCI6ImFkbWluQGVtYWlsLmNvbSIsImZpcnN0TmFtZSI6IkFkbWluIiwibGFzdE5hbWUiOiJBZG1pbiIsInJvbGUiOiIxIiwiZXhwIjoxNzE2NTU5ODE4LCJpc3MiOiJBdXRoLk1pY3JvU2VydmljZSIsImF1ZCI6IkF1dGguTWljcm9TZXJ2aWNlIn0.UrQhmJ_taTs_escgDgJloJlbYnxuQWFft_Gn1u8VtTbYHmc_nbQ5ggirE7z3jnPdHxaGG11epMDvKs7ub08BooclgesPmxjFjGStVGtGRqt8Mz8G1oaSGqyxqo4C4z6x4UQMGVL-sWdFW8Hh5w_0NJJD26hNrooEIFQo0dMOIkA7g-bf9e0E1mxX2BJO8IWaLgQSF377ayXvIogPfaGg8o_4BmDtXofCC6YAK_AGTgOJTeP5K-1ubbVSmE-_k0RjvLiLg3rYGvDUKhMYNv9awrNRlk_4g9kN5mj7OEYBzIhZkyEkpJsbniZ0GwIE3ZIIrwhfDfzQiAPrSMm0LhyGTg",
-                "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9",
-                600
-            )
-
-            AuthUtils.saveUserOnSharedPreferences(this@LoginActivity, user)
-            navigateToHome()
-        } else {
-            lifecycleScope.launch {
-                AuthUtils.authenticateUser(this@LoginActivity, email, password).collect { result ->
-                    when (result) {
-                        is Resource.Success -> {
-                            if (result.data == true) {
-                                navigateToHome()
-                            }
+        lifecycleScope.launch {
+            AuthUtils.authenticateUser(this@LoginActivity, email, password).collect { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        if (result.data == true) {
+                            navigateToHome()
                         }
-                        is Resource.Error -> {
-                            Toast.makeText(this@LoginActivity, result.message, Toast.LENGTH_SHORT).show()
-                        }
-                        is Resource.Loading -> {}
                     }
+                    is Resource.Error -> {
+                        Toast.makeText(this@LoginActivity, result.message, Toast.LENGTH_SHORT).show()
+                    }
+                    is Resource.Loading -> {}
                 }
             }
         }
@@ -79,5 +72,24 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this@LoginActivity, HomeActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun validateInputs(email: String, password: String): Boolean {
+        val emailEditText = findViewById<EditText>(R.id.editTextEmail)
+        val passwordEditText = findViewById<EditText>(R.id.editTextPassword)
+
+        var isValid = true
+
+        if (email.isEmpty()) {
+            emailEditText.error = "Email is required"
+            isValid = false
+        }
+
+        if (password.isEmpty()) {
+            passwordEditText.error = "Password is required"
+            isValid = false
+        }
+
+        return isValid
     }
 }

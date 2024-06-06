@@ -20,7 +20,7 @@ class VehiclesViewModel(private val repository: VehicleRepository) : ViewModel()
     private val _searchQuery = MutableLiveData<String?>()
     val searchQuery: LiveData<String?> get() = _searchQuery
 
-    private val perPage = 10
+    private val perPage = 50
     private var currentPage = mutableMapOf<VehicleType, Int>()
     private var isLoadingMore = mutableMapOf<VehicleType, Boolean>()
     private var hasMoreData = mutableMapOf<VehicleType, Boolean>()

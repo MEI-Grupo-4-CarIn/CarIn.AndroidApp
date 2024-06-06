@@ -20,7 +20,7 @@ class RoutesViewModel(private val repository: RouteRepository) : ViewModel() {
     private val _searchQuery = MutableLiveData<String?>()
     val searchQuery: LiveData<String?> get() = _searchQuery
 
-    private val perPage = 10
+    private val perPage = 30
     private var currentPage = mutableMapOf<RouteType, Int>()
     private var isLoadingMore = mutableMapOf<RouteType, Boolean>()
     private var hasMoreData = mutableMapOf<RouteType, Boolean>()

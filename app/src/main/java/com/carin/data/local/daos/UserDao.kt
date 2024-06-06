@@ -1,6 +1,7 @@
 package com.carin.data.local.daos
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.RawQuery
 import androidx.room.Upsert
@@ -13,6 +14,9 @@ import com.carin.domain.enums.Role
 interface UserDao {
     @Query("SELECT * FROM users WHERE id = :id LIMIT 1")
     suspend fun getUserById(id: Int): UserEntity?
+
+    @Insert
+    suspend fun insertUser(user: UserEntity)
 
     @Upsert
     suspend fun upsertUsers(users: List<UserEntity>)

@@ -15,10 +15,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkModule {
 
+    private const val GATEWAY_URL = "http://2.80.118.111:9000/"
     private val gson: Gson = GsonBuilder()
         .setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
         .create()
-
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
@@ -30,28 +30,28 @@ object NetworkModule {
             .build()
     }
 
-    private fun createRetrofit(baseUrl: String, context: Context): Retrofit {
+    private fun createRetrofit(context: Context): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(baseUrl)
+            .baseUrl(GATEWAY_URL)
             .client(createOkHttpClient(context))
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 
     fun provideAuthService(context: Context): AuthService {
-        return createRetrofit("http://13.50.63.152:9000/", context).create(AuthService::class.java)
+        return createRetrofit(context).create(AuthService::class.java)
     }
 
     fun provideUserService(context: Context): UserService {
-        return createRetrofit("http://13.50.63.152:9000/", context).create(UserService::class.java)
+        return createRetrofit(context).create(UserService::class.java)
     }
 
     fun provideRouteService(context: Context): RouteService {
-        return createRetrofit("http://13.50.63.152:9000/", context).create(RouteService::class.java)
+        return createRetrofit(context).create(RouteService::class.java)
     }
 
     fun provideVehicleService(context: Context): VehicleService {
-        return createRetrofit("http://13.50.63.152:9000/", context).create(VehicleService::class.java)
+        return createRetrofit(context).create(VehicleService::class.java)
     }
 
 }

@@ -13,9 +13,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
-import com.carin.activities.ItemSpacingDecoration
 import com.carin.adapter.RoutesTabAdapter
 import com.carin.domain.enums.RouteType
+import com.carin.utils.ItemSpacingDecoration
 import com.carin.viewmodels.RoutesViewModel
 import com.carin.viewmodels.events.RoutesListEvent
 import com.carin.viewmodels.states.RoutesListState

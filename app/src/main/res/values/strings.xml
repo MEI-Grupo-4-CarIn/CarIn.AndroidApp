@@ -145,7 +145,7 @@
     <!--Vehicles-->
     <string name="all">All</string>
     <string name="inUse">In use</string>
-    <string name="search">Search...</string>
+    <string name="search">Search…</string>
     <string name="editVehicle">Edit Vehicle</string>
     <string name="deleteVehicle">Delete Vehicle</string>
     <string name="textDeleteVehicle">Are you sure you want to eliminate the vehicle?</string>
@@ -180,5 +180,9 @@
     <string name="no_results">No results</string>
     <string name="network_error">Network error, please check your connection</string>
     <string name="scroll_to_top">Scroll to top</string>
+    <string name="register_successful">Register successful!</string>
+    <string name="confirmPassword">Confirm Password</string>
+    <string name="carin_logo">carin_logo</string>
+    <string name="example_email">example@email.com</string>
 
 </resources>

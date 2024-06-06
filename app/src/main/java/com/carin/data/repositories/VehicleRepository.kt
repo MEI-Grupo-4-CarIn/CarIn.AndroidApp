@@ -25,7 +25,7 @@ class VehicleRepository(
         search: String?,
         status: VehicleStatus?,
         page: Int = 1,
-        perPage: Int = 10
+        perPage: Int = 50
     ): Flow<Resource<List<VehicleModel>>> {
         return flow {
             emit(Resource.Loading())
@@ -44,6 +44,7 @@ class VehicleRepository(
             }
 
             if (isToFetchRemote) {
+                emit(Resource.Loading())
                 val remoteVehicles = try {
                     val response = vehicleService.getVehicles(search, status?.description, page, perPage).execute()
                     if (response.isSuccessful) {

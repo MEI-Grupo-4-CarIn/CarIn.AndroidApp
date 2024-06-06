@@ -25,6 +25,7 @@ import com.carin.adapter.SchedulingAdapter
 import com.carin.adapter.UserAdapter
 import com.carin.domain.enums.Role
 import com.carin.utils.AuthUtils
+import com.carin.utils.ItemSpacingDecoration
 
 class InfoVehicleActivity : AppCompatActivity() {
 
@@ -118,7 +119,7 @@ class InfoVehicleActivity : AppCompatActivity() {
 
         val iconImageView: ImageView = findViewById(R.id.iconImageView)
         iconImageView.setOnClickListener {
-            val intent = Intent(this, VehicleActivity::class.java)
+            val intent = Intent(this, VehiclesListActivity::class.java)
             startActivity(intent)
         }
 
@@ -242,8 +243,7 @@ class InfoVehicleActivity : AppCompatActivity() {
 
         val btnYes = dialogView.findViewById<Button>(R.id.btnYes)
         btnYes.setOnClickListener {
-            // Lógica para eliminar
-            // Implemente aqui a lógica para deletar a rota
+            // Implement delete logic
             dialog.dismiss()
         }
 

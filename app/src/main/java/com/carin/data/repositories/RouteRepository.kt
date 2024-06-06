@@ -30,7 +30,7 @@ class RouteRepository(
         search: String?,
         status: RouteStatus?,
         page: Int = 1,
-        perPage: Int = 10
+        perPage: Int = 30
     ): Flow<Resource<List<RouteModel>>> {
         return flow {
             emit(Resource.Loading())
@@ -49,6 +49,7 @@ class RouteRepository(
             }
 
             if (isToFetchRemote) {
+                emit(Resource.Loading())
                 val remoteRoutes = try {
                     val response = routeService.getRoutes(search, status.toString().lowercase(), page, perPage).execute()
                     if (response.isSuccessful) {

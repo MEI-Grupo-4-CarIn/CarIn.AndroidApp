@@ -19,7 +19,6 @@ import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.di.RepositoryModule
 import com.carin.domain.enums.Role
@@ -33,7 +32,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class VehicleActivity : AppCompatActivity() {
+class VehiclesListActivity : AppCompatActivity() {
 
     private var isRotated = false
 
@@ -223,15 +222,5 @@ class VehicleActivity : AppCompatActivity() {
 
     private fun performSearch(query: String) {
         viewModel.onEvent(VehiclesListEvent.UpdateSearch(query))
-    }
-}
-
-class ItemSpacingDecoration(private val spacing: Int) : RecyclerView.ItemDecoration() {
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-        super.getItemOffsets(outRect, view, parent, state)
-
-        if (parent.getChildAdapterPosition(view) != parent.adapter!!.itemCount - 1) {
-            outRect.bottom = spacing
-        }
     }
 }
