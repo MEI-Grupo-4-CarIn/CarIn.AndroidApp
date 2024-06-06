@@ -20,6 +20,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.carin.R
+import com.carin.domain.enums.Role
+import com.carin.fragments.MainFragmentUserInfo
+import com.carin.utils.AuthUtils
 
 class InfoUserActivity : AppCompatActivity() {
 
@@ -27,6 +30,20 @@ class InfoUserActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info_user)
+
+        val idFromList = intent.getStringExtra("id")
+        val userId = idFromList?.toInt()
+        val userAuth = AuthUtils.getUserAuth(this)
+        var isOwnProfile = true
+        userAuth?.let {
+            adjustUIBasedOnRole(it.role)
+            if (idFromList != null)
+                isOwnProfile = userId == it.userId
+        }
+
+        if (!isOwnProfile) {
+            findViewById<View>(R.id.footerLinearLayout).visibility = View.GONE
+        }
 
         if(savedInstanceState == null){
             supportFragmentManager.beginTransaction()
@@ -63,6 +80,7 @@ class InfoUserActivity : AppCompatActivity() {
                         true
                     }
                     R.id.logOut -> {
+                        AuthUtils.clearUserOnSharedPreferences(this)
                         startActivity(Intent(this, LoginActivity::class.java))
                         finish()
                         true
@@ -77,7 +95,7 @@ class InfoUserActivity : AppCompatActivity() {
         val iconImageView: ImageView = findViewById(R.id.iconImage)
 
         iconImageView.setOnClickListener {
-            val intent = Intent(this, UserActivity::class.java)
+            val intent = Intent(this, UsersListActivity::class.java)
             startActivity(intent)
         }
 
@@ -103,7 +121,7 @@ class InfoUserActivity : AppCompatActivity() {
         val buttonRoute: ImageView = findViewById(R.id.buttonRoute)
 
         buttonRoute.setOnClickListener {
-            val intent = Intent(this, RouteActivity::class.java)
+            val intent = Intent(this, RoutesListActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -111,7 +129,7 @@ class InfoUserActivity : AppCompatActivity() {
         val buttonVehicle: ImageView = findViewById(R.id.buttonVehicle)
 
         buttonVehicle.setOnClickListener {
-            val intent = Intent(this, VehicleActivity::class.java)
+            val intent = Intent(this, VehiclesListActivity::class.java)
             startActivity(intent)
         }
 
@@ -173,22 +191,45 @@ class InfoUserActivity : AppCompatActivity() {
         layoutAddUser.setOnClickListener {
             val intent = Intent(this, NewUserActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.animator.slide_up, 0)
         }
-
 
         layoutAddVehicle.setOnClickListener {
             val intent = Intent(this, NewVehicleActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.animator.slide_up, 0)
         }
 
         layoutAddRoute.setOnClickListener {
             val intent = Intent(this, NewRouteActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.animator.slide_up, 0)
         }
 
         layoutNewAppointment.setOnClickListener {
             val intent = Intent(this, NewSchedulingActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.animator.slide_up, 0)
         }
     }
+
+    private fun adjustUIBasedOnRole(role: Role) {
+        when (role) {
+            Role.Admin -> showAdminComponents()
+            Role.Manager -> showManagerComponents()
+            Role.Driver -> showDriverComponents()
+        }
+    }
+
+    private fun showAdminComponents() {
+
+    }
+    private fun showManagerComponents() {
+
+    }
+
+    private fun showDriverComponents() {
+        findViewById<View>(R.id.buttonMore).visibility = View.GONE
+    }
+
 }

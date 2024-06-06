@@ -3,23 +3,24 @@ package com.carin.activities
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
+import com.carin.adapter.ApprovalAdapter
 import com.carin.adapter.EmployeesHomeAdapter
 import com.carin.adapter.HomeNotificationAdapter
 import com.carin.adapter.LatestInformationAdapter
 import com.carin.adapter.SchedulingHomeAdapter
+import com.carin.domain.enums.Role
+import com.carin.utils.AuthUtils
+import com.carin.utils.ItemSpacingDecoration
 
 class HomeActivity : AppCompatActivity() {
 
@@ -30,6 +31,11 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var adapterInformation: LatestInformationAdapter
     private lateinit var latestInformations: List<LatestInformation>
 
+    private lateinit var adapterApproval: ApprovalAdapter
+    private lateinit var approvals: MutableList<Approval>
+    private lateinit var recyclerView6: RecyclerView
+    private lateinit var textViewNoResults: TextView
+
     private lateinit var adapterscheduling: SchedulingHomeAdapter
     private lateinit var schedulings: List<Schedulings>
 
@@ -39,6 +45,17 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+       val userAuths = AuthUtils.getUserAuth(this)
+
+       userAuths?.let {
+            adjustUIBasedOnRole(it.role)
+        }
+
+        val helloTextView: TextView = findViewById(R.id.textViewHello)
+        val userAuth = AuthUtils.getUserAuth(this)
+        val helloText = getString(R.string.hello, userAuth?.firstName)
+        helloTextView.text = helloText
 
         val recyclerView1: RecyclerView = findViewById(R.id.recyclerView1)
 
@@ -56,6 +73,26 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         })
+
+        recyclerView6 = findViewById(R.id.recyclerView6)
+        textViewNoResults = findViewById(R.id.textViewNoResults)
+
+        recyclerView6.addItemDecoration(ItemSpacingDecoration(10))
+        recyclerView6.layoutManager = LinearLayoutManager(this)
+
+        approvals = getApproval()
+
+        checkIfListIsEmpty()
+
+        adapterApproval = ApprovalAdapter(approvals, this)
+        recyclerView6.adapter = adapterApproval
+
+        recyclerView6.setHasFixedSize(true)
+        val itemHeight = resources.getDimensionPixelSize(R.dimen.item_height)
+        val recyclerViewHeight = itemHeight * 4
+        val layoutParam = recyclerView6.layoutParams
+        layoutParam.height = recyclerViewHeight
+        recyclerView6.layoutParams = layoutParam
 
         val recyclerView2: RecyclerView = findViewById(R.id.recyclerView)
 
@@ -114,14 +151,14 @@ class HomeActivity : AppCompatActivity() {
         val buttonVehicle = findViewById<ImageView>(R.id.buttonVehicle)
 
         buttonVehicle.setOnClickListener {
-        val intent = Intent(this, VehicleActivity::class.java)
+        val intent = Intent(this, VehiclesListActivity::class.java)
             startActivity(intent)
         }
 
         val moreUsers: TextView = findViewById(R.id.textViewSeeMore3)
 
         moreUsers.setOnClickListener {
-            val intent = Intent(this, UserActivity::class.java)
+            val intent = Intent(this, UsersListActivity::class.java)
             overridePendingTransition(R.animator.slide_in_right, R.animator.slide_out_left)
             startActivity(intent)
         }
@@ -145,7 +182,7 @@ class HomeActivity : AppCompatActivity() {
         val buttonRoute: ImageView = findViewById(R.id.buttonRoute)
 
         buttonRoute.setOnClickListener {
-            val intent = Intent(this, RouteActivity::class.java)
+            val intent = Intent(this, RoutesListActivity::class.java)
             startActivity(intent)
         }
 
@@ -156,16 +193,6 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val overlay = View(this)
-        overlay.apply {
-            layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-            setBackgroundColor(Color.parseColor("#DD000000"))
-            visibility = View.INVISIBLE
-        }
-
-        val constraintLayout = findViewById<ConstraintLayout>(R.id.main)
-        constraintLayout.addView(overlay)
-
         val buttonMore = findViewById<ImageView>(R.id.buttonMore)
         val layoutNewAppointment = findViewById<RelativeLayout>(R.id.layoutNewAppointment)
         val layoutAddRoute = findViewById<RelativeLayout>(R.id.layoutAddRoute)
@@ -173,7 +200,6 @@ class HomeActivity : AppCompatActivity() {
         val layoutAddUser = findViewById<RelativeLayout>(R.id.layoutAddUser)
 
         buttonMore.setOnClickListener {
-                        overlay.visibility = if (isRotated) View.INVISIBLE else View.VISIBLE
             if (isRotated) {
                 val rotateAnimator = ObjectAnimator.ofFloat(buttonMore, "rotation", 45f, 0f)
                     .apply {
@@ -181,13 +207,8 @@ class HomeActivity : AppCompatActivity() {
                         interpolator = AccelerateDecelerateInterpolator()
                     }
 
-                val fadeOutAnimator = ObjectAnimator.ofFloat(overlay, "alpha", 0.5f, 0f)
-                    .apply {
-                        duration = 500
-                    }
-
                 val animatorSet = AnimatorSet()
-                animatorSet.playTogether(rotateAnimator, fadeOutAnimator)
+                animatorSet.playTogether(rotateAnimator)
                 animatorSet.start()
 
                 layoutNewAppointment.visibility = View.INVISIBLE
@@ -201,13 +222,8 @@ class HomeActivity : AppCompatActivity() {
                         interpolator = AccelerateDecelerateInterpolator()
                     }
 
-                val fadeInAnimator = ObjectAnimator.ofFloat(overlay, "alpha", 0f, 0.5f)
-                    .apply {
-                        duration = 500
-                    }
-
                 val animatorSet = AnimatorSet()
-                animatorSet.playTogether(rotateAnimator, fadeInAnimator)
+                animatorSet.playTogether(rotateAnimator)
                 animatorSet.start()
 
                 layoutNewAppointment.visibility = View.VISIBLE
@@ -223,7 +239,6 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
             overridePendingTransition(R.animator.slide_up, 0)
         }
-
 
         layoutAddVehicle.setOnClickListener {
             val intent = Intent(this, NewVehicleActivity::class.java)
@@ -243,6 +258,44 @@ class HomeActivity : AppCompatActivity() {
             overridePendingTransition(R.animator.slide_up, 0)
         }
 
+    }
+
+    internal fun checkIfListIsEmpty() {
+        if (approvals.isEmpty()) {
+            recyclerView6.visibility = View.GONE
+            textViewNoResults.visibility = View.VISIBLE
+        } else {
+            recyclerView6.visibility = View.VISIBLE
+            textViewNoResults.visibility = View.GONE
+        }
+    }
+
+    private fun adjustUIBasedOnRole(role: Role) {
+        when (role) {
+            Role.Admin -> showAdminComponents()
+            Role.Manager -> showManagerComponents()
+            Role.Driver -> showDriverComponents()
+        }
+    }
+
+    private fun showAdminComponents() {
+
+    }
+    private fun showManagerComponents() {
+
+    }
+
+    private fun showDriverComponents() {
+        findViewById<View>(R.id.linearLayout6).visibility = View.GONE
+        findViewById<View>(R.id.recyclerView6).visibility = View.GONE
+        findViewById<View>(R.id.thirdLineLinearLayout).visibility = View.GONE
+
+        findViewById<View>(R.id.linearLayout2).visibility = View.GONE
+        findViewById<View>(R.id.linear_layout_latest_information).visibility = View.GONE
+        findViewById<View>(R.id.recyclerView).visibility = View.GONE
+        findViewById<View>(R.id.fourthLineLinearLayout).visibility = View.GONE
+
+        findViewById<View>(R.id.buttonMore).visibility = View.GONE
 
     }
 
@@ -258,12 +311,33 @@ class HomeActivity : AppCompatActivity() {
     }
     data class Notification(val imageResource: Int, val notificationType: String,  val country: String, val temp: String)
 
+
+    private fun getApproval(): MutableList<Approval> {
+
+        val approvals = mutableListOf<Approval>()
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+        approvals.add(Approval("Bruno Jorge Ferreira", "Condutor"))
+
+        return approvals
+    }
+    data class Approval(val fullname: String,  val role: String)
+
     private fun getLatestInformation(): List<LatestInformation> {
 
         val latestInformations = mutableListOf<LatestInformation>()
         latestInformations.add(LatestInformation(R.drawable.ic_check, "Rota Concluída","Bruno Joaquim concluiu a viagem até Itália."))
-        latestInformations.add(LatestInformation(R.drawable.ic_check, "Rota Concluída","Bruno Joaquim concluiu a viagem até Itália e voltou para Portugal."))
-        latestInformations.add(LatestInformation(R.drawable.ic_check, "Rota Concluída","Bruno Joaquim concluiu a viagem até Itália.Bruno Joaquim concluiu a viagem até Itália.Bruno Joaquim concluiu a viagem até Itália."))
+        latestInformations.add(LatestInformation(R.drawable.ic_error, "Rota Concluída","Bruno Joaquim concluiu a viagem até Itália e voltou para Portugal."))
+        latestInformations.add(LatestInformation(R.drawable.ic_error, "Rota Concluída","Bruno Joaquim concluiu a viagem até Itália.Bruno Joaquim concluiu a viagem até Itália.Bruno Joaquim concluiu a viagem até Itália."))
         latestInformations.add(LatestInformation(R.drawable.ic_check, "Rota Concluída","Bruno Joaquim concluiu a viagem até Itália."))
 
         return latestInformations

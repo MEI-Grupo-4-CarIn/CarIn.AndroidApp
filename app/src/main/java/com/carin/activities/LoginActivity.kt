@@ -7,16 +7,24 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.carin.R
+import com.carin.utils.AuthUtils
+import com.carin.utils.Resource
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
 
-    private val email = "teste@example.com"
-    private val password = "senha123"
+    private lateinit var emailEditText: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        emailEditText = findViewById(R.id.editTextEmail)
+        intent.getStringExtra("email")?.let {
+            emailEditText.setText(it)
+        }
 
         val buttonRegister: Button = findViewById(R.id.buttonRegister)
 
@@ -27,22 +35,14 @@ class LoginActivity : AppCompatActivity() {
 
         val buttonLogin = findViewById<Button>(R.id.buttonLogin)
         buttonLogin.setOnClickListener {
-            val enteredEmail = findViewById<EditText>(R.id.editTextEmail).text.toString()
+            val enteredEmail = emailEditText.text.toString()
             val enteredPassword = findViewById<EditText>(R.id.editTextPassword).text.toString()
 
-            if (enteredEmail == email && enteredPassword == password) {
-                val intent = Intent(this, HomeActivity::class.java)
-                startActivity(intent)
-                finish()
-            } else {
-                val errorMessage = if (isDeviceInEnglish()) {
-                    "Incorrect email or password!"
-                } else {
-                    "Email ou senha incorretos!"
-                }
-                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+            if (validateInputs(enteredEmail, enteredPassword)) {
+                performLogin(enteredEmail, enteredPassword)
             }
         }
+
         val textViewForgotPassword = findViewById<TextView>(R.id.textViewForgotPassword)
         textViewForgotPassword.setOnClickListener {
             val intent = Intent(this, ConfirmPasswordActivity::class.java)
@@ -50,8 +50,46 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun isDeviceInEnglish(): Boolean {
-        val language = resources.configuration.locale.language
-        return language == "en"
+    private fun performLogin(email: String, password: String) {
+        lifecycleScope.launch {
+            AuthUtils.authenticateUser(this@LoginActivity, email, password).collect { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        if (result.data == true) {
+                            navigateToHome()
+                        }
+                    }
+                    is Resource.Error -> {
+                        Toast.makeText(this@LoginActivity, result.message, Toast.LENGTH_SHORT).show()
+                    }
+                    is Resource.Loading -> {}
+                }
+            }
+        }
+    }
+
+    private fun navigateToHome() {
+        val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun validateInputs(email: String, password: String): Boolean {
+        val emailEditText = findViewById<EditText>(R.id.editTextEmail)
+        val passwordEditText = findViewById<EditText>(R.id.editTextPassword)
+
+        var isValid = true
+
+        if (email.isEmpty()) {
+            emailEditText.error = "Email is required"
+            isValid = false
+        }
+
+        if (password.isEmpty()) {
+            passwordEditText.error = "Password is required"
+            isValid = false
+        }
+
+        return isValid
     }
 }
