@@ -20,6 +20,7 @@ import com.carin.adapter.LatestInformationAdapter
 import com.carin.adapter.SchedulingHomeAdapter
 import com.carin.domain.enums.Role
 import com.carin.utils.AuthUtils
+import com.carin.utils.ItemSpacingDecoration
 
 class HomeActivity : AppCompatActivity() {
 
@@ -150,7 +151,7 @@ class HomeActivity : AppCompatActivity() {
         val buttonVehicle = findViewById<ImageView>(R.id.buttonVehicle)
 
         buttonVehicle.setOnClickListener {
-        val intent = Intent(this, VehicleActivity::class.java)
+        val intent = Intent(this, VehiclesListActivity::class.java)
             startActivity(intent)
         }
 

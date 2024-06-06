@@ -30,7 +30,7 @@ object AuthUtils {
         return context.getSharedPreferences(context.resources.getString(R.string.app_name), Context.MODE_PRIVATE)
     }
 
-    private suspend fun refreshToken(
+    suspend fun refreshToken(
         context: Context,
         refreshToken: String
     ): Flow<Boolean>  {
@@ -98,7 +98,7 @@ object AuthUtils {
                         emit(Resource.Success(true))
                     }
                 } else {
-                    emit(Resource.Error("Login failed"))
+                    emit(Resource.Error("Login failed: " + response.errorBody()?.string()))
                 }
             } catch(e: IOException) {
                 e.printStackTrace()

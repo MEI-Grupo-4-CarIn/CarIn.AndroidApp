@@ -13,7 +13,7 @@ interface UserService {
         @Query("search") search: String? = null,
         @Query("role") role: Role? = null,
         @Query("page") page: Int? = null,
-        @Query("per_page") perPage: Int? = null
+        @Query("perPage") perPage: Int? = null
     ): Call<List<UserDto>>
 
     @GET("/users/{id}")

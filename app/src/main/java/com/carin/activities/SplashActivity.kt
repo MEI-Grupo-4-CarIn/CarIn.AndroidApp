@@ -2,40 +2,51 @@ package com.carin.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.carin.R
 import com.carin.utils.AuthUtils
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SplashActivity : AppCompatActivity() {
-
-    private val SPLASH_DISPLAY_LENGTH = 2000L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
 
-        Handler().postDelayed({
-            val userAuth = AuthUtils.getUserAuth(this)
+        lifecycleScope.launch {
+            delay(1500)
+            val userAuth = AuthUtils.getUserAuth(this@SplashActivity)
             if (userAuth != null) {
-                if (!AuthUtils.isAuthenticated(this)) {
-                    runBlocking {
-                        AuthUtils.refreshTokenBlocking(this@SplashActivity, userAuth.refreshToken)
-                    }
-
-                    if (AuthUtils.isAuthenticated(this)) {
-                        val mainIntent = Intent(this@SplashActivity, HomeActivity::class.java)
-                        startActivity(mainIntent)
-                        finish()
+                if (AuthUtils.isAuthenticated(this@SplashActivity)) {
+                    navigateToHome()
+                }
+                else {
+                    AuthUtils.refreshToken(this@SplashActivity, userAuth.refreshToken).collect { result ->
+                        if (result) {
+                            withContext(Dispatchers.Main) { navigateToHome() }
+                        }
                     }
                 }
             }
             else {
-                val mainIntent = Intent(this@SplashActivity, LoginActivity::class.java)
-                startActivity(mainIntent)
-                finish()
+                withContext(Dispatchers.Main) { navigateToLogin() }
             }
-        }, SPLASH_DISPLAY_LENGTH)
+        }
+    }
+
+    private fun navigateToHome() {
+        val mainIntent = Intent(this@SplashActivity, HomeActivity::class.java)
+        startActivity(mainIntent)
+        finish()
+    }
+
+    private fun navigateToLogin() {
+        val mainIntent = Intent(this@SplashActivity, LoginActivity::class.java)
+        startActivity(mainIntent)
+        finish()
     }
 }

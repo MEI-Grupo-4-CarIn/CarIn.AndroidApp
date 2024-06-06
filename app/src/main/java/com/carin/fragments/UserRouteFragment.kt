@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.activities.InfoRouteActivity
 import com.carin.activities.InfoVehicleActivity
-import com.carin.activities.ItemSpacingDecoration
 import com.carin.adapter.RouteInfoAdapter
+import com.carin.utils.ItemSpacingDecoration
 
 class UserRouteFragment : Fragment() {
 

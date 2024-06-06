@@ -10,7 +10,8 @@ object RepositoryModule {
     fun provideUserRepository(context: Context): UserRepository {
         val userDao = AppDatabase.invoke(context).userDao()
         val userService = NetworkModule.provideUserService(context)
-        return UserRepository(userDao, userService)
+        val authService = NetworkModule.provideAuthService(context)
+        return UserRepository(userDao, userService, authService)
     }
 
     fun provideRouteRepository(context: Context): RouteRepository {

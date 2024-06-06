@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.adapter.NotificationAdapter
+import com.carin.utils.ItemSpacingDecoration
 
 class NotificationActivity : AppCompatActivity() {
 

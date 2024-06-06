@@ -129,7 +129,7 @@ class InfoUserActivity : AppCompatActivity() {
         val buttonVehicle: ImageView = findViewById(R.id.buttonVehicle)
 
         buttonVehicle.setOnClickListener {
-            val intent = Intent(this, VehicleActivity::class.java)
+            val intent = Intent(this, VehiclesListActivity::class.java)
             startActivity(intent)
         }
 
