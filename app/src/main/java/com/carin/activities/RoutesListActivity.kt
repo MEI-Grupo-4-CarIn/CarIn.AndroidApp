@@ -21,7 +21,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.carin.R
 import com.carin.di.RepositoryModule
+import com.carin.domain.enums.Role
 import com.carin.fragments.MainRoutesListFragment
+import com.carin.utils.AuthUtils
 import com.carin.viewmodels.RoutesViewModel
 import com.carin.viewmodels.RoutesViewModelFactory
 import com.carin.viewmodels.events.RoutesListEvent
@@ -37,6 +39,13 @@ class RoutesListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_routes_list)
+
+        val userAuths = AuthUtils.getUserAuth(this)
+
+        userAuths?.let {
+            adjustUIBasedOnRole(it.role)
+        }
+
 
         if(savedInstanceState == null){
             supportFragmentManager.beginTransaction()
@@ -138,18 +147,25 @@ class RoutesListActivity : AppCompatActivity() {
         layoutAddUser.setOnClickListener {
             val intent = Intent(this, NewUserActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.animator.slide_up, 0)
         }
+
         layoutAddVehicle.setOnClickListener {
             val intent = Intent(this, NewVehicleActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.animator.slide_up, 0)
         }
+
         layoutAddRoute.setOnClickListener {
             val intent = Intent(this, NewRouteActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.animator.slide_up, 0)
         }
+
         layoutNewAppointment.setOnClickListener {
             val intent = Intent(this, NewSchedulingActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.animator.slide_up, 0)
         }
     }
 
@@ -167,6 +183,25 @@ class RoutesListActivity : AppCompatActivity() {
             }
         }
         return super.dispatchTouchEvent(event)
+    }
+
+    private fun adjustUIBasedOnRole(role: Role) {
+        when (role) {
+            Role.Admin -> showAdminComponents()
+            Role.Manager -> showManagerComponents()
+            Role.Driver -> showDriverComponents()
+        }
+    }
+
+    private fun showAdminComponents() {
+
+    }
+    private fun showManagerComponents() {
+
+    }
+
+    private fun showDriverComponents() {
+        findViewById<View>(R.id.buttonMore).visibility = View.GONE
     }
 
     private fun performSearch(query: String) {

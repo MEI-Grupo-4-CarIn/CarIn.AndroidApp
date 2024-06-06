@@ -29,6 +29,9 @@
     <string name="account_approvals">Account Approvals</string>
     <string name="latest_information">Latest Information</string>
     <string name="bookings_for_today">Bookings for Today</string>
+    <string name="noResults">No Results!!!</string>
+    <string name="approveAccount">Approve Account</string>
+    <string name="changeTheUsersRole">Change the users role?</string>
 
     <!--Login-->
     <string name="confirmEmail">Confirm Email</string>

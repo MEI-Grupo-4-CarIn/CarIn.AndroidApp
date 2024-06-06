@@ -30,6 +30,10 @@
     <string name="account_approvals">Aprovações de Conta</string>
     <string name="latest_information">Últimas Informações</string>
     <string name="bookings_for_today">Agendamentos para hoje</string>
+    <string name="noResults">Sem Resultados!!!</string>
+    <string name="scroll_to_top">Rolar para cima</string>
+    <string name="approveAccount">Aprovar Conta</string>
+    <string name="changeTheUsersRole">Alterar a função do utilizador?</string>
 
     <!--Login-->
     <string name="confirmEmail">Confirmar Email</string>
@@ -175,7 +179,6 @@
     <string name="upcomingEvents">Próximos eventos</string>
     <string name="no_results">Sem resultados</string>
     <string name="network_error">Erro de rede, por favor verifique a sua conexão</string>
-    <string name="scroll_to_top">Rolar para cima</string>
 
 
 </resources>

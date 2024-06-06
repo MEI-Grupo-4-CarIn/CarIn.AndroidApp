@@ -2,6 +2,7 @@ package com.carin.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.CalendarView
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.adapter.SchedulingHomeAdapter
+import com.carin.domain.enums.Role
+import com.carin.utils.AuthUtils
 import java.util.Calendar
 
 class CalendarActivity : AppCompatActivity() {
@@ -18,6 +21,12 @@ class CalendarActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calendar)
+
+        val userAuths = AuthUtils.getUserAuth(this)
+
+        userAuths?.let {
+            adjustUIBasedOnRole(it.role)
+        }
 
         val calendarView = findViewById<CalendarView>(R.id.calendarView)
 
@@ -79,6 +88,25 @@ class CalendarActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         })
+    }
+
+    private fun adjustUIBasedOnRole(role: Role) {
+        when (role) {
+            Role.Admin -> showAdminComponents()
+            Role.Manager -> showManagerComponents()
+            Role.Driver -> showDriverComponents()
+        }
+    }
+
+    private fun showAdminComponents() {
+
+    }
+    private fun showManagerComponents() {
+
+    }
+
+    private fun showDriverComponents() {
+        findViewById<View>(R.id.optionsIcon).visibility = View.GONE
     }
 
     private fun getScheduling(): List<HomeActivity.Schedulings> {

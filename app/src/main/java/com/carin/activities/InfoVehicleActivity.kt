@@ -9,6 +9,7 @@ import android.text.style.ImageSpan
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.Menu
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.PopupMenu
@@ -22,6 +23,8 @@ import com.carin.R
 import com.carin.adapter.RouteInfoAdapter
 import com.carin.adapter.SchedulingAdapter
 import com.carin.adapter.UserAdapter
+import com.carin.domain.enums.Role
+import com.carin.utils.AuthUtils
 
 class InfoVehicleActivity : AppCompatActivity() {
 
@@ -36,6 +39,12 @@ class InfoVehicleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info_vehicle)
+
+        val userAuths = AuthUtils.getUserAuth(this)
+
+        userAuths?.let {
+            adjustUIBasedOnRole(it.role)
+        }
 
         val moreSchedulings: TextView = findViewById(R.id.textViewSeeMore)
 
@@ -162,6 +171,34 @@ class InfoVehicleActivity : AppCompatActivity() {
             val intent = Intent(this, RoutesListActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun adjustUIBasedOnRole(role: Role) {
+        when (role) {
+            Role.Admin -> showAdminComponents()
+            Role.Manager -> showManagerComponents()
+            Role.Driver -> showDriverComponents()
+        }
+    }
+
+    private fun showAdminComponents() {
+
+    }
+    private fun showManagerComponents() {
+
+    }
+
+    private fun showDriverComponents() {
+        findViewById<View>(R.id.optionsIcon).visibility = View.GONE
+        findViewById<View>(R.id.thirdLinearLayout).visibility = View.GONE
+        findViewById<View>(R.id.recyclerView).visibility = View.GONE
+        findViewById<View>(R.id.line2LinearLayout).visibility = View.GONE
+        findViewById<View>(R.id.fourLinearLayout).visibility = View.GONE
+        findViewById<View>(R.id.textViewLastDrivers).visibility = View.GONE
+        findViewById<View>(R.id.recyclerView1).visibility = View.GONE
+        findViewById<View>(R.id.line3LinearLayout).visibility = View.GONE
+        findViewById<View>(R.id.fiveLinearLayout).visibility = View.GONE
+        findViewById<View>(R.id.recyclerView2).visibility = View.GONE
     }
 
     private fun getSchedulings(): List<Scheduling> {
