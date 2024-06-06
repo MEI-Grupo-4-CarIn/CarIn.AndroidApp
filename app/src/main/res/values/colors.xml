@@ -6,11 +6,18 @@
     <color name="colorSecundary">#2F7FB8</color>
     <color name="colorGrey60">#9910273D</color>
     <color name="colorBlue30">#78C4FD</color>
-    <color name="colorBlue10">#7F2F7FB8</color>
+    <color name="colorBlue20">#342F7FB8</color>
+    <color name="colorBlue10">#192F7FB8</color>
     <color name="green">#45958E</color>
     <color name="gray">#80042C49</color>
     <color name="colorThird">#56B4F6</color>
     <color name="green20">#3345958E</color>
     <color name="grey10">#1A2F7FB8</color>
+    <color name="red">#33E36255</color>
+    <color name="colorPending">#EAB2A2</color>
+    <color name="colorInProgress">#45958E</color>
+    <color name="colorCancelled">#E36255</color>
+    <color name="colorCompleted">#4CAF50</color>
+    <color name="colorGray">#CCCCCC</color>
 
 </resources>

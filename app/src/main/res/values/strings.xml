@@ -12,10 +12,10 @@
     <string name="textInfo">Your privacy is important to us. It is carins policy to respect your privacy regarding any information we may collect from you across our website, carin, and other sites we own and operate. We only ask for personal information when we really need it to provide a service to you. We do this by fair and lawful means, with your knowledge and consent. We also let you know why we are collecting it and how it will be used.We only retain the information we collect for as long as is necessary to provide the service you have requested. When we store data, we protect it within commercially acceptable means to prevent loss and theft, as well as unauthorised access, disclosure, copying, use or modification.We do not share personally identifiable information publicly or with third parties, except where required by law.Our website may have links to external websites that are not operated by us. Please be aware that we have no control over the content and practices of these sites and cannot accept responsibility for their respective privacy policies.You are free to decline our request for personal information on the understanding that we may not be able to provide some of the services you desire.Your continued use of our website will be considered as acceptance of our practices around privacy and personal information. If you have any questions about how we handle user data and personal information, please contact us.The Google AdSense service we use to serve advertising uses a DoubleClick cookie to serve more relevant adverts across the web and limit the number of times a particular advert is shown to you.For more information about Google AdSense, see the official Google AdSense privacy FAQs.We use adverts to offset the costs of running this site and provide funding for future developments. The behavioural advertising cookies used by this site are designed to ensure that you are provided with the most relevant adverts wherever possible by anonymously tracking your interests and presenting similar things that may be of interest to you.A number of partners advertise on our behalf and affiliate tracking cookies simply allow us to see if our customers have accessed the site via one of our partners sites so that we can credit them appropriately and, where applicable, allow our affiliate partners to offer any promotions that may provide you with the opportunity to make a purchase.User CommitmentThe user undertakes to make appropriate use of the content and information that carin offers on the site and, by way of example but not limited to: A) Not to engage in activities that are illegal or contrary to good faith or public order;B) Not to disseminate propaganda or content of a racist, xenophobic, Bet National or gambling nature, any type of illegal pornography, apology for terrorism or against human rights;C) Not to cause damage to the physical (hardware) and logical (software) systems of carin, its suppliers or third parties, to introduce or disseminate computer viruses or any other hardware or software systems that are capable of causing the aforementioned damage. More informationWe hope this is clear and, as mentioned above, if there is something you are not sure whether you need or not, it is generally safer to leave cookies enabled if you interact with one of the features you use on our website.This policy is effective from 9 January 2024 23:41.</string>
 
     <!--Home-->
-    <string name="hello">Hello José</string>
+    <string name="hello">Hello %1$s</string>
     <string name="numberCars">Number of cars</string>
     <string name="numberEmployees">Number of employees</string>
-    <string name="numberJourneys">Number of journeys</string>
+    <string name="numberJourneys">Number of routes</string>
     <string name="carsWorkshop">Cars in the workshop</string>
     <string name="home">Home</string>
     <string name="route">Routes</string>
@@ -25,6 +25,13 @@
     <string name="addRoute">Add route</string>
     <string name="addVehicle">Add vehicle</string>
     <string name="addUser">Add user</string>
+    <string name="notifications">Notifications</string>
+    <string name="account_approvals">Account Approvals</string>
+    <string name="latest_information">Latest Information</string>
+    <string name="bookings_for_today">Bookings for Today</string>
+    <string name="noResults">No Results!!!</string>
+    <string name="approveAccount">Approve Account</string>
+    <string name="changeTheUsersRole">Change the users role?</string>
 
     <!--Login-->
     <string name="confirmEmail">Confirm Email</string>
@@ -138,7 +145,7 @@
     <!--Vehicles-->
     <string name="all">All</string>
     <string name="inUse">In use</string>
-    <string name="search">Search ...</string>
+    <string name="search">Search…</string>
     <string name="editVehicle">Edit Vehicle</string>
     <string name="deleteVehicle">Delete Vehicle</string>
     <string name="textDeleteVehicle">Are you sure you want to eliminate the vehicle?</string>
@@ -170,5 +177,12 @@
     <!--Calendar-->
     <string name="today">Today</string>
     <string name="upcomingEvents">Upcoming events</string>
+    <string name="no_results">No results</string>
+    <string name="network_error">Network error, please check your connection</string>
+    <string name="scroll_to_top">Scroll to top</string>
+    <string name="register_successful">Register successful!</string>
+    <string name="confirmPassword">Confirm Password</string>
+    <string name="carin_logo">carin_logo</string>
+    <string name="example_email">example@email.com</string>
 
 </resources>

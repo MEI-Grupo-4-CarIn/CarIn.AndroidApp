@@ -1,7 +1,8 @@
 plugins {
+    id("com.google.secrets_gradle_plugin") version "0.5"
+    id("kotlin-kapt")
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    id("com.google.secrets_gradle_plugin") version "0.5"
 }
 
 android {
@@ -44,6 +45,20 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.play.services.maps)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.jjwt.jackson)
+    implementation(libs.jjwt.api)
+    implementation(libs.jjwt.impl)
+    implementation(libs.jackson.module.kotlin)
+    implementation(libs.androidx.sqlite.ktx)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.logging.interceptor)
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.play.services.location)
+    implementation(libs.play.services.places)
+    "kapt"(libs.androidx.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
