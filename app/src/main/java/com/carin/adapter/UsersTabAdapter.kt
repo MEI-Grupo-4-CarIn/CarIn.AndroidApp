@@ -28,7 +28,8 @@ class UsersTabAdapter(private var users: MutableList<UserModel>) : RecyclerView.
         val user = users[position]
         holder.imageView.setImageResource(user.imageResource)
         holder.textView1.text = "${user.firstName} ${user.lastName}"
-        holder.textView2.text = "${user.email}"
+        holder.textView2.text = user.email
+        holder.itemView.tag = user.id
     }
 
     override fun getItemCount(): Int = users.size
@@ -62,6 +63,10 @@ class UsersTabAdapter(private var users: MutableList<UserModel>) : RecyclerView.
                 val byteArrayOutputStream = ByteArrayOutputStream()
                 personBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
                 val byteArray: ByteArray = byteArrayOutputStream.toByteArray()
+
+                val userId = itemView.tag as Int
+
+                intent.putExtra("id", userId.toString())
                 intent.putExtra("imageResource", byteArray)
                 intent.putExtra("name", textView1.text.toString())
                 intent.putExtra("email", textView2.text.toString())

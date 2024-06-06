@@ -8,22 +8,42 @@ import android.text.style.ImageSpan
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.Menu
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.PopupMenu
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.carin.R
+import com.carin.domain.enums.Role
+import com.carin.utils.AuthUtils
 
 class InfoRouteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info_route)
 
+        val userAuths = AuthUtils.getUserAuth(this)
+
+        userAuths?.let {
+            adjustUIBasedOnRole(it.role)
+        }
+
         val iconImageView = findViewById<ImageView>(R.id.iconImageView)
         iconImageView.setOnClickListener {
             startActivity(Intent(this, RoutesListActivity::class.java))
+        }
+
+        val textViewSeeMore = findViewById<TextView>(R.id.textViewSeeMore)
+        textViewSeeMore.setOnClickListener {
+            startActivity(Intent(this, InfoVehicleActivity::class.java))
+        }
+
+        val textViewSeeMoreDriver = findViewById<TextView>(R.id.textViewSeeMoreDriver)
+        textViewSeeMoreDriver.setOnClickListener {
+            startActivity(Intent(this, InfoUserActivity::class.java))
         }
 
         val optionsIcon = findViewById<ImageView>(R.id.optionsIcon)
@@ -63,6 +83,26 @@ class InfoRouteActivity : AppCompatActivity() {
             }
             popupMenu.show()
         }
+    }
+
+    private fun adjustUIBasedOnRole(role: Role) {
+        when (role) {
+            Role.Admin -> showAdminComponents()
+            Role.Manager -> showManagerComponents()
+            Role.Driver -> showDriverComponents()
+        }
+    }
+
+    private fun showAdminComponents() {
+
+    }
+    private fun showManagerComponents() {
+
+    }
+
+    private fun showDriverComponents() {
+        findViewById<View>(R.id.optionsIcon).visibility = View.GONE
+
     }
 
     private fun showDeleteConfirmationDialog() {

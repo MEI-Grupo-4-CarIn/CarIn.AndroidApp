@@ -32,8 +32,8 @@ class UserAdapter(
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val user = users[position]
         holder.circularImageView.setImageResource(user.image)
-        holder.firstNameViewTime.text = "${user.firstName}"
-        holder.lastNameViewTime.text = "${user.lastName}"
+        holder.firstNameViewTime.text = user.firstName
+        holder.lastNameViewTime.text = user.lastName
 
         holder.itemView.setOnClickListener {
             listener?.onItemClick(position)

@@ -22,7 +22,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.di.RepositoryModule
+import com.carin.domain.enums.Role
 import com.carin.fragments.MainFragmentVehicle
+import com.carin.utils.AuthUtils
 import com.carin.viewmodels.VehiclesViewModel
 import com.carin.viewmodels.VehiclesViewModelFactory
 import com.carin.viewmodels.events.VehiclesListEvent
@@ -41,6 +43,12 @@ class VehicleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_vehicles_list)
+
+        val userAuths = AuthUtils.getUserAuth(this)
+
+        userAuths?.let {
+            adjustUIBasedOnRole(it.role)
+        }
 
         if(savedInstanceState == null){
             supportFragmentManager.beginTransaction()
@@ -156,25 +164,26 @@ class VehicleActivity : AppCompatActivity() {
         layoutAddUser.setOnClickListener {
             val intent = Intent(this, NewUserActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.animator.slide_up, 0)
         }
-
 
         layoutAddVehicle.setOnClickListener {
             val intent = Intent(this, NewVehicleActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.animator.slide_up, 0)
         }
 
         layoutAddRoute.setOnClickListener {
             val intent = Intent(this, NewRouteActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.animator.slide_up, 0)
         }
 
         layoutNewAppointment.setOnClickListener {
             val intent = Intent(this, NewSchedulingActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.animator.slide_up, 0)
         }
-
-
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
@@ -191,6 +200,25 @@ class VehicleActivity : AppCompatActivity() {
             }
         }
         return super.dispatchTouchEvent(event)
+    }
+
+    private fun adjustUIBasedOnRole(role: Role) {
+        when (role) {
+            Role.Admin -> showAdminComponents()
+            Role.Manager -> showManagerComponents()
+            Role.Driver -> showDriverComponents()
+        }
+    }
+
+    private fun showAdminComponents() {
+
+    }
+    private fun showManagerComponents() {
+
+    }
+
+    private fun showDriverComponents() {
+        findViewById<View>(R.id.buttonMore).visibility = View.GONE
     }
 
     private fun performSearch(query: String) {
