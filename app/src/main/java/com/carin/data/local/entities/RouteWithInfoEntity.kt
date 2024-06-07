@@ -10,5 +10,11 @@ data class RouteWithInfoEntity(
         parentColumn = "userId",
         entityColumn = "id"
     )
-    val user: UserEntity
+    val user: UserEntity,
+
+    @Relation(
+        parentColumn = "vehicleId",
+        entityColumn = "id"
+    )
+    val vehicle: VehicleEntity,
 )

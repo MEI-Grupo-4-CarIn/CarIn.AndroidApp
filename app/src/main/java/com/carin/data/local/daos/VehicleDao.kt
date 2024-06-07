@@ -13,7 +13,10 @@ import com.carin.domain.enums.VehicleStatus
 @Dao
 interface VehicleDao {
     @Query("SELECT * FROM vehicles WHERE id = :id LIMIT 1")
-    suspend fun getVehicleById(id: Int): VehicleEntity?
+    suspend fun getVehicleById(id: String): VehicleEntity?
+
+    @Upsert
+    suspend fun upsertVehicle(vehicle: VehicleEntity)
 
     @Upsert
     suspend fun upsertVehicles(vehicles: List<VehicleEntity>)

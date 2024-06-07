@@ -19,6 +19,9 @@ interface UserDao {
     suspend fun insertUser(user: UserEntity)
 
     @Upsert
+    suspend fun upsertUser(user: UserEntity)
+
+    @Upsert
     suspend fun upsertUsers(users: List<UserEntity>)
 
     @RawQuery

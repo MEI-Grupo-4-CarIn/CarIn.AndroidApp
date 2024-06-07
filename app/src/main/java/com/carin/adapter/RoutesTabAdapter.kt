@@ -38,9 +38,9 @@ class RoutesTabAdapter(private val routes: MutableList<RouteModel>) : RecyclerVi
         holder.destinationTextView.text = route.endPoint.city
         holder.driverNameTextView.text = "${route.user?.firstName} ${route.user?.lastName}"
         holder.hoursTextView.text = "${route.duration}"
-        holder.departureDateTextView.text = formatter.format(route.startDate)
+        holder.departureDateTextView.text = " ${formatter.format(route.startDate)}"
         holder.statusTextView.text = route.status.description
-        holder.vehicleTextView.text = "INFINITY Vision Qe"
+        holder.vehicleTextView.text = "${route.vehicle?.brand} ${route.vehicle?.model}"
         holder.kmTextView.text = "${decimalFormat.format(route.distance)} km"
 
         val (progress, color) = getProgressAndColor(route.status, holder.itemView.context)

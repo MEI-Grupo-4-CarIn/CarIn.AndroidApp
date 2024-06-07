@@ -27,6 +27,7 @@ fun RouteWithInfoEntity.toRouteModel(): RouteModel {
         creationDateUtc = route.creationDateUtc,
         lastUpdateDateUtc = route.lastUpdateDateUtc,
         user = user.toUserModel(),
+        vehicle = vehicle.toVehicleModel()
     )
 }
 

@@ -20,4 +20,5 @@ data class RouteModel(
     val creationDateUtc: Date,
     val lastUpdateDateUtc: Date?,
     val user: UserModel?,
+    val vehicle: VehicleModel?
 )

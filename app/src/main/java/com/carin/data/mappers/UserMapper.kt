@@ -19,6 +19,7 @@ fun UserEntity.toUserModel(): UserModel {
         lastName = lastName,
         email = email,
         birthDate = birthDate,
+        age = null,
         role = roleId,
         status = status,
         creationDateUtc = creationDateUtc,
@@ -66,4 +67,8 @@ fun AuthRegisterDto.toUserEntity(): UserEntity {
         lastUpdateDateUtc = lastUpdateDateUtc?.let { dateFormatter.parse(it) },
         localLastUpdateDateUtc = Date()
     )
+}
+
+private fun pickRandomUserImage () {
+
 }

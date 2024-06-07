@@ -17,7 +17,7 @@ class MainFragmentUserInfo : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.user_info_fragment_main, container, false)
+        return inflater.inflate(R.layout.info_user_fragment_main, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,8 +45,8 @@ class UserInfoFragmentTypeAdapter(fragment: Fragment) : FragmentStateAdapter(fra
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> UserInfoFragment()
-            1 -> UserRouteFragment()
+            0 -> InfoUserDetailsFragment()
+            1 -> InfoUserRoutesFragment()
             else -> throw IllegalArgumentException("Invalid position: $position")
         }
     }

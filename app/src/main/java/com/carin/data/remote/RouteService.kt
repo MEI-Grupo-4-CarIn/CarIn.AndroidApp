@@ -11,6 +11,8 @@ interface RouteService {
         @Query("search") search: String? = null,
         @Query("status") status: String? = null,
         @Query("page") page: Int? = null,
-        @Query("perPage") perPage: Int? = null
+        @Query("perPage") perPage: Int? = null,
+        @Query("userId") userId: Int? = null,
+        @Query("vehicleId") vehicleId: String? = null,
     ): Call<List<RouteDto>>
 }

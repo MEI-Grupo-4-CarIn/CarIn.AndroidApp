@@ -44,12 +44,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Data de saída:"
+                    android:text="@string/departureDates"
                     android:textSize="10sp"
                     android:paddingStart="8dp"/>
 
                 <TextView
-                    android:id="@+id/dateEndTextView"
+                    android:id="@+id/departureDateTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="12 Fevereiro"/>
@@ -69,7 +69,7 @@
                     android:paddingEnd="8dp"/>
 
                 <TextView
-                    android:id="@+id/brandTextView"
+                    android:id="@+id/vehicleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="INFINITY Vision Qe"/>

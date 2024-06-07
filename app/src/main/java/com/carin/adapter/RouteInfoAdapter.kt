@@ -6,22 +6,16 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
-import com.carin.activities.InfoVehicleActivity
+import com.carin.domain.models.RouteModel
+import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.Locale
 
-class RouteInfoAdapter(
-    private val routes: List<InfoVehicleActivity.RouteInfo>
-) :
-    RecyclerView.Adapter<RouteInfoAdapter.RouteInfoViewHolder>() {
+class RouteInfoAdapter(private val routes: MutableList<RouteModel>) : RecyclerView.Adapter<RouteInfoAdapter.RouteInfoViewHolder>() {
 
-    interface OnItemClickListener {
-        fun onItemClick(position: Int)
-    }
-
-    private var listener: OnItemClickListener? = null
-
-    fun setOnItemClickListener(listener: OnItemClickListener) {
-        this.listener = listener
-    }
+    private val routeIds = mutableSetOf<String>()
+    private val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+    private val decimalFormat = DecimalFormat("#.##")
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouteInfoViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -31,31 +25,35 @@ class RouteInfoAdapter(
 
     override fun onBindViewHolder(holder: RouteInfoViewHolder, position: Int) {
         val route = routes[position]
-        holder.originTextView.text = "${route.origin}"
-        holder.destinationTextView.text = "${route.destination}"
-        holder.dateEndTextView.text = "${route.date}"
-        holder.brandTextView.text = "${route.brand}"
-        holder.hourTextView.text = "${route.hour}"
-        holder.kmTextView.text = "${route.km}"
-
-        holder.itemView.setOnClickListener {
-            listener?.onItemClick(position)
-        }
+        holder.originTextView.text = route.startPoint.city
+        holder.destinationTextView.text = route.endPoint.city
+        holder.departureDateTextView.text = " ${formatter.format(route.startDate)}"
+        holder.vehicleTextView.text = "Nothing"
+        holder.hourTextView.text = "${route.duration}"
+        holder.kmTextView.text = "${decimalFormat.format(route.distance)} km"
     }
 
-    override fun getItemCount(): Int {
-        return routes.size
+    override fun getItemCount(): Int = routes.size
+
+    fun updateRoutes(newRoutes: List<RouteModel>) {
+        routes.clear()
+        routeIds.clear()
+        addRoutesToAdapter(newRoutes)
+    }
+
+    private fun addRoutesToAdapter(newRoutes: List<RouteModel>) {
+        val filteredUsers = newRoutes.filter { routeIds.add(it.id) }
+        routes.addAll(filteredUsers)
+        notifyDataSetChanged()
     }
 
     class RouteInfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val originTextView: TextView = itemView.findViewById(R.id.originTextView)
         val destinationTextView: TextView = itemView.findViewById(R.id.destinationTextView)
-        val dateEndTextView: TextView = itemView.findViewById(R.id.dateEndTextView)
-        val brandTextView: TextView = itemView.findViewById(R.id.brandTextView)
+        val departureDateTextView: TextView = itemView.findViewById(R.id.departureDateTextView)
+        val vehicleTextView: TextView = itemView.findViewById(R.id.vehicleTextView)
         val hourTextView: TextView = itemView.findViewById(R.id.hourTextView)
         val kmTextView: TextView = itemView.findViewById(R.id.kmTextView)
-
-
     }
 
 }
