@@ -17,7 +17,6 @@ class MainFragmentUserInfo : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.user_info_fragment_main, container, false)
     }
 
@@ -32,8 +31,8 @@ class MainFragmentUserInfo : Fragment() {
         val currentLocale = Locale.getDefault()
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             val currentLabel = when (currentLocale.language) {
-                "pt" -> TypeInfoUser.values()[position].labelPt
-                else -> TypeInfoUser.values()[position].labelEn
+                "pt" -> TypeInfoUser.entries[position].labelPt
+                else -> TypeInfoUser.entries[position].labelEn
             }
             tab.text = currentLabel
         }.attach()
@@ -42,7 +41,7 @@ class MainFragmentUserInfo : Fragment() {
 }
 
 class UserInfoFragmentTypeAdapter(fragment: Fragment) : FragmentStateAdapter(fragment){
-    override fun getItemCount(): Int = TypeInfoUser.values().size
+    override fun getItemCount(): Int = TypeInfoUser.entries.size
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {

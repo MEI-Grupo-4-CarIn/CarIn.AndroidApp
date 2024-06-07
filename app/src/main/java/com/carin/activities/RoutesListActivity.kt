@@ -13,8 +13,8 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -33,6 +33,8 @@ import kotlinx.coroutines.launch
 
 
 class RoutesListActivity : AppCompatActivity() {
+
+    private var isRotated = false
     private lateinit var viewModel: RoutesViewModel
     private var searchJob : Job? = null
 
@@ -95,53 +97,87 @@ class RoutesListActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {}
         })
 
-        // Menu Buttons
-        val buttonRoute: ImageView = findViewById(R.id.buttonRoute)
-        buttonRoute.setOnClickListener {
-            val intent = Intent(this, RoutesListActivity::class.java)
+        // Prepare the Menu
+        prepareMenu()
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            val v: View? = currentFocus
+            if (v is EditText) {
+                val outRect = Rect()
+                v.getGlobalVisibleRect(outRect)
+                if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+                    v.clearFocus()
+                    val imm: InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(v.windowToken, 0)
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event)
+    }
+
+    private fun prepareMenu() {
+        val buttonHome = findViewById<LinearLayout>(R.id.linearLayoutHome)
+        buttonHome.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
             finish()
         }
 
-        val buttonVehicle: ImageView = findViewById(R.id.buttonVehicle)
-        buttonVehicle.setOnClickListener {
+        val buttonVehicles = findViewById<LinearLayout>(R.id.linearLayoutVehicles)
+        buttonVehicles.setOnClickListener {
             val intent = Intent(this, VehiclesListActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
-        val buttonHome: ImageView = findViewById(R.id.buttonHome)
-        buttonHome.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-        }
-
-        val buttonPerson: ImageView = findViewById(R.id.buttonPerson)
-        buttonPerson.setOnClickListener {
+        val buttonProfile = findViewById<LinearLayout>(R.id.linearLayoutProfile)
+        buttonProfile.setOnClickListener {
             val intent = Intent(this, InfoUserActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
-        val buttonMore = findViewById<ImageButton>(R.id.buttonMore)
+        val buttonMore = findViewById<LinearLayout>(R.id.linearLayoutMore)
         val layoutNewAppointment = findViewById<RelativeLayout>(R.id.layoutNewAppointment)
         val layoutAddRoute = findViewById<RelativeLayout>(R.id.layoutAddRoute)
         val layoutAddVehicle = findViewById<RelativeLayout>(R.id.layoutAddVehicle)
         val layoutAddUser = findViewById<RelativeLayout>(R.id.layoutAddUser)
 
         buttonMore.setOnClickListener {
-            val rotateAnimator = ObjectAnimator.ofFloat(buttonMore, "rotation", 0f, 45f)
-                .apply {
-                    duration = 500
-                    interpolator = AccelerateDecelerateInterpolator()
-                }
+            if (isRotated) {
+                val rotateAnimator = ObjectAnimator.ofFloat(buttonMore, "rotation", 45f, 0f)
+                    .apply {
+                        duration = 500
+                        interpolator = AccelerateDecelerateInterpolator()
+                    }
 
-            val animatorSet = AnimatorSet()
-            animatorSet.play(rotateAnimator)
-            animatorSet.start()
+                val animatorSet = AnimatorSet()
+                animatorSet.playTogether(rotateAnimator)
+                animatorSet.start()
 
-            layoutNewAppointment.visibility = View.VISIBLE
-            layoutAddRoute.visibility = View.VISIBLE
-            layoutAddVehicle.visibility = View.VISIBLE
-            layoutAddUser.visibility = View.VISIBLE
+                layoutNewAppointment.visibility = View.INVISIBLE
+                layoutAddRoute.visibility = View.INVISIBLE
+                layoutAddVehicle.visibility = View.INVISIBLE
+                layoutAddUser.visibility = View.INVISIBLE
+            } else {
+                val rotateAnimator = ObjectAnimator.ofFloat(buttonMore, "rotation", 0f, 45f)
+                    .apply {
+                        duration = 500
+                        interpolator = AccelerateDecelerateInterpolator()
+                    }
+
+                val animatorSet = AnimatorSet()
+                animatorSet.playTogether(rotateAnimator)
+                animatorSet.start()
+
+                layoutNewAppointment.visibility = View.VISIBLE
+                layoutAddRoute.visibility = View.VISIBLE
+                layoutAddVehicle.visibility = View.VISIBLE
+                layoutAddUser.visibility = View.VISIBLE
+            }
+            isRotated = !isRotated
         }
 
         layoutAddUser.setOnClickListener {
@@ -167,22 +203,6 @@ class RoutesListActivity : AppCompatActivity() {
             startActivity(intent)
             overridePendingTransition(R.animator.slide_up, 0)
         }
-    }
-
-    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        if (event.action == MotionEvent.ACTION_DOWN) {
-            val v: View? = currentFocus
-            if (v is EditText) {
-                val outRect = Rect()
-                v.getGlobalVisibleRect(outRect)
-                if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
-                    v.clearFocus()
-                    val imm: InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(v.windowToken, 0)
-                }
-            }
-        }
-        return super.dispatchTouchEvent(event)
     }
 
     private fun adjustUIBasedOnRole(role: Role) {

@@ -12,8 +12,8 @@ import android.view.ContextThemeWrapper
 import android.view.Menu
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -118,36 +118,33 @@ class InfoUserActivity : AppCompatActivity() {
             personImageView.setImageBitmap(carBitmap)
         }
 
-        val buttonRoute: ImageView = findViewById(R.id.buttonRoute)
+        // Prepare the Menu
+        prepareMenu()
+    }
 
-        buttonRoute.setOnClickListener {
+    private fun prepareMenu() {
+        val buttonHome = findViewById<LinearLayout>(R.id.linearLayoutHome)
+        buttonHome.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        val buttonRoutes = findViewById<LinearLayout>(R.id.linearLayoutRoutes)
+        buttonRoutes.setOnClickListener {
             val intent = Intent(this, RoutesListActivity::class.java)
             startActivity(intent)
             finish()
         }
 
-        val buttonVehicle: ImageView = findViewById(R.id.buttonVehicle)
-
-        buttonVehicle.setOnClickListener {
+        val buttonVehicles = findViewById<LinearLayout>(R.id.linearLayoutVehicles)
+        buttonVehicles.setOnClickListener {
             val intent = Intent(this, VehiclesListActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
-        val buttonHome: ImageView = findViewById(R.id.buttonHome)
-
-        buttonHome.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-        }
-
-        val buttonPerson: ImageView = findViewById(R.id.buttonPerson)
-
-        buttonPerson.setOnClickListener {
-            val intent = Intent(this, InfoUserActivity::class.java)
-            startActivity(intent)
-        }
-
-        val buttonMore = findViewById<ImageButton>(R.id.buttonMore)
+        val buttonMore = findViewById<LinearLayout>(R.id.linearLayoutMore)
         val layoutNewAppointment = findViewById<RelativeLayout>(R.id.layoutNewAppointment)
         val layoutAddRoute = findViewById<RelativeLayout>(R.id.layoutAddRoute)
         val layoutAddVehicle = findViewById<RelativeLayout>(R.id.layoutAddVehicle)
@@ -162,7 +159,7 @@ class InfoUserActivity : AppCompatActivity() {
                     }
 
                 val animatorSet = AnimatorSet()
-                animatorSet.play(rotateAnimator)
+                animatorSet.playTogether(rotateAnimator)
                 animatorSet.start()
 
                 layoutNewAppointment.visibility = View.INVISIBLE
@@ -177,7 +174,7 @@ class InfoUserActivity : AppCompatActivity() {
                     }
 
                 val animatorSet = AnimatorSet()
-                animatorSet.play(rotateAnimator)
+                animatorSet.playTogether(rotateAnimator)
                 animatorSet.start()
 
                 layoutNewAppointment.visibility = View.VISIBLE
@@ -231,5 +228,4 @@ class InfoUserActivity : AppCompatActivity() {
     private fun showDriverComponents() {
         findViewById<View>(R.id.buttonMore).visibility = View.GONE
     }
-
 }

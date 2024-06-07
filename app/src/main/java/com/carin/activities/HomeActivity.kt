@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -48,7 +49,7 @@ class HomeActivity : AppCompatActivity() {
 
        val userAuths = AuthUtils.getUserAuth(this)
 
-       userAuths?.let {
+        userAuths?.let {
             adjustUIBasedOnRole(it.role)
         }
 
@@ -148,15 +149,7 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val buttonVehicle = findViewById<ImageView>(R.id.buttonVehicle)
-
-        buttonVehicle.setOnClickListener {
-        val intent = Intent(this, VehiclesListActivity::class.java)
-            startActivity(intent)
-        }
-
         val moreUsers: TextView = findViewById(R.id.textViewSeeMore3)
-
         moreUsers.setOnClickListener {
             val intent = Intent(this, UsersListActivity::class.java)
             overridePendingTransition(R.animator.slide_in_right, R.animator.slide_out_left)
@@ -164,7 +157,6 @@ class HomeActivity : AppCompatActivity() {
         }
 
         val moreNotifications: TextView = findViewById(R.id.textViewSeeMore1)
-
         moreNotifications.setOnClickListener {
             val intent = Intent(this, NotificationActivity::class.java)
             overridePendingTransition(R.animator.slide_in_right, R.animator.slide_out_left)
@@ -172,28 +164,50 @@ class HomeActivity : AppCompatActivity() {
         }
 
         val moreSchedulings: TextView = findViewById(R.id.textViewSeeMore)
-
         moreSchedulings.setOnClickListener {
             val intent = Intent(this, CalendarActivity::class.java)
             overridePendingTransition(R.animator.slide_in_right, R.animator.slide_out_left)
             startActivity(intent)
         }
 
-        val buttonRoute: ImageView = findViewById(R.id.buttonRoute)
+        // Prepare the Menu
+        prepareMenu()
 
-        buttonRoute.setOnClickListener {
+    }
+
+    fun checkIfListIsEmpty() {
+        if (approvals.isEmpty()) {
+            recyclerView6.visibility = View.GONE
+            textViewNoResults.visibility = View.VISIBLE
+        } else {
+            recyclerView6.visibility = View.VISIBLE
+            textViewNoResults.visibility = View.GONE
+        }
+    }
+
+    private fun prepareMenu() {
+        val buttonRoutes = findViewById<LinearLayout>(R.id.linearLayoutRoutes)
+        buttonRoutes.setOnClickListener {
             val intent = Intent(this, RoutesListActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
-        val buttonPerson: ImageView = findViewById(R.id.buttonPerson)
+        val buttonVehicles = findViewById<LinearLayout>(R.id.linearLayoutVehicles)
+        buttonVehicles.setOnClickListener {
+            val intent = Intent(this, VehiclesListActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
-        buttonPerson.setOnClickListener {
+        val buttonProfile = findViewById<LinearLayout>(R.id.linearLayoutProfile)
+        buttonProfile.setOnClickListener {
             val intent = Intent(this, InfoUserActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
-        val buttonMore = findViewById<ImageView>(R.id.buttonMore)
+        val buttonMore = findViewById<LinearLayout>(R.id.linearLayoutMore)
         val layoutNewAppointment = findViewById<RelativeLayout>(R.id.layoutNewAppointment)
         val layoutAddRoute = findViewById<RelativeLayout>(R.id.layoutAddRoute)
         val layoutAddVehicle = findViewById<RelativeLayout>(R.id.layoutAddVehicle)
@@ -256,17 +270,6 @@ class HomeActivity : AppCompatActivity() {
             val intent = Intent(this, NewSchedulingActivity::class.java)
             startActivity(intent)
             overridePendingTransition(R.animator.slide_up, 0)
-        }
-
-    }
-
-    internal fun checkIfListIsEmpty() {
-        if (approvals.isEmpty()) {
-            recyclerView6.visibility = View.GONE
-            textViewNoResults.visibility = View.VISIBLE
-        } else {
-            recyclerView6.visibility = View.VISIBLE
-            textViewNoResults.visibility = View.GONE
         }
     }
 
