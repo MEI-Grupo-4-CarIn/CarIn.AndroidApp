@@ -73,7 +73,7 @@ class RoutesViewModel(private val repository: RouteRepository) : ViewModel() {
                             )
                         }
                         is Resource.Error -> {
-                            _uiState.value = RoutesListState.Error(type, result.message ?: "Unknown error")
+                            _uiState.value = RoutesListState.Error(result.message ?: "Unknown error", type)
                         }
                     }
                 }
@@ -114,7 +114,7 @@ class RoutesViewModel(private val repository: RouteRepository) : ViewModel() {
                                 )
                             }
                             is Resource.Error -> {
-                                _uiState.value = RoutesListState.Error(type, result.message ?: "Unknown error")
+                                _uiState.value = RoutesListState.Error(result.message ?: "Unknown error", type)
                             }
                         }
                     }

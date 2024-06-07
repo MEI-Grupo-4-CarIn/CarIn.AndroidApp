@@ -16,12 +16,22 @@ interface RouteDao {
     suspend fun getRouteById(id: String): RouteWithInfoEntity?
 
     @Upsert
+    suspend fun upsertRoute(routes: RouteEntity)
+
+    @Upsert
     suspend fun upsertRoutes(routes: List<RouteEntity>)
 
     @RawQuery
     suspend fun getRoutes(query: SupportSQLiteQuery): List<RouteWithInfoEntity>
 
-    suspend fun getListOfRoutes(search: String?, status: RouteStatus?, page: Int = 1, perPage: Int = 10): List<RouteWithInfoEntity> {
+    suspend fun getListOfRoutes(
+        search: String?,
+        status: RouteStatus?,
+        page: Int = 1,
+        perPage: Int = 10,
+        userId: Int?,
+        vehicleId: String?
+    ): List<RouteWithInfoEntity> {
         val queryBuilder = StringBuilder("SELECT * FROM routes WHERE isDeleted = 0")
         val args = mutableListOf<Any?>()
 
@@ -37,6 +47,16 @@ interface RouteDao {
         if (status != null) {
             queryBuilder.append(" AND status = ?")
             args.add(status.statusId)
+        }
+
+        if (userId != null) {
+            queryBuilder.append(" AND userId = ?")
+            args.add(userId)
+        }
+
+        if (!vehicleId.isNullOrEmpty()) {
+            queryBuilder.append(" AND vehicleId = ?")
+            args.add(vehicleId)
         }
 
         queryBuilder.append(" ORDER BY creationDateUtc DESC")

@@ -27,8 +27,8 @@ class UsersTabAdapter(private var users: MutableList<UserModel>) : RecyclerView.
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val user = users[position]
         holder.imageView.setImageResource(user.imageResource)
-        holder.textView1.text = "${user.firstName} ${user.lastName}"
-        holder.textView2.text = user.email
+        holder.nameText.text = "${user.firstName} ${user.lastName}"
+        holder.emailText.text = user.email
         holder.itemView.tag = user.id
     }
 
@@ -51,10 +51,10 @@ class UsersTabAdapter(private var users: MutableList<UserModel>) : RecyclerView.
     }
 
     class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageView: ImageView = itemView.findViewById(R.id.imageView)
-        val textView1: TextView = itemView.findViewById(R.id.textView1)
-        val textView2: TextView = itemView.findViewById(R.id.textView2)
-        private val backgroundRectangleImageView: ImageView = itemView.findViewById(R.id.backgroundRectangle)
+        val imageView: ImageView = itemView.findViewById(R.id.userItemImageView)
+        val nameText: TextView = itemView.findViewById(R.id.userItemNameTxt)
+        val emailText: TextView = itemView.findViewById(R.id.userItemEmailTxt)
+        private val backgroundRectangleImageView = itemView.findViewById<ImageView>(R.id.backgroundRectangle)
         init {
             backgroundRectangleImageView.setOnClickListener {
                 val context = itemView.context
@@ -66,10 +66,9 @@ class UsersTabAdapter(private var users: MutableList<UserModel>) : RecyclerView.
 
                 val userId = itemView.tag as Int
 
-                intent.putExtra("id", userId.toString())
+                intent.putExtra("id", userId)
                 intent.putExtra("imageResource", byteArray)
-                intent.putExtra("name", textView1.text.toString())
-                intent.putExtra("email", textView2.text.toString())
+                intent.putExtra("name", nameText.text.toString())
                 context.startActivity(intent)
             }
         }

@@ -86,6 +86,49 @@ class UserRepository(
         }.flowOn(Dispatchers.IO)
     }
 
+    suspend fun getUserById(id: Int): Flow<Resource<UserModel>> {
+        return flow {
+            emit(Resource.Loading())
+
+            val localUser = userDao.getUserById(id)
+            val isToFetchRemote = localUser == null || localUser.localLastUpdateDateUtc < Date(System.currentTimeMillis() - 15.minutes.inWholeMilliseconds)
+            if (localUser != null) {
+                emit(Resource.Success(data = localUser.toUserModel()))
+            }
+
+            if (isToFetchRemote) {
+                val remoteUser = try {
+                    val response =
+                        userService.getUserById(id).execute()
+                    if (response.isSuccessful) {
+                        response.body()
+                    } else {
+                        emit(Resource.Error("Couldn't fetch user: " + response.message()))
+                        null
+                    }
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                    emit(Resource.Error("Couldn't fetch user"))
+                    null
+                } catch (e: HttpException) {
+                    e.printStackTrace()
+                    emit(Resource.Error("Couldn't fetch user"))
+                    null
+                }
+
+                remoteUser?.let { userDto ->
+                    val userEntity = userDto.toUserEntity()
+                    userDao.upsertUser(userEntity)
+
+                    val upsertedUser = userDao.getUserById(id)
+                    if (upsertedUser != null) {
+                        emit(Resource.Success(data = upsertedUser.toUserModel()))
+                    }
+                }
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
     suspend fun registerUser(userRegisterModel: UserRegisterModel): Flow<Resource<Boolean>> {
         return flow {
             emit(Resource.Loading())
