@@ -15,10 +15,10 @@
 
         <RelativeLayout
             android:id="@+id/layoutNewAppointment"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:layout_marginEnd="100dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginEnd="80dp"
             android:layout_marginBottom="20dp"
             android:visibility="invisible"
             android:background="@drawable/custom_button_background"
@@ -26,33 +26,38 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <ImageView
-                android:id="@+id/imageViewNewAppointmentIcon"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:src="@drawable/ic_new_appointment" />
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/textViewNewAppointment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
-                android:layout_toEndOf="@id/imageViewNewAppointmentIcon"
-                android:text="@string/newAppointment"
-                android:textColor="#FFFFFF" />
+                <ImageView
+                    android:id="@+id/imageViewNewAppointmentIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:src="@drawable/ic_new_appointment" />
+
+                <TextView
+                    android:id="@+id/textViewNewAppointment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/newAppointment"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/layoutAddRoute"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:layout_marginEnd="100dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginEnd="80dp"
             android:layout_marginBottom="20dp"
             android:visibility="invisible"
             android:background="@drawable/custom_button_background"
@@ -60,95 +65,69 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <TextView
-                android:id="@+id/textViewAddRoute"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
-                android:layout_toEndOf="@id/imageViewAddRouteIcon"
-                android:text="@string/addRoute"
-                android:textColor="#FFFFFF" />
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-            <ImageView
-                android:id="@+id/imageViewAddRouteIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:src="@drawable/ic_route" />
+                <ImageView
+                    android:id="@+id/imageViewAddRouteIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:src="@drawable/ic_route" />
 
+                <TextView
+                    android:id="@+id/textViewAddRoute"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/addRoute"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/layoutAddVehicle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:layout_marginEnd="100dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginEnd="80dp"
             android:layout_marginBottom="20dp"
             android:visibility="invisible"
             android:background="@drawable/custom_button_background"
-            app:layout_constraintBottom_toTopOf="@id/layoutAddUser"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <TextView
-                android:id="@+id/textViewAddVehicle"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
-                android:layout_toEndOf="@id/imageViewAddVehicleIcon"
-                android:text="@string/addVehicle"
-                android:textColor="#FFFFFF" />
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-            <ImageView
-                android:id="@+id/imageViewAddVehicleIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:src="@drawable/ic_vehicle" />
-        </RelativeLayout>
+                <ImageView
+                    android:id="@+id/imageViewAddVehicleIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:src="@drawable/ic_vehicle" />
 
-        <RelativeLayout
-            android:id="@+id/layoutAddUser"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:layout_marginEnd="100dp"
-            android:layout_marginBottom="20dp"
-            android:visibility="invisible"
-            android:background="@drawable/custom_button_background"
-            app:layout_constraintBottom_toTopOf="@id/layoutAddVehicle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <TextView
-                android:id="@+id/textViewAddUser"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
-                android:layout_toEndOf="@id/imageViewAddUserIcon"
-                android:text="@string/addUser"
-                android:textColor="#FFFFFF" />
-
-            <ImageView
-                android:id="@+id/imageViewAddUserIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:src="@drawable/ic_person" />
-
+                <TextView
+                    android:id="@+id/textViewAddVehicle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/addVehicle"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
