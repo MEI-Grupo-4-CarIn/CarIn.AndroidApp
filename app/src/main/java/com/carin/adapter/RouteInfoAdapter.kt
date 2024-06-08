@@ -28,7 +28,7 @@ class RouteInfoAdapter(private val routes: MutableList<RouteModel>) : RecyclerVi
         holder.originTextView.text = route.startPoint.city
         holder.destinationTextView.text = route.endPoint.city
         holder.departureDateTextView.text = " ${formatter.format(route.startDate)}"
-        holder.vehicleTextView.text = "Nothing"
+        holder.vehicleTextView.text = "${route.vehicle?.brand} ${route.vehicle?.model}"
         holder.hourTextView.text = "${route.duration}"
         holder.kmTextView.text = "${decimalFormat.format(route.distance)} km"
     }

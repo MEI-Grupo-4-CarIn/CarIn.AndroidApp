@@ -20,6 +20,7 @@ class InfoUserDetailsFragment : Fragment() {
 
     private lateinit var viewModel: InfoUserViewModel
     private lateinit var progressBar: ProgressBar
+    private var userId: Int? = null
     private val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
     override fun onCreateView(
@@ -53,7 +54,8 @@ class InfoUserDetailsFragment : Fragment() {
                     }
                 }
                 is Resource.Error -> {
-                    Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
+                    val networkErrorMessage = getString(R.string.network_error)
+                    Toast.makeText(requireContext(), networkErrorMessage, Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -63,10 +65,17 @@ class InfoUserDetailsFragment : Fragment() {
         if (userIdFromList == -1) {
             val userAuth = AuthUtils.getUserAuth(requireContext())
             if (userAuth != null) {
+                userId = userAuth.userId
                 viewModel.loadUserDetails(userAuth.userId)
             }
         } else {
+            userId = userIdFromList
             viewModel.loadUserDetails(userIdFromList)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        userId?.let { viewModel.loadUserDetails(it) }
     }
 }

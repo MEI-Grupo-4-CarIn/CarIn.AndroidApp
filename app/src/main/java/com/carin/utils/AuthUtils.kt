@@ -30,6 +30,39 @@ object AuthUtils {
         return context.getSharedPreferences(context.resources.getString(R.string.app_name), Context.MODE_PRIVATE)
     }
 
+    private fun saveUserOnSharedPreferences(context: Context, loginResponse: AuthTokenDto) {
+        val objectMapper = jacksonObjectMapper()
+        val parts = loginResponse.token.split(".")
+        if (parts.size != 3) {
+            throw IllegalArgumentException("Invalid JWT token")
+        }
+
+        val payload = String(Base64.decode(parts[1], Base64.URL_SAFE or Base64.NO_PADDING or Base64.NO_WRAP))
+        val mappedClaims: Map<String, Any> = objectMapper.readValue(payload, object : TypeReference<Map<String, Any>>() {})
+
+        val claims = DefaultClaims(mappedClaims)
+
+        val role = Role.fromId(claims["role"].toString().toInt())
+            ?: throw IllegalArgumentException("Invalid role")
+
+        val userAuth = UserAuth(
+            claims["id"].toString().toInt(),
+            claims["email"].toString(),
+            claims["firstName"].toString(),
+            claims["lastName"].toString(),
+            role,
+            loginResponse.token,
+            loginResponse.refreshToken,
+            Date(claims["exp"].toString().toLong() * 1000)
+        )
+
+        val sharedPreferences = getSharedPreferences(context)
+        val editor = sharedPreferences.edit()
+        val userJson = gson.toJson(userAuth)
+        editor.putString("user", userJson)
+        editor.apply()
+    }
+
     suspend fun refreshToken(
         context: Context,
         refreshToken: String
@@ -122,35 +155,18 @@ object AuthUtils {
         return userAuth
     }
 
-    fun saveUserOnSharedPreferences(context: Context, loginResponse: AuthTokenDto) {
-        val objectMapper = jacksonObjectMapper()
-        val parts = loginResponse.token.split(".")
-        if (parts.size != 3) {
-            throw IllegalArgumentException("Invalid JWT token")
-        }
+    fun updateUserAuth(context: Context, firstName: String?, lastName: String?, email: String?) {
+        val userAuth = getUserAuth(context)
 
-        val payload = String(Base64.decode(parts[1], Base64.URL_SAFE or Base64.NO_PADDING or Base64.NO_WRAP))
-        val mappedClaims: Map<String, Any> = objectMapper.readValue(payload, object : TypeReference<Map<String, Any>>() {})
-
-        val claims = DefaultClaims(mappedClaims)
-
-        val role = Role.fromId(claims["role"].toString().toInt())
-            ?: throw IllegalArgumentException("Invalid role")
-
-        val userAuth = UserAuth(
-            claims["id"].toString().toInt(),
-            claims["email"].toString(),
-            claims["firstName"].toString(),
-            claims["lastName"].toString(),
-            role,
-            loginResponse.token,
-            loginResponse.refreshToken,
-            Date(claims["exp"].toString().toLong() * 1000)
+        val updatedUserAuth = userAuth?.copy(
+            firstName = firstName?: userAuth.firstName,
+            lastName = lastName?: userAuth.lastName,
+            email = email?: userAuth.email
         )
 
         val sharedPreferences = getSharedPreferences(context)
         val editor = sharedPreferences.edit()
-        val userJson = gson.toJson(userAuth)
+        val userJson = gson.toJson(updatedUserAuth)
         editor.putString("user", userJson)
         editor.apply()
     }

@@ -7,13 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.activities.InfoVehicleActivity
-import com.carin.domain.models.UserModel
 import com.carin.domain.models.VehicleModel
-import com.carin.fragments.VehiclesTabFragment
 import java.io.ByteArrayOutputStream
 
 class VehiclesTabAdapter(private val vehicles: MutableList<VehicleModel>) : RecyclerView.Adapter<VehiclesTabAdapter.VehicleViewHolder>() {
@@ -61,10 +60,10 @@ class VehiclesTabAdapter(private val vehicles: MutableList<VehicleModel>) : Recy
         val fuelTextView: TextView = itemView.findViewById(R.id.fuelTextView)
         val consumptionTextView: TextView = itemView.findViewById(R.id.consumptionTextView)
         val autonomyTextView: TextView = itemView.findViewById(R.id.autonomyTextView)
-        val backgroundRectangleImageView: ImageView = itemView.findViewById(R.id.backgroundRectangle)
+        val vehicleItemLayout: ConstraintLayout = itemView.findViewById(R.id.vehicleItemLayout)
 
         init {
-            backgroundRectangleImageView.setOnClickListener {
+            vehicleItemLayout.setOnClickListener {
                 val context = itemView.context
                 val intent = Intent(context, InfoVehicleActivity::class.java)
                 val carBitmap: Bitmap = carImageView.drawable.toBitmap()

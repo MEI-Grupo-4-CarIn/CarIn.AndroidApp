@@ -71,7 +71,8 @@ class RegisterActivity : AppCompatActivity() {
                 }
                 is Resource.Success -> {
                     progressBar.visibility = View.GONE
-                    Toast.makeText(this, "@string/register_success", Toast.LENGTH_SHORT).show()
+                    val successMessage = getString(R.string.register_successful)
+                    Toast.makeText(this, successMessage, Toast.LENGTH_SHORT).show()
                     navigateToLogin()
                 }
                 is Resource.Error -> {
@@ -120,41 +121,42 @@ class RegisterActivity : AppCompatActivity() {
         val emailEditText = findViewById<EditText>(R.id.editTextEmail)
         val passwordEditText = findViewById<EditText>(R.id.editTextPassword)
         val confirmPasswordEditText = findViewById<EditText>(R.id.editTextConfirmPassword)
-
         var isValid = true
+        val requiredFieldMessage = getString(R.string.field_required)
+        val passwordNotMatchMessage = getString(R.string.password_not_match)
 
         if (firstName.isEmpty()) {
-            findViewById<EditText>(R.id.editTextFirstName).error = "First name is required"
+            findViewById<EditText>(R.id.editTextFirstName).error = requiredFieldMessage
             isValid = false
         }
 
         if (lastName.isEmpty()) {
-            findViewById<EditText>(R.id.editTextLastName).error = "Last name is required"
+            findViewById<EditText>(R.id.editTextLastName).error = requiredFieldMessage
             isValid = false
         }
 
         if (birthDate.isNullOrEmpty()) {
-            birthdayEditText.error = "Birth date is required"
+            birthdayEditText.error = requiredFieldMessage
             isValid = false
         }
 
         if (email.isEmpty()) {
-            emailEditText.error = "Email is required"
+            emailEditText.error = requiredFieldMessage
             isValid = false
         }
 
         if (password.isEmpty()) {
-            passwordEditText.error = "Password is required"
+            passwordEditText.error = requiredFieldMessage
             isValid = false
         }
 
         if (confirmPassword.isEmpty()) {
-            confirmPasswordEditText.error = "Confirm password is required"
+            confirmPasswordEditText.error = requiredFieldMessage
             isValid = false
         }
 
         if (password != confirmPassword) {
-            confirmPasswordEditText.error = "Passwords do not match"
+            confirmPasswordEditText.error = passwordNotMatchMessage
             isValid = false
         }
 
