@@ -183,6 +183,9 @@
     <string name="confirmPassword">Confirme a password</string>
     <string name="carin_logo">carin_logo</string>
     <string name="example_email">exemplo@email.com</string>
+    <string name="field_required">Este campo é obrigatório</string>
+    <string name="user_update_successful">Utilizador atualizado com sucesso!</string>
+    <string name="password_not_match">As passwords não coincidem</string>
 
 
 </resources>
