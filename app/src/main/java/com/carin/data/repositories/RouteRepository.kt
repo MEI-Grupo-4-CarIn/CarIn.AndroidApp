@@ -37,7 +37,8 @@ class RouteRepository(
         page: Int = 1,
         perPage: Int = 30,
         userId: Int? = null,
-        vehicleId: String? = null
+        vehicleId: String? = null,
+        forceRefresh: Boolean = false
     ): Flow<Resource<List<RouteModel>>> {
         return flow {
             emit(Resource.Loading())
@@ -55,7 +56,7 @@ class RouteRepository(
                 )
             }
 
-            if (isToFetchRemote) {
+            if (isToFetchRemote || forceRefresh) {
                 emit(Resource.Loading())
                 val remoteRoutes = try {
                     val response = routeService.getRoutes(

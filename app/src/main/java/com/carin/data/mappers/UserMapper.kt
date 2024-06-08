@@ -3,10 +3,12 @@ package com.carin.data.mappers
 import com.carin.R
 import com.carin.data.local.entities.UserEntity
 import com.carin.data.remote.dto.UserDto
+import com.carin.data.remote.dto.UserUpdateRequest
 import com.carin.data.remote.dto.auth.AuthRegisterDto
 import com.carin.data.remote.dto.auth.AuthRegisterRequest
 import com.carin.domain.models.UserModel
 import com.carin.domain.models.UserRegisterModel
+import com.carin.domain.models.UserUpdateModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -69,6 +71,10 @@ fun AuthRegisterDto.toUserEntity(): UserEntity {
     )
 }
 
-private fun pickRandomUserImage () {
-
+fun UserUpdateModel.toUserUpdateRequest(): UserUpdateRequest {
+    return UserUpdateRequest(
+        firstName = firstName,
+        lastName = lastName,
+        email = email
+    )
 }

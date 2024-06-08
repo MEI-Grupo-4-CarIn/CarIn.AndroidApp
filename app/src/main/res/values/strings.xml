@@ -184,5 +184,8 @@
     <string name="confirmPassword">Confirm Password</string>
     <string name="carin_logo">carin_logo</string>
     <string name="example_email">example@email.com</string>
+    <string name="field_required">This field is required</string>
+    <string name="user_update_successful">User updated with success!</string>
+    <string name="password_not_match">Passwords do not match</string>
 
 </resources>

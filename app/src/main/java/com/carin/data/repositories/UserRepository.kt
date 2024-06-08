@@ -4,11 +4,13 @@ import com.carin.data.local.daos.UserDao
 import com.carin.data.mappers.toAuthRegisterRequest
 import com.carin.data.mappers.toUserEntity
 import com.carin.data.mappers.toUserModel
+import com.carin.data.mappers.toUserUpdateRequest
 import com.carin.data.remote.AuthService
 import com.carin.data.remote.UserService
 import com.carin.domain.enums.Role
 import com.carin.domain.models.UserModel
 import com.carin.domain.models.UserRegisterModel
+import com.carin.domain.models.UserUpdateModel
 import com.carin.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -86,7 +88,7 @@ class UserRepository(
         }.flowOn(Dispatchers.IO)
     }
 
-    suspend fun getUserById(id: Int): Flow<Resource<UserModel>> {
+    suspend fun getUserById(id: Int, forceRefresh: Boolean = false): Flow<Resource<UserModel>> {
         return flow {
             emit(Resource.Loading())
 
@@ -96,7 +98,7 @@ class UserRepository(
                 emit(Resource.Success(data = localUser.toUserModel()))
             }
 
-            if (isToFetchRemote) {
+            if (isToFetchRemote || forceRefresh) {
                 val remoteUser = try {
                     val response =
                         userService.getUserById(id).execute()
@@ -125,6 +127,42 @@ class UserRepository(
                         emit(Resource.Success(data = upsertedUser.toUserModel()))
                     }
                 }
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun updateUser(userUpdateModel: UserUpdateModel): Flow<Resource<Boolean>> {
+        return flow {
+            emit(Resource.Loading())
+
+            val isUpdated = try {
+                val response =
+                    userService.updateUser(userUpdateModel.id, userUpdateModel.toUserUpdateRequest()).execute()
+                if (response.isSuccessful) {
+                    true
+                } else {
+                    emit(Resource.Error("ERROR: " + response.message()))
+                    false
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error("ERROR"))
+                false
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                emit(Resource.Error("ERROR"))
+                false
+            }
+
+            if (isUpdated) {
+                userDao.updatePartialUser(
+                    userUpdateModel.id,
+                    userUpdateModel.firstName,
+                    userUpdateModel.lastName,
+                    userUpdateModel.email
+                )
+
+                emit(Resource.Success(true))
             }
         }.flowOn(Dispatchers.IO)
     }

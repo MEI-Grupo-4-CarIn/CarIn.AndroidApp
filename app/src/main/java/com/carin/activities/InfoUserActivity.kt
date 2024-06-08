@@ -25,6 +25,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.carin.R
 import com.carin.di.RepositoryModule
 import com.carin.domain.enums.Role
+import com.carin.domain.models.UserAuth
 import com.carin.fragments.MainFragmentUserInfo
 import com.carin.utils.AuthUtils
 import com.carin.viewmodels.InfoUserViewModel
@@ -36,14 +37,17 @@ class InfoUserActivity : AppCompatActivity() {
     private lateinit var infoUserContainer: FrameLayout
     private lateinit var optionsIcon: ImageView
     private lateinit var viewModel: InfoUserViewModel
+    private var userAuth: UserAuth? = null
+    private var isOwnProfile = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info_user)
 
         val idFromList = intent.getIntExtra("id", -1)
-        val userAuth = AuthUtils.getUserAuth(this)
-        val isOwnProfile = idFromList == -1 || idFromList == userAuth?.userId
+        val isFromList = idFromList != -1
+        userAuth = AuthUtils.getUserAuth(this)
+        isOwnProfile = !isFromList || idFromList == userAuth?.userId
 
         userAuth?.let {
             adjustUIBasedOnRole(it.role)
@@ -52,6 +56,9 @@ class InfoUserActivity : AppCompatActivity() {
         infoUserContainer = findViewById(R.id.infoUserContainer)
         optionsIcon = findViewById(R.id.optionsIcon)
         val goBackIcon = findViewById<ImageView>(R.id.infoUserGoBackIcon)
+        goBackIcon.setOnClickListener {
+            finish()
+        }
 
         // Adjust the UI to show the footer and options menu only for the own profile
         if (isOwnProfile) {
@@ -61,14 +68,12 @@ class InfoUserActivity : AppCompatActivity() {
 
             findViewById<View>(R.id.footerLinearLayout).visibility = View.VISIBLE
             optionsIcon.visibility = View.VISIBLE
-            goBackIcon.visibility = View.GONE
+
+            if (!isFromList)
+                goBackIcon.visibility = View.GONE
 
             prepareMenu()
             prepareOptionsMenu()
-        } else {
-            goBackIcon.setOnClickListener {
-                finish()
-            }
         }
 
         if(savedInstanceState == null){
@@ -78,7 +83,6 @@ class InfoUserActivity : AppCompatActivity() {
         }
 
         val infoUserNameTxt = findViewById<TextView>(R.id.infoUserNameTxt)
-
         if (isOwnProfile) {
             infoUserNameTxt.text = "${userAuth?.firstName} ${userAuth?.lastName}"
         } else {
@@ -90,6 +94,19 @@ class InfoUserActivity : AppCompatActivity() {
         val routeRepository = RepositoryModule.provideRouteRepository(this)
         val factory = InfoUserViewModelFactory(userRepository, routeRepository)
         viewModel = ViewModelProvider(this, factory)[InfoUserViewModel::class.java]
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val infoUserNameTxt = findViewById<TextView>(R.id.infoUserNameTxt)
+        if (isOwnProfile) {
+            userAuth = AuthUtils.getUserAuth(this)
+            infoUserNameTxt.text = "${userAuth?.firstName} ${userAuth?.lastName}"
+        } else {
+            val userName = intent.getStringExtra("name")
+            infoUserNameTxt.text = userName
+        }
     }
 
     private fun prepareMenu() {
@@ -204,12 +221,20 @@ class InfoUserActivity : AppCompatActivity() {
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.edit -> {
-                        startActivity(Intent(this, EditUserActivity::class.java))
+                        val intent = Intent(this, EditUserActivity::class.java)
+                        if (userAuth != null)
+                            intent.putExtra("userId", userAuth?.userId)
+
+                        startActivity(intent)
                         true
                     }
                     R.id.logOut -> {
                         AuthUtils.clearUserOnSharedPreferences(this)
-                        startActivity(Intent(this, LoginActivity::class.java))
+
+                        val intent = Intent(this, LoginActivity::class.java)
+                        // Clears the activity stack
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
                         finish()
                         true
                     }

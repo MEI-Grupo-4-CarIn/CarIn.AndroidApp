@@ -24,6 +24,20 @@ interface UserDao {
     @Upsert
     suspend fun upsertUsers(users: List<UserEntity>)
 
+    @Query("""
+        UPDATE users SET
+        firstName = CASE WHEN :firstName IS NOT NULL THEN :firstName ELSE firstName END,
+        lastName = CASE WHEN :lastName IS NOT NULL THEN :lastName ELSE lastName END,
+        email = CASE WHEN :email IS NOT NULL THEN :email ELSE email END
+        WHERE id = :id
+    """)
+    suspend fun updatePartialUser(
+        id: Int,
+        firstName: String?,
+        lastName: String?,
+        email: String?
+    )
+
     @RawQuery
     suspend fun getUsers(query: SupportSQLiteQuery): List<UserEntity>
 

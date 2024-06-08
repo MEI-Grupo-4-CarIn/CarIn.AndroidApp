@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.carin.data.repositories.RouteRepository
 import com.carin.data.repositories.UserRepository
 import com.carin.domain.models.UserModel
+import com.carin.domain.models.UserUpdateModel
 import com.carin.utils.Resource
 import com.carin.viewmodels.states.RoutesListState
 import kotlinx.coroutines.launch
@@ -23,10 +24,12 @@ class InfoUserViewModel(
     val uiDetailsState: LiveData<Resource<UserModel>> get() = _uiDetailsState
     private val _uiRoutesState = MutableLiveData<RoutesListState>()
     val uiRoutesState: LiveData<RoutesListState> get() = _uiRoutesState
+    private val _userUpdateState = MutableLiveData<Resource<Boolean>>()
+    val userUpdateState: LiveData<Resource<Boolean>> get() = _userUpdateState
 
     fun loadUserDetails(userId: Int) {
         viewModelScope.launch {
-            userRepository.getUserById(userId).collect { result ->
+            userRepository.getUserById(userId, true).collect { result ->
                 if (result is Resource.Success) {
                     val user = result.data
                     user?.let {
@@ -64,6 +67,14 @@ class InfoUserViewModel(
                         _uiRoutesState.value = RoutesListState.Error(result.message ?: "Unknown error")
                     }
                 }
+            }
+        }
+    }
+
+    fun updateUser(userUpdateModel: UserUpdateModel) {
+        viewModelScope.launch {
+            userRepository.updateUser(userUpdateModel).collect { result ->
+                _userUpdateState.value = result
             }
         }
     }
