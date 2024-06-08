@@ -1,5 +1,6 @@
 package com.carin.adapter
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.view.LayoutInflater
@@ -13,9 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.activities.InfoVehicleActivity
 import com.carin.domain.models.VehicleModel
+import com.carin.utils.getStringResourceByName
 import java.io.ByteArrayOutputStream
 
-class VehiclesTabAdapter(private val vehicles: MutableList<VehicleModel>) : RecyclerView.Adapter<VehiclesTabAdapter.VehicleViewHolder>() {
+class VehiclesTabAdapter(private val context: Context, val vehicles: MutableList<VehicleModel>) : RecyclerView.Adapter<VehiclesTabAdapter.VehicleViewHolder>() {
 
     private val vehiclesIds = mutableSetOf<String>()
 
@@ -30,9 +32,9 @@ class VehiclesTabAdapter(private val vehicles: MutableList<VehicleModel>) : Recy
         holder.carImageView.setImageResource(vehicle.imageResource)
         holder.brandTextView.text = vehicle.brand
         holder.licensePlateTextView.text = vehicle.licensePlate
-        holder.fuelTextView.text = vehicle.fuelType.description
-        holder.consumptionTextView.text = "${vehicle.averageFuelConsumption}"
-        holder.autonomyTextView.text = "${vehicle.kms}"
+        holder.fuelTextView.text = context.getStringResourceByName(vehicle.fuelType.stringKey)
+        holder.consumptionTextView.text = "${vehicle.averageFuelConsumption} l/100km"
+        holder.autonomyTextView.text = "${vehicle.kms.toInt()} km"
     }
 
     override fun getItemCount(): Int = vehicles.size
@@ -79,3 +81,5 @@ class VehiclesTabAdapter(private val vehicles: MutableList<VehicleModel>) : Recy
     }
 
 }
+
+

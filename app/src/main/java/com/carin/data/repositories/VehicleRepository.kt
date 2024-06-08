@@ -37,8 +37,7 @@ class VehicleRepository(
             if (localVehicles.isNotEmpty()) {
                 emit(
                     Resource.Success(
-                        data = localVehicles.map { it.toVehicleModel() },
-                        waitForRemote = isToFetchRemote
+                        data = localVehicles.map { it.toVehicleModel() }
                     )
                 )
             }

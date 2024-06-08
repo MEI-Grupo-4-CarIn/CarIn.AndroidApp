@@ -25,8 +25,8 @@ class ApprovalAdapter(
 
     override fun onBindViewHolder(holder: ApprovalViewHolder, position: Int) {
         val approval = approvals[position]
-        holder.textView2.text = approval.fullname
-        holder.textView3.text = approval.role
+        holder.approveNameTxt.text = approval.fullname
+        holder.approveEmailTxt.text = approval.role
 
         holder.buttonCheck.setOnClickListener {
             showPopupDialog()
@@ -75,8 +75,8 @@ class ApprovalAdapter(
     }
 
     class ApprovalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textView2: TextView = itemView.findViewById(R.id.textView2)
-        val textView3: TextView = itemView.findViewById(R.id.textView3)
+        val approveNameTxt: TextView = itemView.findViewById(R.id.approveNameTxt)
+        val approveEmailTxt: TextView = itemView.findViewById(R.id.approveEmailTxt)
         val buttonCheck: Button = itemView.findViewById(R.id.button_check)
         val buttonCross: Button = itemView.findViewById(R.id.button_cross)
     }

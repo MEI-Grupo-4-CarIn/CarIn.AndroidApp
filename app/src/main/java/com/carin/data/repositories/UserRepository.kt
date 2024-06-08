@@ -43,8 +43,7 @@ class UserRepository(
             if (localUsers.isNotEmpty()) {
                 emit(
                     Resource.Success(
-                        data = localUsers.map { it.toUserModel() },
-                        waitForRemote = isToFetchRemote
+                        data = localUsers.map { it.toUserModel() }
                     )
                 )
             }

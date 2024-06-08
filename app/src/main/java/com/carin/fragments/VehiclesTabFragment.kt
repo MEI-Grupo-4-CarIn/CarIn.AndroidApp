@@ -15,14 +15,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.adapter.VehiclesTabAdapter
 import com.carin.domain.enums.VehicleType
-import com.carin.viewmodels.VehiclesViewModel
+import com.carin.viewmodels.VehiclesListViewModel
 import com.carin.viewmodels.events.VehiclesListEvent
 import com.carin.viewmodels.states.VehiclesListState
 
 class VehiclesTabFragment : Fragment() {
 
     private lateinit var adapter: VehiclesTabAdapter
-    private lateinit var viewModel: VehiclesViewModel
+    private lateinit var viewModel: VehiclesListViewModel
     private lateinit var currentVehicleType: VehicleType
     private lateinit var emptyTextView: TextView
     private lateinit var errorTextView: TextView
@@ -43,7 +43,7 @@ class VehiclesTabFragment : Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        adapter = VehiclesTabAdapter(mutableListOf())
+        adapter = VehiclesTabAdapter(requireContext(), mutableListOf())
         recyclerView.adapter = adapter
 
         emptyTextView = view.findViewById(R.id.emptyTextView)
@@ -51,7 +51,7 @@ class VehiclesTabFragment : Fragment() {
         progressBar = view.findViewById(R.id.progressBar)
 
         // Obtain the ViewModel from the Activity's ViewModelProvider
-        viewModel = ViewModelProvider(requireActivity())[VehiclesViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[VehiclesListViewModel::class.java]
 
         viewModel.uiState.observe(viewLifecycleOwner) { state ->
             when (state) {

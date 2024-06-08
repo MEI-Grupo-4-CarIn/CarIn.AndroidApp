@@ -17,15 +17,15 @@ import androidx.lifecycle.lifecycleScope
 import com.carin.R
 import com.carin.di.RepositoryModule
 import com.carin.fragments.MainUsersListFragment
-import com.carin.viewmodels.UsersViewModel
-import com.carin.viewmodels.UsersViewModelFactory
+import com.carin.viewmodels.UsersListViewModel
+import com.carin.viewmodels.UsersListViewModelFactory
 import com.carin.viewmodels.events.UsersListEvent
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class UsersListActivity : AppCompatActivity() {
-    private lateinit var viewModel: UsersViewModel
+    private lateinit var viewModel: UsersListViewModel
     private var searchJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,8 +47,8 @@ class UsersListActivity : AppCompatActivity() {
         val searchEditText: EditText = findViewById(R.id.searchEditText)
 
         val userRepository = RepositoryModule.provideUserRepository(this)
-        val factory = UsersViewModelFactory(userRepository)
-        viewModel = ViewModelProvider(this, factory)[UsersViewModel::class.java]
+        val factory = UsersListViewModelFactory(userRepository)
+        viewModel = ViewModelProvider(this, factory)[UsersListViewModel::class.java]
 
         searchEditText.setOnEditorActionListener { _, actionId, _ ->
             // Close the keyboard when the search button is clicked

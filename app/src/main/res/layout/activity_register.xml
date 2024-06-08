@@ -119,11 +119,11 @@
                         android:layout_height="45dp"
                         android:layout_below="@id/editTextLastName"
                         android:layout_marginTop="40dp"
-                        android:hint="@string/enterDateBirth"
+                        android:background="@drawable/edit_text_custom_background"
                         android:focusable="false"
+                        android:hint="@string/enterDateBirth"
                         android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:background="@drawable/edit_text_custom_background"/>
+                        android:paddingEnd="10dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -201,7 +201,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
-                    android:backgroundTint="@color/colorSecundary"/>
+                    android:backgroundTint="@color/colorSecondary"/>
 
                 <ImageView
                     android:id="@+id/imageCarin"

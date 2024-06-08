@@ -13,7 +13,7 @@ import com.carin.viewmodels.states.UsersListState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class UsersViewModel(private val repository: UserRepository) : ViewModel() {
+class UsersListViewModel(private val repository: UserRepository) : ViewModel() {
 
     private val _uiState = MutableLiveData<UsersListState>()
     val uiState: LiveData<UsersListState> get() = _uiState
@@ -126,11 +126,11 @@ class UsersViewModel(private val repository: UserRepository) : ViewModel() {
     }
 }
 
-class UsersViewModelFactory(private val repository: UserRepository) : ViewModelProvider.Factory {
+class UsersListViewModelFactory(private val repository: UserRepository) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(UsersViewModel::class.java)) {
-            return UsersViewModel(repository) as T
+        if (modelClass.isAssignableFrom(UsersListViewModel::class.java)) {
+            return UsersListViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

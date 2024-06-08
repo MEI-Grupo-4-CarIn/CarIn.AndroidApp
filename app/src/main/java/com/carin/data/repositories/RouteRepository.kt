@@ -50,8 +50,7 @@ class RouteRepository(
             if (localRoutes.isNotEmpty()) {
                 emit(
                     Resource.Success(
-                        data = localRoutes.map { it.toRouteModel() },
-                        waitForRemote = isToFetchRemote
+                        data = localRoutes.map { it.toRouteModel() }
                     )
                 )
             }

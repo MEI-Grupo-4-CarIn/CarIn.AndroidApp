@@ -51,7 +51,7 @@
             android:text="@string/yes"
             android:textStyle="bold"
             android:textColor="@android:color/white"
-            android:backgroundTint="@color/colorSecundary"
+            android:backgroundTint="@color/colorSecondary"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:layout_marginEnd="8dp"/>
