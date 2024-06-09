@@ -211,13 +211,12 @@ class HomeActivity : AppCompatActivity() {
         val layoutNewAppointment = findViewById<RelativeLayout>(R.id.layoutNewAppointment)
         val layoutAddRoute = findViewById<RelativeLayout>(R.id.layoutAddRoute)
         val layoutAddVehicle = findViewById<RelativeLayout>(R.id.layoutAddVehicle)
-        val layoutAddUser = findViewById<RelativeLayout>(R.id.layoutAddUser)
 
         buttonMore.setOnClickListener {
             if (isRotated) {
                 val rotateAnimator = ObjectAnimator.ofFloat(buttonMore, "rotation", 45f, 0f)
                     .apply {
-                        duration = 500
+                        duration = 300
                         interpolator = AccelerateDecelerateInterpolator()
                     }
 
@@ -228,11 +227,10 @@ class HomeActivity : AppCompatActivity() {
                 layoutNewAppointment.visibility = View.INVISIBLE
                 layoutAddRoute.visibility = View.INVISIBLE
                 layoutAddVehicle.visibility = View.INVISIBLE
-                layoutAddUser.visibility = View.INVISIBLE
             } else {
                 val rotateAnimator = ObjectAnimator.ofFloat(buttonMore, "rotation", 0f, 45f)
                     .apply {
-                        duration = 500
+                        duration = 300
                         interpolator = AccelerateDecelerateInterpolator()
                     }
 
@@ -243,15 +241,8 @@ class HomeActivity : AppCompatActivity() {
                 layoutNewAppointment.visibility = View.VISIBLE
                 layoutAddRoute.visibility = View.VISIBLE
                 layoutAddVehicle.visibility = View.VISIBLE
-                layoutAddUser.visibility = View.VISIBLE
             }
             isRotated = !isRotated
-        }
-
-        layoutAddUser.setOnClickListener {
-            val intent = Intent(this, NewUserActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(R.animator.slide_up, 0)
         }
 
         layoutAddVehicle.setOnClickListener {

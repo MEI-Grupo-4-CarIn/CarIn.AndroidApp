@@ -186,6 +186,20 @@
     <string name="field_required">Este campo é obrigatório</string>
     <string name="user_update_successful">Utilizador atualizado com sucesso!</string>
     <string name="password_not_match">As passwords não coincidem</string>
+    <string name="select_driver">Selecione um condutor</string>
+    <string name="invalid_destination_message">Endereço de destino inválido</string>
+    <string name="destination_not_empty_message">Endereço de destino não pode ser vazio</string>
+    <string name="invalid_departure_message">Endereço de partida inválido</string>
+    <string name="departure_not_empty_message">Endereço de partida não pode ser vazio</string>
+    <string name="select_vehicle">Selecione um veículo</string>
+    <string name="diesel">Diesel</string>
+    <string name="petrol">Gasolina</string>
+    <string name="electric">Elétrico</string>
+    <string name="city">Cidade</string>
+    <string name="country">País</string>
+    <string name="avoidTolls">Evitar portagens</string>
+    <string name="avoidHighways">Evitar autoestradas</string>
+    <string name="route_created_message">Rota criada com sucesso!</string>
 
 
 </resources>

@@ -2,12 +2,12 @@ package com.carin.data.mappers
 
 import com.carin.data.local.entities.RouteEntity
 import com.carin.data.local.entities.RouteWithInfoEntity
+import com.carin.data.remote.dto.RouteCreationRequest
 import com.carin.data.remote.dto.RouteDto
 import com.carin.domain.enums.RouteStatus
+import com.carin.domain.models.RouteCreationModel
 import com.carin.domain.models.RouteModel
-import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 
 fun RouteWithInfoEntity.toRouteModel(): RouteModel {
     return RouteModel(
@@ -32,7 +32,6 @@ fun RouteWithInfoEntity.toRouteModel(): RouteModel {
 }
 
 fun RouteDto.toRouteEntity(): RouteEntity {
-    val dateFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
     return RouteEntity(
         id = id,
         userId = userId,
@@ -50,5 +49,18 @@ fun RouteDto.toRouteEntity(): RouteEntity {
         creationDateUtc = creationDateUtc,
         lastUpdateDateUtc = lastUpdateDateUtc,
         localLastUpdateDateUtc = Date()
+    )
+}
+
+fun RouteCreationModel.toRouteCreationRequest(): RouteCreationRequest {
+    return RouteCreationRequest(
+        userId = userId.toString(),
+        vehicleId = vehicleId,
+        startPoint = startPoint.toLocationRequest(),
+        endPoint = endPoint.toLocationRequest(),
+        startDate = startDate,
+        status = status.toString().lowercase(),
+        avoidTolls = avoidTolls,
+        avoidHighways = avoidHighways
     )
 }

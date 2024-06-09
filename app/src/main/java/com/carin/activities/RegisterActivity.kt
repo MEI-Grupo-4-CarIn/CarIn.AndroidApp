@@ -91,13 +91,20 @@ class RegisterActivity : AppCompatActivity() {
 
         val datePickerDialog = DatePickerDialog(
             this,
-            { _, year, monthOfYear, dayOfMonth ->
-                val selectedDate = "$dayOfMonth-${monthOfYear + 1}-$year"
-                editText.setText(selectedDate)
+            { _, selectedYear, selectedMonth, selectedDayOfMonth ->
+                val selectedDateTime = Calendar.getInstance()
+                selectedDateTime.set(
+                    selectedYear,
+                    selectedMonth,
+                    selectedDayOfMonth
+                )
+                val selectedDateTimeFormatted =
+                    SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(
+                        selectedDateTime.time
+                    )
+                editText.setText(selectedDateTimeFormatted)
             },
-            year,
-            month,
-            day
+            year, month, day
         )
         datePickerDialog.show()
     }

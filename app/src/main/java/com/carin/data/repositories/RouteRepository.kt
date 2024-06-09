@@ -3,6 +3,7 @@ package com.carin.data.repositories
 import com.carin.data.local.daos.RouteDao
 import com.carin.data.local.daos.UserDao
 import com.carin.data.local.daos.VehicleDao
+import com.carin.data.mappers.toRouteCreationRequest
 import com.carin.data.mappers.toRouteEntity
 import com.carin.data.mappers.toRouteModel
 import com.carin.data.mappers.toUserEntity
@@ -11,6 +12,7 @@ import com.carin.data.remote.RouteService
 import com.carin.data.remote.UserService
 import com.carin.data.remote.VehicleService
 import com.carin.domain.enums.RouteStatus
+import com.carin.domain.models.RouteCreationModel
 import com.carin.domain.models.RouteModel
 import com.carin.utils.Resource
 import kotlinx.coroutines.Dispatchers
@@ -50,8 +52,7 @@ class RouteRepository(
             if (localRoutes.isNotEmpty()) {
                 emit(
                     Resource.Success(
-                        data = localRoutes.map { it.toRouteModel() },
-                        waitForRemote = isToFetchRemote
+                        data = localRoutes.map { it.toRouteModel() }
                     )
                 )
             }
@@ -167,4 +168,36 @@ class RouteRepository(
             }
         }.flowOn(Dispatchers.IO)
     }
+
+    suspend fun createRoute(routeCreationModel: RouteCreationModel): Flow<Resource<String>> {
+        return flow {
+            emit(Resource.Loading())
+
+            val remoteRoute = try {
+                val response = routeService.createRoute(routeCreationModel.toRouteCreationRequest()).execute()
+                if (response.isSuccessful) {
+                    response.body()
+                } else {
+                    emit(Resource.Error(response.message()))
+                    null
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't create route"))
+                null
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't create route"))
+                null
+            }
+
+            remoteRoute?.let { routeDto ->
+                val routeEntity = routeDto.toRouteEntity()
+                routeDao.insertRoute(routeEntity)
+
+                emit(Resource.Success(remoteRoute.id))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
 }

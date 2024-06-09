@@ -216,18 +216,20 @@
                 android:layout_marginBottom="60dp"/>
         </LinearLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonRegister"
             android:layout_width="381dp"
             android:layout_height="52dp"
             android:text="@string/save"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/relativeLayoutVehicle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:backgroundTint="@color/colorSecundary"/>
+            android:background="@drawable/rounded_blue_button"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayoutVehicle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -8,58 +8,31 @@
     android:padding="6dp"
     android:layout_marginBottom="5dp">
 
-    <ImageView
-        android:id="@+id/carImageView"
-        android:layout_width="54dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:src="@drawable/logo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/brandTextView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
     <TextView
         android:id="@+id/brandTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:text="Marca e Modelo"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"
+        android:textSize="16sp"
         android:maxLines="1"
         android:ellipsize="end"
-        app:layout_constraintStart_toEndOf="@id/carImageView"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <TextView
-        android:id="@+id/licensePlateTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="XXXX-XX"
-        android:textColor="@color/colorPrimary"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintStart_toEndOf="@id/carImageView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/brandTextView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintStart_toEndOf="@id/carImageView"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/licensePlateTextView"
+        app:layout_constraintTop_toBottomOf="@id/brandTextView"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
@@ -78,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@color/colorPrimary"
-            android:text="XX km/l"
+            android:text="XX l/100km"
             android:drawableLeft="@drawable/ic_consumption"
             android:drawablePadding="4dp"/>
 

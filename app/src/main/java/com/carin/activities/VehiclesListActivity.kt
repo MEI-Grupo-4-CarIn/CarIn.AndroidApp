@@ -23,8 +23,8 @@ import com.carin.di.RepositoryModule
 import com.carin.domain.enums.Role
 import com.carin.fragments.MainFragmentVehicle
 import com.carin.utils.AuthUtils
-import com.carin.viewmodels.VehiclesViewModel
-import com.carin.viewmodels.VehiclesViewModelFactory
+import com.carin.viewmodels.VehiclesListViewModel
+import com.carin.viewmodels.VehiclesListViewModelFactory
 import com.carin.viewmodels.events.VehiclesListEvent
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
 class VehiclesListActivity : AppCompatActivity() {
 
     private var isRotated = false
-    private lateinit var viewModel: VehiclesViewModel
+    private lateinit var viewModel: VehiclesListViewModel
     private var searchJob : Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,8 +56,8 @@ class VehiclesListActivity : AppCompatActivity() {
         val searchEditText: EditText = findViewById(R.id.searchEditText)
 
         val vehicleRepository = RepositoryModule.provideVehicleRepository(this)
-        val factory = VehiclesViewModelFactory(vehicleRepository)
-        viewModel = ViewModelProvider(this, factory)[VehiclesViewModel::class.java]
+        val factory = VehiclesListViewModelFactory(vehicleRepository)
+        viewModel = ViewModelProvider(this, factory)[VehiclesListViewModel::class.java]
 
         searchEditText.setOnEditorActionListener { _, actionId, _ ->
             // Close the keyboard when the search button is clicked
@@ -134,7 +134,6 @@ class VehiclesListActivity : AppCompatActivity() {
         val layoutNewAppointment = findViewById<RelativeLayout>(R.id.layoutNewAppointment)
         val layoutAddRoute = findViewById<RelativeLayout>(R.id.layoutAddRoute)
         val layoutAddVehicle = findViewById<RelativeLayout>(R.id.layoutAddVehicle)
-        val layoutAddUser = findViewById<RelativeLayout>(R.id.layoutAddUser)
 
         buttonMore.setOnClickListener {
             if (isRotated) {
@@ -151,7 +150,6 @@ class VehiclesListActivity : AppCompatActivity() {
                 layoutNewAppointment.visibility = View.INVISIBLE
                 layoutAddRoute.visibility = View.INVISIBLE
                 layoutAddVehicle.visibility = View.INVISIBLE
-                layoutAddUser.visibility = View.INVISIBLE
             } else {
                 val rotateAnimator = ObjectAnimator.ofFloat(buttonMore, "rotation", 0f, 45f)
                     .apply {
@@ -166,15 +164,8 @@ class VehiclesListActivity : AppCompatActivity() {
                 layoutNewAppointment.visibility = View.VISIBLE
                 layoutAddRoute.visibility = View.VISIBLE
                 layoutAddVehicle.visibility = View.VISIBLE
-                layoutAddUser.visibility = View.VISIBLE
             }
             isRotated = !isRotated
-        }
-
-        layoutAddUser.setOnClickListener {
-            val intent = Intent(this, NewUserActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(R.animator.slide_up, 0)
         }
 
         layoutAddVehicle.setOnClickListener {
