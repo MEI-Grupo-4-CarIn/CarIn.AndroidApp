@@ -1,6 +1,7 @@
 package com.carin.data.local.daos
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.RawQuery
 import androidx.room.Upsert
@@ -14,6 +15,9 @@ import com.carin.domain.enums.RouteStatus
 interface RouteDao {
     @Query("SELECT * FROM routes WHERE id = :id LIMIT 1")
     suspend fun getRouteById(id: String): RouteWithInfoEntity?
+
+    @Insert
+    suspend fun insertRoute(routes: RouteEntity)
 
     @Upsert
     suspend fun upsertRoute(routes: RouteEntity)

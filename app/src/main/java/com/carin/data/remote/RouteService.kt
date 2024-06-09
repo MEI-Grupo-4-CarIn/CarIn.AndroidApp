@@ -1,8 +1,11 @@
 package com.carin.data.remote
 
+import com.carin.data.remote.dto.RouteCreationRequest
 import com.carin.data.remote.dto.RouteDto
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface RouteService {
@@ -15,4 +18,7 @@ interface RouteService {
         @Query("userId") userId: Int? = null,
         @Query("vehicleId") vehicleId: String? = null,
     ): Call<List<RouteDto>>
+
+    @POST("/routes")
+    fun createRoute(@Body routeCreationRequest: RouteCreationRequest): Call<RouteDto>
 }
