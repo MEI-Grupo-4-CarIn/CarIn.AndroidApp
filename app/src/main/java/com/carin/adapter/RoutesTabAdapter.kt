@@ -37,7 +37,7 @@ class RoutesTabAdapter(private val routes: MutableList<RouteModel>) : RecyclerVi
         holder.originTextView.text = route.startPoint.city
         holder.destinationTextView.text = route.endPoint.city
         holder.driverNameTextView.text = "${route.user?.firstName} ${route.user?.lastName}"
-        holder.hoursTextView.text = "${route.duration}"
+        holder.hoursTextView.text = "${route.duration} h"
         holder.departureDateTextView.text = " ${formatter.format(route.startDate)}"
         holder.statusTextView.text = route.status.description
         holder.vehicleTextView.text = "${route.vehicle?.brand} ${route.vehicle?.model}"
