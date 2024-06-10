@@ -33,12 +33,14 @@ class InfoRouteActivity : AppCompatActivity() {
 
         val iconImageView = findViewById<ImageView>(R.id.iconImageView)
         iconImageView.setOnClickListener {
-            startActivity(Intent(this, RoutesListActivity::class.java))
+            Intent(this, RoutesListActivity::class.java)
+            finish()
         }
 
         val textViewSeeMore = findViewById<TextView>(R.id.textViewSeeMore)
         textViewSeeMore.setOnClickListener {
-            startActivity(Intent(this, InfoVehicleActivity::class.java))
+            val intent = Intent(this, InfoVehicleActivity::class.java)
+            startActivity(intent)
         }
 
         val textViewSeeMoreDriver = findViewById<TextView>(R.id.textViewSeeMoreDriver)

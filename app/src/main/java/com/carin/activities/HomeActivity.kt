@@ -156,6 +156,7 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+
         val moreNotifications: TextView = findViewById(R.id.textViewSeeMore1)
         moreNotifications.setOnClickListener {
             val intent = Intent(this, NotificationActivity::class.java)
@@ -262,6 +263,7 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
             overridePendingTransition(R.animator.slide_up, 0)
         }
+
     }
 
     private fun adjustUIBasedOnRole(role: Role) {

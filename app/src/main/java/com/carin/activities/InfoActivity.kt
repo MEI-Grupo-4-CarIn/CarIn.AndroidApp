@@ -14,8 +14,7 @@ class InfoActivity : AppCompatActivity() {
 
         val iconImageView = findViewById<ImageView>(R.id.iconImageView)
         iconImageView.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
+            Intent(this, HomeActivity::class.java)
             finish()
         }
     }
