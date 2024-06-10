@@ -39,6 +39,7 @@ import com.carin.domain.models.LocationCreationModel
 import com.carin.domain.models.RouteCreationModel
 import com.carin.domain.models.UserModel
 import com.carin.domain.models.VehicleModel
+import com.carin.utils.ConvertersUtils
 import com.carin.utils.Resource
 import com.carin.viewmodels.CreateRouteViewModel
 import com.carin.viewmodels.CreateRouteViewModelFactory
@@ -77,6 +78,7 @@ class NewRouteActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var lastLocation: Location
     private var selectedUserId: Int? = null
     private var selectedVehicleId: String? = null
+    private var selectedDate: Date? = null
     private var startPoint: LatLng? = null
     private var endPoint: LatLng? = null
     private var searchJob: Job? = null
@@ -146,7 +148,7 @@ class NewRouteActivity : AppCompatActivity(), OnMapReadyCallback {
                     vehicleId = selectedVehicleId!!,
                     startPoint = LocationCreationModel(editTextDepartureCity.text.toString(), editTextDepartureCountry.text.toString()),
                     endPoint = LocationCreationModel(editTextDestinationCity.text.toString(), editTextDestinationCountry.text.toString()),
-                    startDate = convertBirthDateToCSharpFormat(editTextDepartureDate.text.toString()) ?: "",
+                    startDate = ConvertersUtils.convertBirthDateToCSharpFormat(editTextDepartureDate.text.toString()) ?: "",
                     avoidTolls = avoidTollsCheckBox.isChecked,
                     avoidHighways = avoidHighwaysCheckBox.isChecked,
                 )
@@ -348,6 +350,11 @@ class NewRouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun showDateTimePickerDialog(editText: EditText) {
         val calendar = Calendar.getInstance()
+
+        selectedDate?.let {
+            calendar.time = it
+        }
+
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
@@ -368,6 +375,7 @@ class NewRouteActivity : AppCompatActivity(), OnMapReadyCallback {
                             selectedHourOfDay,
                             selectedMinute
                         )
+                        selectedDate = selectedDateTime.time
                         val selectedDateTimeFormatted =
                             SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault()).format(
                                 selectedDateTime.time
@@ -549,6 +557,7 @@ class NewRouteActivity : AppCompatActivity(), OnMapReadyCallback {
         editTextVehicle: EditText
     ): Boolean {
         val requiredFieldMessage = getString(R.string.field_required)
+        val messageDateShouldBeInFuture = getString(R.string.date_should_be_future)
         var isValid = true
 
         if (editTextDepartureCity.text.toString().isEmpty()) {
@@ -586,6 +595,11 @@ class NewRouteActivity : AppCompatActivity(), OnMapReadyCallback {
             isValid = false
         }
 
+        if (selectedDate != null && selectedDate!! < Date()) {
+            editTextDepartureDate.error = messageDateShouldBeInFuture
+            Toast.makeText(this, messageDateShouldBeInFuture, Toast.LENGTH_SHORT).show()
+        }
+
         return isValid
     }
 
@@ -608,12 +622,5 @@ class NewRouteActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun finish() {
         super.finish()
         overridePendingTransition(0, R.animator.slide_out_down)
-    }
-
-    private fun convertBirthDateToCSharpFormat(birthDate: String): String? {
-        val inputFormat = SimpleDateFormat("dd-MM-yyyy hh:mm", Locale.getDefault())
-        val date: Date? = inputFormat.parse(birthDate)
-        val outputFormat = SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault())
-        return date?.let { outputFormat.format(it) }
     }
 }

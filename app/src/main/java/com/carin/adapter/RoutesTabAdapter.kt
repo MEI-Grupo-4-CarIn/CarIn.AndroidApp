@@ -16,11 +16,12 @@ import com.carin.R
 import com.carin.activities.InfoRouteActivity
 import com.carin.domain.enums.RouteStatus
 import com.carin.domain.models.RouteModel
+import com.carin.utils.getStringResourceByName
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class RoutesTabAdapter(private val routes: MutableList<RouteModel>) : RecyclerView.Adapter<RoutesTabAdapter.RouteViewHolder>() {
+class RoutesTabAdapter(private val context: Context,private val routes: MutableList<RouteModel>) : RecyclerView.Adapter<RoutesTabAdapter.RouteViewHolder>() {
 
     private val routeIds = mutableSetOf<String>()
     private val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
@@ -39,7 +40,7 @@ class RoutesTabAdapter(private val routes: MutableList<RouteModel>) : RecyclerVi
         holder.driverNameTextView.text = "${route.user?.firstName} ${route.user?.lastName}"
         holder.hoursTextView.text = "${route.duration} h"
         holder.departureDateTextView.text = " ${formatter.format(route.startDate)}"
-        holder.statusTextView.text = route.status.description
+        holder.statusTextView.text = context.getStringResourceByName(route.status.stringKey)
         holder.vehicleTextView.text = "${route.vehicle?.brand} ${route.vehicle?.model}"
         holder.kmTextView.text = "${decimalFormat.format(route.distance)} km"
 

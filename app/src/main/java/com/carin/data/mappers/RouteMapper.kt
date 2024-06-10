@@ -4,9 +4,11 @@ import com.carin.data.local.entities.RouteEntity
 import com.carin.data.local.entities.RouteWithInfoEntity
 import com.carin.data.remote.dto.RouteCreationRequest
 import com.carin.data.remote.dto.RouteDto
+import com.carin.data.remote.dto.RouteUpdateRequest
 import com.carin.domain.enums.RouteStatus
 import com.carin.domain.models.RouteCreationModel
 import com.carin.domain.models.RouteModel
+import com.carin.domain.models.RouteUpdateModel
 import java.util.Date
 
 fun RouteWithInfoEntity.toRouteModel(): RouteModel {
@@ -42,7 +44,7 @@ fun RouteDto.toRouteEntity(): RouteEntity {
         estimatedEndDate = estimatedEndDate,
         distance = distance,
         duration = duration,
-        status = RouteStatus.fromDescription(status) ?: RouteStatus.Pending,
+        status = RouteStatus.fromDescription(status)!!,
         avoidTolls = avoidTolls,
         avoidHighways = avoidHighways,
         isDeleted = isDeleted,
@@ -59,7 +61,18 @@ fun RouteCreationModel.toRouteCreationRequest(): RouteCreationRequest {
         startPoint = startPoint.toLocationRequest(),
         endPoint = endPoint.toLocationRequest(),
         startDate = startDate,
-        status = status.toString().lowercase(),
+        status = status.externalKey,
+        avoidTolls = avoidTolls,
+        avoidHighways = avoidHighways
+    )
+}
+
+fun RouteUpdateModel.toRouteUpdateRequest(): RouteUpdateRequest {
+    return RouteUpdateRequest(
+        userId = userId?.toString(),
+        vehicleId = vehicleId,
+        startDate = startDate,
+        status = status?.externalKey,
         avoidTolls = avoidTolls,
         avoidHighways = avoidHighways
     )

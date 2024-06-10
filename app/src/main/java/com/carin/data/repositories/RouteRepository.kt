@@ -6,6 +6,7 @@ import com.carin.data.local.daos.VehicleDao
 import com.carin.data.mappers.toRouteCreationRequest
 import com.carin.data.mappers.toRouteEntity
 import com.carin.data.mappers.toRouteModel
+import com.carin.data.mappers.toRouteUpdateRequest
 import com.carin.data.mappers.toUserEntity
 import com.carin.data.mappers.toVehicleEntity
 import com.carin.data.remote.RouteService
@@ -14,6 +15,7 @@ import com.carin.data.remote.VehicleService
 import com.carin.domain.enums.RouteStatus
 import com.carin.domain.models.RouteCreationModel
 import com.carin.domain.models.RouteModel
+import com.carin.domain.models.RouteUpdateModel
 import com.carin.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -63,7 +65,7 @@ class RouteRepository(
                 val remoteRoutes = try {
                     val response = routeService.getRoutes(
                         search,
-                        status.toString().lowercase(),
+                        status?.externalKey,
                         page,
                         perPage,
                         userId,
@@ -257,6 +259,54 @@ class RouteRepository(
                 routeDao.insertRoute(routeEntity)
 
                 emit(Resource.Success(remoteRoute.id))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun updateRoute(routeUpdateModel: RouteUpdateModel): Flow<Resource<Boolean>> {
+        return flow {
+            emit(Resource.Loading())
+
+            val remoteRoute = try {
+                val response =
+                    routeService.updateRoute(routeUpdateModel.id, routeUpdateModel.toRouteUpdateRequest()).execute()
+                if (response.isSuccessful) {
+                    response.body()
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = errorBody?.let {
+                        try {
+                            JSONObject(it).getString("message")
+                        } catch (e: Exception) {
+                            response.message()
+                        }
+                    } ?: response.message()
+                    emit(Resource.Error(errorMessage))
+                    null
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error("ERROR"))
+                null
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                emit(Resource.Error("ERROR"))
+                null
+            }
+
+            if (remoteRoute != null) {
+                val routeEntity = remoteRoute.toRouteEntity()
+                routeDao.updatePartialRoute(
+                    routeUpdateModel.id,
+                    if (routeUpdateModel.userId != null) routeEntity.userId else null,
+                    if (routeUpdateModel.vehicleId != null) routeEntity.vehicleId else null,
+                    if (routeUpdateModel.startDate != null) routeEntity.startDate else null,
+                    routeUpdateModel.status,
+                    routeUpdateModel.avoidTolls,
+                    routeUpdateModel.avoidHighways
+                )
+
+                emit(Resource.Success(true))
             }
         }.flowOn(Dispatchers.IO)
     }

@@ -135,7 +135,7 @@
                         android:focusable="false"
                         android:layout_marginEnd="5dp"
                         android:gravity="center_horizontal|center_vertical"
-                        android:hint="dd-mm-yyyy hh:mm"
+                        android:hint="dd-mm-yyyy HH:mm"
                         android:padding="10dp"/>
 
                 </LinearLayout>
@@ -165,7 +165,7 @@
                         android:focusable="false"
                         android:layout_marginStart="5dp"
                         android:gravity="center_horizontal|center_vertical"
-                        android:hint="dd-mm-yyyy hh:mm"
+                        android:hint="dd-mm-yyyy HH:mm"
                         android:padding="10dp" />
                 </LinearLayout>
 
@@ -268,7 +268,7 @@
                         android:id="@+id/spinnerOptionsDriver"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:entries="@array/options"
+                        android:entries="@array/optionsRole"
                         android:background="@drawable/edit_text_custom_background"
                         style="@style/SpinnerTextStyle"/>
 
@@ -284,7 +284,7 @@
                         android:id="@+id/spinnerOptionsVehicle"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:entries="@array/options"
+                        android:entries="@array/optionsRole"
                         android:background="@drawable/edit_text_custom_background"
                         style="@style/SpinnerTextStyle"/>
                 </LinearLayout>

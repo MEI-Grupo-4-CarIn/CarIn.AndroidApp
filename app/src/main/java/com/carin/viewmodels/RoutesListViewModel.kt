@@ -13,7 +13,7 @@ import com.carin.viewmodels.states.RoutesListState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class RoutesViewModel(private val repository: RouteRepository) : ViewModel() {
+class RoutesListViewModel(private val repository: RouteRepository) : ViewModel() {
 
     private val _uiState = MutableLiveData<RoutesListState>()
     val uiState: LiveData<RoutesListState> get() = _uiState
@@ -129,8 +129,8 @@ class RoutesViewModel(private val repository: RouteRepository) : ViewModel() {
 class RoutesViewModelFactory(private val repository: RouteRepository) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(RoutesViewModel::class.java)) {
-            return RoutesViewModel(repository) as T
+        if (modelClass.isAssignableFrom(RoutesListViewModel::class.java)) {
+            return RoutesListViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

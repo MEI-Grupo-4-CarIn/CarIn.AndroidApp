@@ -6,22 +6,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.carin.data.repositories.RouteRepository
-import com.carin.data.repositories.UserRepository
-import com.carin.data.repositories.VehicleRepository
 import com.carin.domain.models.RouteModel
+import com.carin.domain.models.RouteUpdateModel
 import com.carin.utils.Resource
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
 
 class InfoRouteViewModel(
-    private val userRepository: UserRepository,
-    private val vehicleRepository: VehicleRepository,
     private val routeRepository: RouteRepository
 ) : ViewModel() {
 
     private val _uiDetailsState = MutableLiveData<Resource<RouteModel>>()
     val uiDetailsState: LiveData<Resource<RouteModel>> get() = _uiDetailsState
+    private val _routeUpdateState = MutableLiveData<Resource<Boolean>>()
+    val routeUpdateState: LiveData<Resource<Boolean>> get() = _routeUpdateState
 
     fun loadRouteDetails(routeId: String) {
         viewModelScope.launch {
@@ -36,13 +35,13 @@ class InfoRouteViewModel(
         }
     }
 
-//    fun updateRoute(userUpdateModel: UserUpdateModel) {
-//        viewModelScope.launch {
-//            userRepository.updateUser(userUpdateModel).collect { result ->
-//                _routeUpdateState.value = result
-//            }
-//        }
-//    }
+    fun updateRoute(routeUpdateModel: RouteUpdateModel) {
+        viewModelScope.launch {
+            routeRepository.updateRoute(routeUpdateModel).collect { result ->
+                _routeUpdateState.value = result
+            }
+        }
+    }
 
     private fun calculateAge(dateOfBirth: Date): Int {
         val birthCalendar = Calendar.getInstance().apply {
@@ -59,14 +58,12 @@ class InfoRouteViewModel(
 }
 
 class InfoRouteViewModelFactory(
-    private val userRepository: UserRepository,
-    private val vehicleRepository: VehicleRepository,
     private val routeRepository: RouteRepository
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(InfoRouteViewModel::class.java)) {
-            return InfoRouteViewModel(userRepository, vehicleRepository, routeRepository) as T
+            return InfoRouteViewModel(routeRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

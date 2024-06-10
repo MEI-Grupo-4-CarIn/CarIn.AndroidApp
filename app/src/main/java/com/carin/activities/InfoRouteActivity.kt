@@ -23,6 +23,7 @@ import androidx.lifecycle.lifecycleScope
 import com.carin.R
 import com.carin.di.RepositoryModule
 import com.carin.domain.enums.Role
+import com.carin.domain.enums.RouteStatus
 import com.carin.utils.AuthUtils
 import com.carin.utils.Resource
 import com.carin.utils.getStringResourceByName
@@ -42,6 +43,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.random.Random
@@ -49,10 +51,13 @@ import kotlin.random.Random
 class InfoRouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
+    private lateinit var viewModel: InfoRouteViewModel
+    private lateinit var routeId: String
     private var startPoint: LatLng? = null
     private var endPoint: LatLng? = null
-    private lateinit var viewModel: InfoRouteViewModel
-    private val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    private val birthDateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    private val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+    private val decimalFormat = DecimalFormat("#.##")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,21 +69,27 @@ class InfoRouteActivity : AppCompatActivity(), OnMapReadyCallback {
         val userAuth = AuthUtils.getUserAuth(this)
         userAuth?.let {
             adjustUIBasedOnRole(it.role)
+            if (it.role == Role.Admin || it.role == Role.Manager) {
+                prepareOptionsMenu()
+            }
         }
 
-        val routeIdFromIntent = intent.getStringExtra("routeId")
+        val routeIdFromIntent = intent.getStringExtra("routeId") ?: ""
+        routeId = routeIdFromIntent
 
         val infoRouteGoBackIcon = findViewById<ImageView>(R.id.infoRouteGoBackIcon)
         infoRouteGoBackIcon.setOnClickListener {
             finish()
         }
 
-        prepareOptionsMenu()
-
         val infoRouteDetailsDepartureTxt = findViewById<TextView>(R.id.infoRouteDetailsDepartureTxt)
         val infoRouteDetailsDestinationTxt = findViewById<TextView>(R.id.infoRouteDetailsDestinationTxt)
         val infoRouteDetailsDriverTxt = findViewById<TextView>(R.id.infoRouteDetailsDriverTxt)
         val infoRouteDetailsVehicleTxt = findViewById<TextView>(R.id.infoRouteDetailsVehicleTxt)
+        val infoRouteKmsTxt = findViewById<TextView>(R.id.infoRouteKmsTxt)
+        val infoRouteDurationTxt = findViewById<TextView>(R.id.infoRouteDurationTxt)
+        val infoRouteDetailStatusTxt = findViewById<TextView>(R.id.infoRouteDetailStatusTxt)
+        val infoRouteDetailsDepartureDateTxt = findViewById<TextView>(R.id.infoRouteDetailsDepartureDateTxt)
         val infoRouteDetailsBrandTxt = findViewById<TextView>(R.id.infoRouteDetailsBrandTxt)
         val infoRouteDetailsModelTxt = findViewById<TextView>(R.id.infoRouteDetailsModelTxt)
         val infoRouteDetailsFuelTypeTxt = findViewById<TextView>(R.id.infoRouteDetailsFuelTypeTxt)
@@ -91,18 +102,12 @@ class InfoRouteActivity : AppCompatActivity(), OnMapReadyCallback {
         val infoRouteDetailsFuelCostsTxt = findViewById<TextView>(R.id.infoRouteDetailsFuelCostsTxt)
         val infoRouteDetailsTollsCostsTxt = findViewById<TextView>(R.id.infoRouteDetailsTollsCostsTxt)
         val infoRouteDetailsOtherCostsTxt = findViewById<TextView>(R.id.infoRouteDetailsOtherCostsTxt)
-
-        // TODO: add kilometers and time
-
         val progressBar = findViewById<View>(R.id.progressBar)
         val errorTextView = findViewById<TextView>(R.id.errorTextView)
 
-        val userRepository = RepositoryModule.provideUserRepository(this)
-        val vehicleRepository = RepositoryModule.provideVehicleRepository(this)
         val routeRepository = RepositoryModule.provideRouteRepository(this)
-        val factory = InfoRouteViewModelFactory(userRepository, vehicleRepository, routeRepository)
+        val factory = InfoRouteViewModelFactory(routeRepository)
         viewModel = ViewModelProvider(this, factory)[InfoRouteViewModel::class.java]
-
         viewModel.uiDetailsState.observe(this) { resource ->
             when (resource) {
                 is Resource.Loading -> {
@@ -117,6 +122,9 @@ class InfoRouteActivity : AppCompatActivity(), OnMapReadyCallback {
                         infoRouteDetailsDestinationTxt.text = "${route.endPoint.city}, ${route.endPoint.country}"
                         infoRouteDetailsDriverTxt.text = "${route.user?.firstName} ${route.user?.lastName}"
                         infoRouteDetailsVehicleTxt.text = "${route.vehicle?.brand} ${route.vehicle?.model}"
+                        infoRouteKmsTxt.text = "${decimalFormat.format(route.distance)} km"
+                        infoRouteDurationTxt.text = "${route.duration} h"
+                        infoRouteDetailsDepartureDateTxt.text = formatter.format(route.startDate)
                         infoRouteDetailsBrandTxt.text = route.vehicle?.brand
                         infoRouteDetailsModelTxt.text = route.vehicle?.model
                         infoRouteDetailsFuelTypeTxt.text = route.vehicle?.fuelType?.let {
@@ -124,7 +132,7 @@ class InfoRouteActivity : AppCompatActivity(), OnMapReadyCallback {
                         }
                         infoRouteDetailsLicensePlateTxt.text = route.vehicle?.licensePlate
                         infoRouteDetailsNameTxt.text = "${route.user?.firstName} ${route.user?.lastName}"
-                        infoRouteDetailsBirthDateTxt.text = formatter.format(route.user?.birthDate)
+                        infoRouteDetailsBirthDateTxt.text = birthDateFormatter.format(route.user?.birthDate)
                         infoRouteDetailsAccidentsTxt.text = "0"
                         infoRouteDetailsAgeTxt.text = route.user?.age?.toString() ?: "N/A"
                         infoRouteDetailsEmailTxt.text = route.user?.email
@@ -136,6 +144,8 @@ class InfoRouteActivity : AppCompatActivity(), OnMapReadyCallback {
                         }
                         val randomOtherCost = Random.nextDouble(1.00, 100.00)
                         infoRouteDetailsOtherCostsTxt.text = "%.2f €".format(randomOtherCost)
+
+                        prepareStatusTextView(infoRouteDetailStatusTxt, route.status)
                     }
 
                     setUpMapWithLocations()
@@ -150,13 +160,13 @@ class InfoRouteActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
-        if (routeIdFromIntent != null) {
-            viewModel.loadRouteDetails(routeIdFromIntent)
-        }
+        viewModel.loadRouteDetails(routeId)
     }
 
     private fun prepareOptionsMenu() {
         val optionsIcon = findViewById<ImageView>(R.id.optionsIcon)
+        optionsIcon.visibility = View.VISIBLE
+
         optionsIcon.setOnClickListener { view ->
             val popupMenu = PopupMenu(ContextThemeWrapper(this, R.style.PopupMenu), view)
 
@@ -180,7 +190,9 @@ class InfoRouteActivity : AppCompatActivity(), OnMapReadyCallback {
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.edit -> {
-                        startActivity(Intent(this, EditRouteActivity::class.java))
+                        val intent = Intent(this, EditRouteActivity::class.java)
+                        intent.putExtra("routeId", routeId)
+                        startActivity(intent)
                         true
                     }
                     R.id.delete -> {
@@ -192,6 +204,12 @@ class InfoRouteActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             popupMenu.show()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        routeId.let { viewModel.loadRouteDetails(it) }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -248,6 +266,24 @@ class InfoRouteActivity : AppCompatActivity(), OnMapReadyCallback {
                 mMap.addPolyline(polylineOptions)
                 val bounds = LatLngBounds.Builder().include(start).include(end).build()
                 mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
+            }
+        }
+    }
+
+    private fun prepareStatusTextView(textView: TextView, status: RouteStatus) {
+        textView.text = this.getStringResourceByName(status.stringKey)
+        when (status) {
+            RouteStatus.Pending -> {
+                textView.setTextColor(ContextCompat.getColor(this, R.color.colorPending))
+            }
+            RouteStatus.InProgress -> {
+                textView.setTextColor(ContextCompat.getColor(this, R.color.colorInProgress))
+            }
+            RouteStatus.Completed -> {
+                textView.setTextColor(ContextCompat.getColor(this, R.color.colorCompleted))
+            }
+            RouteStatus.Cancelled -> {
+                textView.setTextColor(ContextCompat.getColor(this, R.color.colorCancelled))
             }
         }
     }

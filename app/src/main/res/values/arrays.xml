@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="options">
-        <item>Insira a função do utilizador</item>
-        <item>Administrador</item>
-        <item>Gestor</item>
-        <item>Condutor</item>
+    <string-array name="optionsRole">
+        <item>@string/select_user_role</item>
+        <item>@string/admin_role</item>
+        <item>@string/manager_role</item>
+        <item>@string/driver_role</item>
     </string-array>
 </resources>

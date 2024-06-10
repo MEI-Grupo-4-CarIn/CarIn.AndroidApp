@@ -140,7 +140,7 @@
     <string name="others">Outros</string>
     <string name="travellingTime">Tempo de viagem</string>
     <string name="co2">CO2</string>
-    <string name="kilometres">Quilómetros</string>
+    <string name="kilometers">Quilómetros</string>
     <string name="totalCost">Custo total</string>
 
     <!--Vehicles-->
@@ -206,6 +206,12 @@
     <string name="driver_role">Condutor</string>
     <string name="routeInformation">Informação da Rota</string>
     <string name="costs">Custos</string>
+    <string name="pending">Pendente</string>
+    <string name="in_progress">A decorrer</string>
+    <string name="completed">Concluída</string>
+    <string name="cancelled">Cancelada</string>
+    <string name="date_should_be_future">A data deve ser no futuro</string>
+    <string name="route_updated_success">Rota atualizada com sucesso!</string>
 
 
 </resources>

@@ -2,9 +2,11 @@ package com.carin.data.remote
 
 import com.carin.data.remote.dto.RouteCreationRequest
 import com.carin.data.remote.dto.RouteDto
+import com.carin.data.remote.dto.RouteUpdateRequest
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -25,4 +27,7 @@ interface RouteService {
 
     @POST("/routes")
     fun createRoute(@Body routeCreationRequest: RouteCreationRequest): Call<RouteDto>
+
+    @PATCH("/routes/{id}")
+    fun updateRoute(@Path("id") id: String, @Body routeUpdateRequest: RouteUpdateRequest): Call<RouteDto>
 }

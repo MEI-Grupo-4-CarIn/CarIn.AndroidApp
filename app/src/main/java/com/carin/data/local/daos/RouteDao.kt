@@ -10,6 +10,7 @@ import androidx.sqlite.db.SupportSQLiteQuery
 import com.carin.data.local.entities.RouteEntity
 import com.carin.data.local.entities.RouteWithInfoEntity
 import com.carin.domain.enums.RouteStatus
+import java.util.Date
 
 @Dao
 interface RouteDao {
@@ -24,6 +25,26 @@ interface RouteDao {
 
     @Upsert
     suspend fun upsertRoutes(routes: List<RouteEntity>)
+
+    @Query("""
+        UPDATE routes SET
+        userId = CASE WHEN :userId IS NOT NULL THEN :userId ELSE userId END,
+        vehicleId = CASE WHEN :vehicleId IS NOT NULL THEN :vehicleId ELSE vehicleId END,
+        startDate = CASE WHEN :startDate IS NOT NULL THEN :startDate ELSE startDate END,
+        status = CASE WHEN :status IS NOT NULL THEN :status ELSE status END,
+        avoidTolls = CASE WHEN :avoidTolls IS NOT NULL THEN :avoidTolls ELSE avoidTolls END,
+        avoidHighways = CASE WHEN :avoidHighways IS NOT NULL THEN :avoidHighways ELSE avoidHighways END
+        WHERE id = :id
+    """)
+    suspend fun updatePartialRoute(
+        id: String,
+        userId: Int?,
+        vehicleId: String?,
+        startDate: Date?,
+        status: RouteStatus?,
+        avoidTolls: Boolean?,
+        avoidHighways: Boolean?
+    )
 
     @RawQuery
     suspend fun getRoutes(query: SupportSQLiteQuery): List<RouteWithInfoEntity>
