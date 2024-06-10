@@ -42,7 +42,7 @@
         android:id="@+id/spinnerOptionsVehicle"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:entries="@array/options"
+        android:entries="@array/optionsRole"
         android:background="@drawable/edit_text_custom_background"
         style="@style/SpinnerTextStyle"
         android:layout_marginBottom="24dp"/>

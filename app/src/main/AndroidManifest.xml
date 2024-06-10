@@ -90,10 +90,6 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activities.NewUserActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
             android:name=".activities.HomeActivity"
             android:screenOrientation="portrait">
             </activity>

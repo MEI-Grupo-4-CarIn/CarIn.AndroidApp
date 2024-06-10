@@ -24,7 +24,7 @@ import com.carin.di.RepositoryModule
 import com.carin.domain.enums.Role
 import com.carin.fragments.MainRoutesListFragment
 import com.carin.utils.AuthUtils
-import com.carin.viewmodels.RoutesViewModel
+import com.carin.viewmodels.RoutesListViewModel
 import com.carin.viewmodels.RoutesViewModelFactory
 import com.carin.viewmodels.events.RoutesListEvent
 import kotlinx.coroutines.Job
@@ -35,7 +35,7 @@ import kotlinx.coroutines.launch
 class RoutesListActivity : AppCompatActivity() {
 
     private var isRotated = false
-    private lateinit var viewModel: RoutesViewModel
+    private lateinit var viewModel: RoutesListViewModel
     private var searchJob : Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,7 +65,7 @@ class RoutesListActivity : AppCompatActivity() {
 
         val routeRepository = RepositoryModule.provideRouteRepository(this)
         val factory = RoutesViewModelFactory(routeRepository)
-        viewModel = ViewModelProvider(this, factory)[RoutesViewModel::class.java]
+        viewModel = ViewModelProvider(this, factory)[RoutesListViewModel::class.java]
 
         searchEditText.setOnEditorActionListener { _, actionId, _ ->
             // Close the keyboard when the search button is clicked

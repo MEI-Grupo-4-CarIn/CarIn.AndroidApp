@@ -44,7 +44,6 @@ class InfoUserDetailsFragment : Fragment() {
                     progressBar.visibility = View.VISIBLE
                 }
                 is Resource.Success -> {
-                    progressBar.visibility = View.GONE
                     resource.data?.let { user ->
                         view.findViewById<TextView>(R.id.infoUserDetailsNameTxt).text = "${user.firstName} ${user.lastName}"
                         view.findViewById<TextView>(R.id.infoUserDetailsEmailTxt).text = user.email
@@ -52,8 +51,11 @@ class InfoUserDetailsFragment : Fragment() {
                         view.findViewById<TextView>(R.id.ageTextView).text = user.age.toString()
                         view.findViewById<TextView>(R.id.roleDetailsTextView).text = user.role.toString()
                     }
+
+                    progressBar.visibility = View.GONE
                 }
                 is Resource.Error -> {
+                    progressBar.visibility = View.GONE
                     val networkErrorMessage = getString(R.string.network_error)
                     Toast.makeText(requireContext(), networkErrorMessage, Toast.LENGTH_LONG).show()
                 }

@@ -16,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import org.json.JSONObject
 import retrofit2.HttpException
 import java.io.IOException
 import java.util.Date
@@ -98,6 +99,8 @@ class UserRepository(
             }
 
             if (isToFetchRemote || forceRefresh) {
+                emit(Resource.Loading())
+
                 val remoteUser = try {
                     val response =
                         userService.getUserById(id).execute()
@@ -130,42 +133,6 @@ class UserRepository(
         }.flowOn(Dispatchers.IO)
     }
 
-    suspend fun updateUser(userUpdateModel: UserUpdateModel): Flow<Resource<Boolean>> {
-        return flow {
-            emit(Resource.Loading())
-
-            val isUpdated = try {
-                val response =
-                    userService.updateUser(userUpdateModel.id, userUpdateModel.toUserUpdateRequest()).execute()
-                if (response.isSuccessful) {
-                    true
-                } else {
-                    emit(Resource.Error("ERROR: " + response.message()))
-                    false
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-                emit(Resource.Error("ERROR"))
-                false
-            } catch (e: HttpException) {
-                e.printStackTrace()
-                emit(Resource.Error("ERROR"))
-                false
-            }
-
-            if (isUpdated) {
-                userDao.updatePartialUser(
-                    userUpdateModel.id,
-                    userUpdateModel.firstName,
-                    userUpdateModel.lastName,
-                    userUpdateModel.email
-                )
-
-                emit(Resource.Success(true))
-            }
-        }.flowOn(Dispatchers.IO)
-    }
-
     suspend fun registerUser(userRegisterModel: UserRegisterModel): Flow<Resource<Boolean>> {
         return flow {
             emit(Resource.Loading())
@@ -190,6 +157,50 @@ class UserRepository(
             remoteUser?.let { authRegisterDto ->
                 val userEntity = authRegisterDto.toUserEntity()
                 userDao.insertUser(userEntity)
+
+                emit(Resource.Success(true))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun updateUser(userUpdateModel: UserUpdateModel): Flow<Resource<Boolean>> {
+        return flow {
+            emit(Resource.Loading())
+
+            val isUpdated = try {
+                val response =
+                    userService.updateUser(userUpdateModel.id, userUpdateModel.toUserUpdateRequest()).execute()
+                if (response.isSuccessful) {
+                    true
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = errorBody?.let {
+                        try {
+                            JSONObject(it).getString("message")
+                        } catch (e: Exception) {
+                            response.message()
+                        }
+                    } ?: response.message()
+                    emit(Resource.Error(errorMessage))
+                    false
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error("ERROR"))
+                false
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                emit(Resource.Error("ERROR"))
+                false
+            }
+
+            if (isUpdated) {
+                userDao.updatePartialUser(
+                    userUpdateModel.id,
+                    userUpdateModel.firstName,
+                    userUpdateModel.lastName,
+                    userUpdateModel.email
+                )
 
                 emit(Resource.Success(true))
             }

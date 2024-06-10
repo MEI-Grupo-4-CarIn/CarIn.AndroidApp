@@ -110,7 +110,7 @@
     <string name="currentkms">Current kms</string>
     <string name="capacity">Capacity</string>
     <string name="NºSeats">Nº of seats</string>
-    <string name="typeFuel">Type of fuel</string>
+    <string name="typeFuel">Fuel type</string>
     <string name="fuel">Fuel</string>
     <string name="averageConsumption">Average consumption</string>
     <string name="status">Status</string>
@@ -139,7 +139,7 @@
     <string name="others">Others</string>
     <string name="travellingTime">Travelling time</string>
     <string name="co2">CO2</string>
-    <string name="kilometres">Kilometres</string>
+    <string name="kilometers">Kilometers</string>
     <string name="totalCost">Total cost</string>
 
     <!--Vehicles-->
@@ -201,6 +201,18 @@
     <string name="avoidTolls">Avoid tolls</string>
     <string name="avoidHighways">Avoid highways</string>
     <string name="route_created_message">Route created with success!</string>
+    <string name="select_user_role">Select the user role</string>
+    <string name="admin_role">Administrator</string>
+    <string name="manager_role">Manager</string>
+    <string name="driver_role">Driver</string>
+    <string name="routeInformation">Route Information</string>
+    <string name="costs">Costs</string>
+    <string name="pending">Pending</string>
+    <string name="in_progress">In Progress</string>
+    <string name="completed">Completed</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="date_should_be_future">The date should be in the future</string>
+    <string name="route_updated_success">Route updated with success!</string>
     <string name="vehicle_created_message">Vehicle created with success!</string>
 
 </resources>
