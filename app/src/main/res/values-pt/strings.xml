@@ -106,8 +106,8 @@
     <string name="enterColor">Insira a cor</string>
     <string name="dateRegistration">Data de Registo</string>
     <string name="dateAcquisition">Data de Aquisição</string>
-    <string name="classtext">Classe</string>
-    <string name="enterClass">Insira a classe</string>
+    <string name="classtext">Categoria</string>
+    <string name="enterClass">Insira a categoria</string>
     <string name="currentkms">Kms Atuais</string>
     <string name="capacity">Capacidade</string>
     <string name="NºSeats">Nº de lugares</string>
@@ -212,6 +212,7 @@
     <string name="cancelled">Cancelada</string>
     <string name="date_should_be_future">A data deve ser no futuro</string>
     <string name="route_updated_success">Rota atualizada com sucesso!</string>
+    <string name="vehicle_created_message">Veículo criado com sucesso!</string>
 
 
 </resources>

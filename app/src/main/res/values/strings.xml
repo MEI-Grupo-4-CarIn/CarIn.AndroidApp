@@ -105,8 +105,8 @@
     <string name="enterColor">Enter the color</string>
     <string name="dateRegistration">Date of registration</string>
     <string name="dateAcquisition">Date of acquisition</string>
-    <string name="classtext">Class</string>
-    <string name="enterClass">Enter the class</string>
+    <string name="classtext">Category</string>
+    <string name="enterClass">Enter the category</string>
     <string name="currentkms">Current kms</string>
     <string name="capacity">Capacity</string>
     <string name="NºSeats">Nº of seats</string>
@@ -213,5 +213,6 @@
     <string name="cancelled">Cancelled</string>
     <string name="date_should_be_future">The date should be in the future</string>
     <string name="route_updated_success">Route updated with success!</string>
+    <string name="vehicle_created_message">Vehicle created with success!</string>
 
 </resources>

@@ -40,9 +40,8 @@ class NotificationActivity : AppCompatActivity() {
         val backNotification: ImageView = findViewById(R.id.iconImageView)
 
         backNotification.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
+            Intent(this, HomeActivity::class.java)
             overridePendingTransition(R.animator.slide_in_right, R.animator.slide_out_left)
-            startActivity(intent)
             finish()
         }
     }

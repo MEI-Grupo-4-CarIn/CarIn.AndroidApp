@@ -1,6 +1,5 @@
 package com.carin.activities
 
-import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
@@ -37,11 +36,10 @@ class UsersListActivity : AppCompatActivity() {
                 .add(R.id.container, MainUsersListFragment())
                 .commitNow()
         }
-
-        val iconImageView: ImageView = findViewById(R.id.iconImageView)
+        
+        val iconImageView = findViewById<ImageView>(R.id.iconImageView)
         iconImageView.setOnClickListener {
-            val intent = Intent(this, InfoVehicleActivity::class.java)
-            startActivity(intent)
+            finish()
         }
 
         val searchEditText: EditText = findViewById(R.id.searchEditText)

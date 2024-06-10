@@ -110,8 +110,7 @@ class InfoVehicleActivity : AppCompatActivity() {
 
         val iconImageView: ImageView = findViewById(R.id.iconImageView)
         iconImageView.setOnClickListener {
-            val intent = Intent(this, VehiclesListActivity::class.java)
-            startActivity(intent)
+          finish()
         }
 
         val optionsIcon = findViewById<ImageView>(R.id.optionsIcon)
