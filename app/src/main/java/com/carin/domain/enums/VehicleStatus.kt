@@ -2,13 +2,14 @@ package com.carin.domain.enums
 
 enum class VehicleStatus(
     val statusId: Int,
-    val description: String
+    val description: String,
+    val stringKey: String,
+    val externalKey: String
+
 ) {
-    None(0, "none"),
-    Permanent(1, "permanent"),
-    InUse(2, "inUse"),
-    Repairing(3, "repairing"),
-    ;
+    None(0, "None", "none", "none"),
+    InUse(1, "InUse", "in_use", "inUse"),
+    Repairing(2, "Repairing", "Repairing", "repairing");
 
     companion object {
         private val mapById = entries.associateBy(VehicleStatus::statusId)

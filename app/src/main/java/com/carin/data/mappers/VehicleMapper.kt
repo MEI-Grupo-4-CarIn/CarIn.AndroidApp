@@ -2,9 +2,11 @@ package com.carin.data.mappers
 
 import com.carin.R
 import com.carin.data.local.entities.VehicleEntity
+import com.carin.data.remote.dto.VehicleCreationRequest
 import com.carin.data.remote.dto.VehicleDto
 import com.carin.domain.enums.FuelType
 import com.carin.domain.enums.VehicleStatus
+import com.carin.domain.models.VehicleCreationModel
 import com.carin.domain.models.VehicleModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -54,5 +56,23 @@ fun VehicleDto.toVehicleEntity(): VehicleEntity {
         creationDateUtc = creationDateUtc,
         lastUpdateDateUtc = lastUpdateDateUtc,
         localLastUpdateDateUtc = Date()
+    )
+}
+
+fun VehicleCreationModel.toVehicleCreationRequest(): VehicleCreationRequest {
+    return VehicleCreationRequest(
+        model = model,
+        brand = brand,
+        licensePlate = licensePlate,
+        vin = vin,
+        color = color,
+        registerDate = registerDate,
+        acquisitionDate = acquisitionDate,
+        category = category,
+        kms = kms,
+        capacity = capacity,
+        fuelType = fuelType.toString().lowercase(),
+        averageFuelConsumption = averageFuelConsumption,
+        status = status.toString().lowercase()
     )
 }
