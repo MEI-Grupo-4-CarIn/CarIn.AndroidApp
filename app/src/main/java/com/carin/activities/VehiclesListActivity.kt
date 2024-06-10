@@ -13,8 +13,8 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -24,8 +24,8 @@ import com.carin.di.RepositoryModule
 import com.carin.domain.enums.Role
 import com.carin.fragments.MainFragmentVehicle
 import com.carin.utils.AuthUtils
-import com.carin.viewmodels.VehiclesViewModel
-import com.carin.viewmodels.VehiclesViewModelFactory
+import com.carin.viewmodels.VehiclesListViewModel
+import com.carin.viewmodels.VehiclesListViewModelFactory
 import com.carin.viewmodels.events.VehiclesListEvent
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -35,8 +35,7 @@ import kotlinx.coroutines.launch
 class VehiclesListActivity : AppCompatActivity() {
 
     private var isRotated = false
-
-    private lateinit var viewModel: VehiclesViewModel
+    private lateinit var viewModel: VehiclesListViewModel
     private var searchJob : Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,11 +54,18 @@ class VehiclesListActivity : AppCompatActivity() {
                 .commitNow()
         }
 
+        val iconImageView = findViewById<ImageView>(R.id.iconImageView)
+        iconImageView.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         val searchEditText: EditText = findViewById(R.id.searchEditText)
 
         val vehicleRepository = RepositoryModule.provideVehicleRepository(this)
-        val factory = VehiclesViewModelFactory(vehicleRepository)
-        viewModel = ViewModelProvider(this, factory)[VehiclesViewModel::class.java]
+        val factory = VehiclesListViewModelFactory(vehicleRepository)
+        viewModel = ViewModelProvider(this, factory)[VehiclesListViewModel::class.java]
 
         searchEditText.setOnEditorActionListener { _, actionId, _ ->
             // Close the keyboard when the search button is clicked
@@ -91,39 +97,51 @@ class VehiclesListActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {}
         })
 
-        val iconImageView: ImageView = findViewById(R.id.iconImageView)
+        prepareMenu()
+    }
 
-        iconImageView.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            val v: View? = currentFocus
+            if (v is EditText) {
+                val outRect = Rect()
+                v.getGlobalVisibleRect(outRect)
+                if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+                    v.clearFocus()
+                    val imm: InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(v.windowToken, 0)
+                }
+            }
         }
+        return super.dispatchTouchEvent(event)
+    }
 
-        val buttonHome: ImageView = findViewById(R.id.buttonHome)
-
+    private fun prepareMenu() {
+        val buttonHome = findViewById<LinearLayout>(R.id.linearLayoutHome)
         buttonHome.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
-        val buttonRoute: ImageView = findViewById(R.id.buttonRoute)
-
-        buttonRoute.setOnClickListener {
+        val buttonRoutes = findViewById<LinearLayout>(R.id.linearLayoutRoutes)
+        buttonRoutes.setOnClickListener {
             val intent = Intent(this, RoutesListActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
-        val buttonPerson: ImageView = findViewById(R.id.buttonPerson)
-
-        buttonPerson.setOnClickListener {
+        val buttonProfile = findViewById<LinearLayout>(R.id.linearLayoutProfile)
+        buttonProfile.setOnClickListener {
             val intent = Intent(this, InfoUserActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
-        val buttonMore = findViewById<ImageButton>(R.id.buttonMore)
+        val buttonMore = findViewById<LinearLayout>(R.id.linearLayoutMore)
         val layoutNewAppointment = findViewById<RelativeLayout>(R.id.layoutNewAppointment)
         val layoutAddRoute = findViewById<RelativeLayout>(R.id.layoutAddRoute)
         val layoutAddVehicle = findViewById<RelativeLayout>(R.id.layoutAddVehicle)
-        val layoutAddUser = findViewById<RelativeLayout>(R.id.layoutAddUser)
 
         buttonMore.setOnClickListener {
             if (isRotated) {
@@ -134,13 +152,12 @@ class VehiclesListActivity : AppCompatActivity() {
                     }
 
                 val animatorSet = AnimatorSet()
-                animatorSet.play(rotateAnimator)
+                animatorSet.playTogether(rotateAnimator)
                 animatorSet.start()
 
                 layoutNewAppointment.visibility = View.INVISIBLE
                 layoutAddRoute.visibility = View.INVISIBLE
                 layoutAddVehicle.visibility = View.INVISIBLE
-                layoutAddUser.visibility = View.INVISIBLE
             } else {
                 val rotateAnimator = ObjectAnimator.ofFloat(buttonMore, "rotation", 0f, 45f)
                     .apply {
@@ -149,21 +166,14 @@ class VehiclesListActivity : AppCompatActivity() {
                     }
 
                 val animatorSet = AnimatorSet()
-                animatorSet.play(rotateAnimator)
+                animatorSet.playTogether(rotateAnimator)
                 animatorSet.start()
 
                 layoutNewAppointment.visibility = View.VISIBLE
                 layoutAddRoute.visibility = View.VISIBLE
                 layoutAddVehicle.visibility = View.VISIBLE
-                layoutAddUser.visibility = View.VISIBLE
             }
             isRotated = !isRotated
-        }
-
-        layoutAddUser.setOnClickListener {
-            val intent = Intent(this, NewUserActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(R.animator.slide_up, 0)
         }
 
         layoutAddVehicle.setOnClickListener {
@@ -183,22 +193,6 @@ class VehiclesListActivity : AppCompatActivity() {
             startActivity(intent)
             overridePendingTransition(R.animator.slide_up, 0)
         }
-    }
-
-    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        if (event.action == MotionEvent.ACTION_DOWN) {
-            val v: View? = currentFocus
-            if (v is EditText) {
-                val outRect = Rect()
-                v.getGlobalVisibleRect(outRect)
-                if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
-                    v.clearFocus()
-                    val imm: InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(v.windowToken, 0)
-                }
-            }
-        }
-        return super.dispatchTouchEvent(event)
     }
 
     private fun adjustUIBasedOnRole(role: Role) {

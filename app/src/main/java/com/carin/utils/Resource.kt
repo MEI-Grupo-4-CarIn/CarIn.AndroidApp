@@ -5,7 +5,7 @@ sealed class Resource<T>(
     val message: String? = null,
     val waitForRemote: Boolean = false
 ) {
-    class Success<T>(data: T?, waitForRemote: Boolean = false): Resource<T>(data)
+    class Success<T>(data: T?): Resource<T>(data)
     class Error<T>(message: String, data: T? = null): Resource<T>(data, message)
     class Loading<T> : Resource<T>(null)
 }

@@ -1,6 +1,5 @@
 package com.carin.activities
 
-import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
@@ -17,15 +16,15 @@ import androidx.lifecycle.lifecycleScope
 import com.carin.R
 import com.carin.di.RepositoryModule
 import com.carin.fragments.MainUsersListFragment
-import com.carin.viewmodels.UsersViewModel
-import com.carin.viewmodels.UsersViewModelFactory
+import com.carin.viewmodels.UsersListViewModel
+import com.carin.viewmodels.UsersListViewModelFactory
 import com.carin.viewmodels.events.UsersListEvent
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class UsersListActivity : AppCompatActivity() {
-    private lateinit var viewModel: UsersViewModel
+    private lateinit var viewModel: UsersListViewModel
     private var searchJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,18 +36,17 @@ class UsersListActivity : AppCompatActivity() {
                 .add(R.id.container, MainUsersListFragment())
                 .commitNow()
         }
-
-        val iconImageView: ImageView = findViewById(R.id.iconImageView)
+        
+        val iconImageView = findViewById<ImageView>(R.id.iconImageView)
         iconImageView.setOnClickListener {
-            val intent = Intent(this, InfoVehicleActivity::class.java)
-            startActivity(intent)
+            finish()
         }
 
         val searchEditText: EditText = findViewById(R.id.searchEditText)
 
         val userRepository = RepositoryModule.provideUserRepository(this)
-        val factory = UsersViewModelFactory(userRepository)
-        viewModel = ViewModelProvider(this, factory)[UsersViewModel::class.java]
+        val factory = UsersListViewModelFactory(userRepository)
+        viewModel = ViewModelProvider(this, factory)[UsersListViewModel::class.java]
 
         searchEditText.setOnEditorActionListener { _, actionId, _ ->
             // Close the keyboard when the search button is clicked

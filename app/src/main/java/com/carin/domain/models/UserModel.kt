@@ -10,6 +10,7 @@ data class UserModel(
     val lastName: String,
     val email: String,
     val birthDate: Date,
+    var age: Int?, // To be calculated
     val role: Role,
     val status: Boolean,
     val creationDateUtc: Date,

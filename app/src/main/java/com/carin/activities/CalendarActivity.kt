@@ -41,17 +41,16 @@ class CalendarActivity : AppCompatActivity() {
         val iconImage: ImageView = findViewById(R.id.iconImage)
 
         iconImage.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
+            Intent(this, HomeActivity::class.java)
             overridePendingTransition(R.animator.slide_in_right, R.animator.slide_out_left)
-            startActivity(intent)
+            finish()
         }
 
         val createSchedulings: ImageView = findViewById(R.id.optionsIcon)
-
         createSchedulings.setOnClickListener {
             val intent = Intent(this, NewSchedulingActivity::class.java)
-            overridePendingTransition(R.animator.slide_in_right, R.animator.slide_out_left)
             startActivity(intent)
+            overridePendingTransition(R.animator.slide_in_right, R.animator.slide_out_left)
         }
 
         val recyclerView3: RecyclerView = findViewById(R.id.recyclerView3)

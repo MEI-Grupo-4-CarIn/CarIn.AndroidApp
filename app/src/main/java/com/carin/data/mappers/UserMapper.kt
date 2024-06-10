@@ -3,10 +3,12 @@ package com.carin.data.mappers
 import com.carin.R
 import com.carin.data.local.entities.UserEntity
 import com.carin.data.remote.dto.UserDto
+import com.carin.data.remote.dto.UserUpdateRequest
 import com.carin.data.remote.dto.auth.AuthRegisterDto
 import com.carin.data.remote.dto.auth.AuthRegisterRequest
 import com.carin.domain.models.UserModel
 import com.carin.domain.models.UserRegisterModel
+import com.carin.domain.models.UserUpdateModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -19,6 +21,7 @@ fun UserEntity.toUserModel(): UserModel {
         lastName = lastName,
         email = email,
         birthDate = birthDate,
+        age = null,
         role = roleId,
         status = status,
         creationDateUtc = creationDateUtc,
@@ -65,5 +68,13 @@ fun AuthRegisterDto.toUserEntity(): UserEntity {
         creationDateUtc = dateFormatter.parse(creationDateUtc) ?: Date(),
         lastUpdateDateUtc = lastUpdateDateUtc?.let { dateFormatter.parse(it) },
         localLastUpdateDateUtc = Date()
+    )
+}
+
+fun UserUpdateModel.toUserUpdateRequest(): UserUpdateRequest {
+    return UserUpdateRequest(
+        firstName = firstName,
+        lastName = lastName,
+        email = email
     )
 }

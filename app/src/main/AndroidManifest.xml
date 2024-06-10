@@ -24,116 +24,93 @@
         android:usesCleartextTraffic="true" >
         <activity
             android:name=".activities.CalendarActivity"
-            android:exported="true"
             android:screenOrientation="portrait">
         </activity>
          <activity
             android:name=".activities.NotificationActivity"
-            android:exported="true"
              android:screenOrientation="portrait">
              >
         </activity>
         <activity
             android:name=".activities.EditUserActivity"
-            android:exported="true"
             android:screenOrientation="portrait">
             >
         </activity>
         <activity
             android:name=".activities.InfoUserActivity"
-            android:exported="true"
             android:screenOrientation="portrait">
             >
         </activity>
         <activity
             android:name=".activities.UsersListActivity"
-            android:exported="true"
             android:screenOrientation="portrait">
             >
         </activity>
         <activity
             android:name=".activities.EditVehicleActivity"
-            android:exported="true"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activities.InfoVehicleActivity"
-            android:exported="true"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activities.EditRouteActivity"
-            android:exported="true"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activities.InfoRouteActivity"
-            android:exported="true"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activities.InfoSchedulingActivity"
-            android:exported="true"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activities.RoutesListActivity"
-            android:exported="true"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activities.VehiclesListActivity"
-            android:exported="true"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activities.NewSchedulingActivity"
-            android:exported="true"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activities.NewRouteActivity"
-            android:exported="true"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activities.NewVehicleActivity"
-            android:exported="true"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name=".activities.NewUserActivity"
-            android:exported="true"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activities.HomeActivity"
-            android:exported="true"
             android:screenOrientation="portrait">
             </activity>
         <activity
             android:name=".activities.InfoActivity"
-            android:exported="true"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activities.RecoverPasswordActivity"
-            android:exported="true"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activities.ConfirmPasswordActivity"
-            android:exported="true"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activities.RegisterActivity"
-            android:exported="true"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activities.LoginActivity"
-            android:exported="true"
             android:screenOrientation="portrait">
         </activity>
         <activity

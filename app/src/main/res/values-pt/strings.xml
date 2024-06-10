@@ -106,8 +106,8 @@
     <string name="enterColor">Insira a cor</string>
     <string name="dateRegistration">Data de Registo</string>
     <string name="dateAcquisition">Data de Aquisição</string>
-    <string name="classtext">Classe</string>
-    <string name="enterClass">Insira a classe</string>
+    <string name="classtext">Categoria</string>
+    <string name="enterClass">Insira a categoria</string>
     <string name="currentkms">Kms Atuais</string>
     <string name="capacity">Capacidade</string>
     <string name="NºSeats">Nº de lugares</string>
@@ -140,7 +140,7 @@
     <string name="others">Outros</string>
     <string name="travellingTime">Tempo de viagem</string>
     <string name="co2">CO2</string>
-    <string name="kilometres">Quilómetros</string>
+    <string name="kilometers">Quilómetros</string>
     <string name="totalCost">Custo total</string>
 
     <!--Vehicles-->
@@ -183,6 +183,36 @@
     <string name="confirmPassword">Confirme a password</string>
     <string name="carin_logo">carin_logo</string>
     <string name="example_email">exemplo@email.com</string>
+    <string name="field_required">Este campo é obrigatório</string>
+    <string name="user_update_successful">Utilizador atualizado com sucesso!</string>
+    <string name="password_not_match">As passwords não coincidem</string>
+    <string name="select_driver">Selecione um condutor</string>
+    <string name="invalid_destination_message">Endereço de destino inválido</string>
+    <string name="destination_not_empty_message">Endereço de destino não pode ser vazio</string>
+    <string name="invalid_departure_message">Endereço de partida inválido</string>
+    <string name="departure_not_empty_message">Endereço de partida não pode ser vazio</string>
+    <string name="select_vehicle">Selecione um veículo</string>
+    <string name="diesel">Diesel</string>
+    <string name="petrol">Gasolina</string>
+    <string name="electric">Elétrico</string>
+    <string name="city">Cidade</string>
+    <string name="country">País</string>
+    <string name="avoidTolls">Evitar portagens</string>
+    <string name="avoidHighways">Evitar autoestradas</string>
+    <string name="route_created_message">Rota criada com sucesso!</string>
+    <string name="select_user_role">Selecione a função do utilizador</string>
+    <string name="admin_role">Administrador</string>
+    <string name="manager_role">Gestor</string>
+    <string name="driver_role">Condutor</string>
+    <string name="routeInformation">Informação da Rota</string>
+    <string name="costs">Custos</string>
+    <string name="pending">Pendente</string>
+    <string name="in_progress">A decorrer</string>
+    <string name="completed">Concluída</string>
+    <string name="cancelled">Cancelada</string>
+    <string name="date_should_be_future">A data deve ser no futuro</string>
+    <string name="route_updated_success">Rota atualizada com sucesso!</string>
+    <string name="vehicle_created_message">Veículo criado com sucesso!</string>
 
 
 </resources>

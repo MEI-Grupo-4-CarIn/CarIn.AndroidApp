@@ -15,14 +15,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.adapter.UsersTabAdapter
 import com.carin.domain.enums.UserType
-import com.carin.viewmodels.UsersViewModel
+import com.carin.viewmodels.UsersListViewModel
 import com.carin.viewmodels.events.UsersListEvent
 import com.carin.viewmodels.states.UsersListState
 
 class UsersTabFragment : Fragment() {
 
     private lateinit var adapter: UsersTabAdapter
-    private lateinit var viewModel: UsersViewModel
+    private lateinit var viewModel: UsersListViewModel
     private lateinit var currentUserType: UserType
     private lateinit var emptyTextView: TextView
     private lateinit var errorTextView: TextView
@@ -51,7 +51,7 @@ class UsersTabFragment : Fragment() {
         progressBar = view.findViewById(R.id.progressBar)
 
         // Obtain the ViewModel from the Activity's ViewModelProvider
-        viewModel = ViewModelProvider(requireActivity())[UsersViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[UsersListViewModel::class.java]
 
         viewModel.uiState.observe(viewLifecycleOwner) { state ->
             when (state) {

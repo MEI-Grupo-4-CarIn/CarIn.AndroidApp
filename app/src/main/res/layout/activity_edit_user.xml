@@ -2,22 +2,32 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/editUserLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    tools:context=".activities.NewUserActivity">
+    android:background="#FFFFFF">
+
+    <TextView
+        android:id="@+id/errorTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/network_error"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textSize="14sp"
+        android:layout_marginTop="15dp"
+        android:textColor="@android:color/holo_red_dark"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
-        android:id="@+id/iconImageView"
+        android:id="@+id/editUserCloseImgView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="26dp"
         android:layout_marginEnd="16dp"
         android:src="@drawable/ic_close"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/errorTextView"/>
 
     <TextView
         android:id="@+id/textViewNewUser"
@@ -27,9 +37,9 @@
         android:textColor="@color/colorPrimary"
         android:textSize="20sp"
         android:layout_marginTop="24dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/errorTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/iconImageView"
+        app:layout_constraintEnd_toStartOf="@+id/editUserCloseImgView"
         app:layout_constraintHorizontal_bias="0.6"/>
 
     <LinearLayout
@@ -55,7 +65,7 @@
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintTop_toBottomOf="@id/linearLayout">
@@ -65,18 +75,15 @@
             android:layout_height="wrap_content"
             android:text="@string/firstName"
             android:textColor="@color/colorPrimary"
-            android:layout_marginStart="20dp"
-            android:textSize="16dp"/>
+            android:textSize="16sp"/>
 
         <EditText
             android:id="@+id/editTextFirstName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="25dp"
-            android:layout_marginEnd="16dp"
+            android:autofillHints="name"
             android:inputType="text"
-
             android:drawablePadding="8dp"
             android:padding="10dp"
             android:background="@drawable/edit_text_custom_background"/>
@@ -86,18 +93,16 @@
             android:layout_height="wrap_content"
             android:text="@string/lastName"
             android:textColor="@color/colorPrimary"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="90dp"
-            android:textSize="16dp"/>
+            android:textSize="16sp"/>
 
         <EditText
             android:id="@+id/editTextLastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/editTextFirstName"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="40dp"
-            android:layout_marginEnd="16dp"
+            android:autofillHints="name"
             android:drawablePadding="8dp"
             android:padding="10dp"
             android:inputType="text"
@@ -108,60 +113,70 @@
             android:layout_height="wrap_content"
             android:text="@string/dateBirth"
             android:textColor="@color/colorPrimary"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="180dp"
-            android:textSize="16dp"/>
+            android:textSize="16sp"/>
 
         <EditText
             android:id="@+id/editTextDateOfBirth"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/editTextLastName"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="40dp"
-            android:layout_marginEnd="16dp"
+            android:autofillHints="date"
             android:drawablePadding="8dp"
+            android:inputType="none"
+            android:textColor="@color/inactiveText"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:padding="10dp"
-            android:background="@drawable/edit_text_custom_background"
-            android:focusable="false"/>
+            android:background="@drawable/edit_text_inactive_background"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nameEmail"
             android:textColor="@color/colorPrimary"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="270dp"
-            android:textSize="16dp"/>
+            android:textSize="16sp"/>
 
         <EditText
             android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/editTextDateOfBirth"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="40dp"
-            android:layout_marginEnd="16dp"
+            android:autofillHints="emailAddress"
             android:drawablePadding="8dp"
             android:padding="10dp"
             android:inputType="textEmailAddress"
             android:background="@drawable/edit_text_custom_background"/>
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/buttonRegister"
-        android:layout_width="381dp"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/editUserSaveButton"
+        android:layout_width="match_parent"
         android:layout_height="52dp"
         android:text="@string/save"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp"
+        android:textColor="#FFFFFF"
+        android:textAllCaps="false"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/colorSecundary"/>
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/rounded_blue_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,233 +1,355 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    tools:context=".activities.NewRouteActivity">
+    android:background="#FFFFFF">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <TextView
+        android:id="@+id/errorTextView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:text="@string/network_error"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:visibility="gone"
+        android:layout_marginTop="15dp"
+        android:textColor="@android:color/holo_red_dark"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-        <ImageView
-            android:id="@+id/iconImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_close"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/closeImgView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/errorTextView"/>
 
-        <TextView
-            android:id="@+id/textViewNewVehicle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/editRoute"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/iconImageView"
-            app:layout_constraintHorizontal_bias="0.55"/>
+    <TextView
+        android:id="@+id/textViewEditRoute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/editRoute"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/errorTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/closeImgView"
+        app:layout_constraintHorizontal_bias="0.55"/>
 
-        <fragment
-            android:id="@+id/map_fragment"
-            class="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/textViewNewVehicle"/>
+    <fragment
+        android:id="@+id/map_fragment"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEditRoute"
+        app:layout_constraintBottom_toTopOf="@id/scroll_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@+id/map_fragment"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSaveRoute">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/departure"
-            android:textColor="@color/colorPrimary"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="15dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/map_fragment"
-            android:textSize="16dp"/>
-
-        <EditText
-            android:id="@+id/editTextDeparture"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="16dp"
-            android:drawablePadding="8dp"
-            android:padding="10dp"
-            android:inputType="text"
-            android:background="@drawable/edit_text_custom_background"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/map_fragment"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/destination"
-            android:textColor="@color/colorPrimary"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="105dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/map_fragment"
-            android:textSize="16dp"/>
-
-        <EditText
-            android:id="@+id/editTextDestination"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="16dp"
-            android:drawablePadding="8dp"
-            android:padding="10dp"
-            android:inputType="text"
-            android:background="@drawable/edit_text_custom_background"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/editTextDeparture"/>
-
-        <LinearLayout
-            android:id="@+id/relativeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/editTextDestination">
+            android:layout_marginHorizontal="16dp">
 
             <TextView
+                android:id="@+id/textViewDeparture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/departure"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <LinearLayout
+                android:id="@+id/departureLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDeparture"
+                app:layout_constraintBottom_toTopOf="@+id/textViewDestination">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/editTextDepartureCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_inactive_background"
+                        android:singleLine="true"
+                        android:inputType="none"
+                        android:textColor="@color/inactiveText"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:padding="10dp"
+                        android:hint="@string/city"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/editTextDepartureCountry"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_inactive_background"
+                        android:singleLine="true"
+                        android:inputType="none"
+                        android:textColor="@color/inactiveText"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:padding="10dp"
+                        android:hint="@string/country"
+                        android:imeOptions="actionNext"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textViewDestination"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/destination"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/departureLayout"/>
+
+            <LinearLayout
+                android:id="@+id/destinationLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDestination"
+                app:layout_constraintBottom_toTopOf="@+id/textViewRouteStatus">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/editTextDestinationCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_inactive_background"
+                        android:singleLine="true"
+                        android:inputType="none"
+                        android:textColor="@color/inactiveText"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:padding="10dp"
+                        android:hint="@string/city"
+                        android:imeOptions="actionNext"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/editTextDestinationCountry"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_inactive_background"
+                        android:singleLine="true"
+                        android:inputType="none"
+                        android:textColor="@color/inactiveText"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:padding="10dp"
+                        android:hint="@string/country"
+                        android:imeOptions="actionNext"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textViewRouteStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/status"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/destinationLayout"/>
+
+            <Spinner
+                android:id="@+id/spinnerOptionsRouteStatus"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_text_custom_background"
+                style="@style/SpinnerTextStyle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewRouteStatus"/>
+
+            <TextView
+                android:id="@+id/textViewDriver"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/driver"
                 android:textColor="@color/colorPrimary"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/spinnerOptionsRouteStatus"/>
 
-            <Spinner
-                android:id="@+id/spinnerOptions"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:entries="@array/options"
-                android:background="@drawable/edit_text_custom_background"
-                style="@style/SpinnerTextStyle" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/fiveLinearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/relativeLayout">
-
-            <LinearLayout
+            <EditText
+                android:id="@+id/editTextDriver"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_weight="1"
-                app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/departureDate"
-                    android:textSize="15sp"
-                    android:textColor="@color/colorPrimary"/>
-
-                <EditText
-                    android:id="@+id/editTextDateRegister"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_custom_background"
-                    android:focusable="false"
-                    android:gravity="center_horizontal"
-                    android:padding="10dp"
-                    app:layout_constraintTop_toBottomOf="@id/relativeLayout" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="20dp"
-                android:layout_weight="1"
-                app:layout_constraintTop_toBottomOf="@+id/fourLinearLayout">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/estimatedTimeArrival"
-                    android:textSize="15sp"
-                    android:textColor="@color/colorPrimary"/>
-
-
-                <EditText
-                    android:id="@+id/editTextExpectedArrival"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_custom_background"
-                    android:focusable="false"
-                    android:gravity="center_horizontal"
-                    android:padding="10dp"
-                    app:layout_constraintTop_toBottomOf="@id/editTextDateRegister" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/relativeLayoutVehicle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/fiveLinearLayout">
+                android:hint="@string/select_driver"
+                android:drawablePadding="8dp"
+                android:padding="10dp"
+                android:inputType="text"
+                android:background="@drawable/edit_text_custom_background"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:cursorVisible="false"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewDriver"/>
 
             <TextView
+                android:id="@+id/textViewDepartureDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/departureDate"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editTextDriver"/>
+
+            <EditText
+                android:id="@+id/editTextDepartureDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_custom_background"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:cursorVisible="false"
+                android:drawablePadding="8dp"
+                android:padding="10dp"
+                android:inputType="datetime"
+                android:hint="dd-mm-yyyy HH:mm"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewDepartureDate"/>
+
+            <TextView
+                android:id="@+id/textViewVehicle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/vehicle"
                 android:textColor="@color/colorPrimary"
-                android:textSize="16dp" />
+                android:textSize="16sp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editTextDepartureDate"/>
 
-            <Spinner
-                android:id="@+id/spinnerOptionsVehicle"
+            <EditText
+                android:id="@+id/editTextVehicle"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:entries="@array/options"
+                android:layout_height="wrap_content"
+                android:hint="@string/select_vehicle"
+                android:drawablePadding="8dp"
+                android:padding="10dp"
+                android:inputType="text"
                 android:background="@drawable/edit_text_custom_background"
-                style="@style/SpinnerTextStyle"
-                android:layout_marginBottom="60dp"/>
-        </LinearLayout>
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:cursorVisible="false"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewVehicle"/>
 
-        <Button
-            android:id="@+id/buttonRegister"
-            android:layout_width="381dp"
-            android:layout_height="52dp"
-            android:text="@string/save"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/relativeLayoutVehicle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:backgroundTint="@color/colorSecundary"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/editTextVehicle"
+                android:layout_marginTop="20dp">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+                <CheckBox
+                    android:id="@+id/checkboxAvoidTolls"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/avoidTolls"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="1"/>
+
+                <CheckBox
+                    android:id="@+id/checkboxAvoidHighways"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/avoidHighways"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonSaveRoute"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="@string/save"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:textAllCaps="false"
+        android:background="@drawable/rounded_blue_button"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/scroll_view"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

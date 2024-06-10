@@ -105,12 +105,12 @@
     <string name="enterColor">Enter the color</string>
     <string name="dateRegistration">Date of registration</string>
     <string name="dateAcquisition">Date of acquisition</string>
-    <string name="classtext">Class</string>
-    <string name="enterClass">Enter the class</string>
+    <string name="classtext">Category</string>
+    <string name="enterClass">Enter the category</string>
     <string name="currentkms">Current kms</string>
     <string name="capacity">Capacity</string>
     <string name="NºSeats">Nº of seats</string>
-    <string name="typeFuel">Type of fuel</string>
+    <string name="typeFuel">Fuel type</string>
     <string name="fuel">Fuel</string>
     <string name="averageConsumption">Average consumption</string>
     <string name="status">Status</string>
@@ -139,7 +139,7 @@
     <string name="others">Others</string>
     <string name="travellingTime">Travelling time</string>
     <string name="co2">CO2</string>
-    <string name="kilometres">Kilometres</string>
+    <string name="kilometers">Kilometers</string>
     <string name="totalCost">Total cost</string>
 
     <!--Vehicles-->
@@ -184,5 +184,35 @@
     <string name="confirmPassword">Confirm Password</string>
     <string name="carin_logo">carin_logo</string>
     <string name="example_email">example@email.com</string>
+    <string name="field_required">This field is required</string>
+    <string name="user_update_successful">User updated with success!</string>
+    <string name="password_not_match">Passwords do not match</string>
+    <string name="select_driver">Select a driver</string>
+    <string name="invalid_destination_message">Invalid destination address</string>
+    <string name="destination_not_empty_message">Destination address cannot be empty</string>
+    <string name="invalid_departure_message">Invalid departure address</string>
+    <string name="departure_not_empty_message">Departure address cannot be empty</string>
+    <string name="select_vehicle">Select a vehicle</string>
+    <string name="diesel">Diesel</string>
+    <string name="petrol">Petrol</string>
+    <string name="electric">Electric</string>
+    <string name="city">City</string>
+    <string name="country">Country</string>
+    <string name="avoidTolls">Avoid tolls</string>
+    <string name="avoidHighways">Avoid highways</string>
+    <string name="route_created_message">Route created with success!</string>
+    <string name="select_user_role">Select the user role</string>
+    <string name="admin_role">Administrator</string>
+    <string name="manager_role">Manager</string>
+    <string name="driver_role">Driver</string>
+    <string name="routeInformation">Route Information</string>
+    <string name="costs">Costs</string>
+    <string name="pending">Pending</string>
+    <string name="in_progress">In Progress</string>
+    <string name="completed">Completed</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="date_should_be_future">The date should be in the future</string>
+    <string name="route_updated_success">Route updated with success!</string>
+    <string name="vehicle_created_message">Vehicle created with success!</string>
 
 </resources>

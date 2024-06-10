@@ -16,6 +16,12 @@ import java.util.Date
             parentColumns = ["id"],
             childColumns = ["userId"],
             onDelete = ForeignKey.RESTRICT,
+        ),
+        ForeignKey(
+            entity = VehicleEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["vehicleId"],
+            onDelete = ForeignKey.RESTRICT,
         )
     ],
     indices = [
