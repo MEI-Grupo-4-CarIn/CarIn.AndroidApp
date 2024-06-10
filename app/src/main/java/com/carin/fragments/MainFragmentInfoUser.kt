@@ -17,8 +17,7 @@ class MainFragmentUserInfo : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.user_info_fragment_main, container, false)
+        return inflater.inflate(R.layout.info_user_fragment_main, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -32,8 +31,8 @@ class MainFragmentUserInfo : Fragment() {
         val currentLocale = Locale.getDefault()
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             val currentLabel = when (currentLocale.language) {
-                "pt" -> TypeInfoUser.values()[position].labelPt
-                else -> TypeInfoUser.values()[position].labelEn
+                "pt" -> TypeInfoUser.entries[position].labelPt
+                else -> TypeInfoUser.entries[position].labelEn
             }
             tab.text = currentLabel
         }.attach()
@@ -42,12 +41,12 @@ class MainFragmentUserInfo : Fragment() {
 }
 
 class UserInfoFragmentTypeAdapter(fragment: Fragment) : FragmentStateAdapter(fragment){
-    override fun getItemCount(): Int = TypeInfoUser.values().size
+    override fun getItemCount(): Int = TypeInfoUser.entries.size
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> UserInfoFragment()
-            1 -> UserRouteFragment()
+            0 -> InfoUserDetailsFragment()
+            1 -> InfoUserRoutesFragment()
             else -> throw IllegalArgumentException("Invalid position: $position")
         }
     }

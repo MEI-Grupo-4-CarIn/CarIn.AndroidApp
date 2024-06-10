@@ -16,14 +16,14 @@ import com.carin.R
 import com.carin.adapter.RoutesTabAdapter
 import com.carin.domain.enums.RouteType
 import com.carin.utils.ItemSpacingDecoration
-import com.carin.viewmodels.RoutesViewModel
+import com.carin.viewmodels.RoutesListViewModel
 import com.carin.viewmodels.events.RoutesListEvent
 import com.carin.viewmodels.states.RoutesListState
 
 class RoutesTabFragment : Fragment() {
 
     private lateinit var adapter: RoutesTabAdapter
-    private lateinit var viewModel: RoutesViewModel
+    private lateinit var viewModel: RoutesListViewModel
     private lateinit var currentRouteType: RouteType
     private lateinit var emptyTextView: TextView
     private lateinit var errorTextView: TextView
@@ -45,7 +45,7 @@ class RoutesTabFragment : Fragment() {
         recyclerView.addItemDecoration(ItemSpacingDecoration(5))
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        adapter = RoutesTabAdapter(mutableListOf())
+        adapter = RoutesTabAdapter(requireContext(), mutableListOf())
         recyclerView.adapter = adapter
 
         emptyTextView = view.findViewById(R.id.emptyTextView)
@@ -53,7 +53,7 @@ class RoutesTabFragment : Fragment() {
         progressBar = view.findViewById(R.id.progressBar)
 
         // Obtain the ViewModel from the Activity's ViewModelProvider
-        viewModel = ViewModelProvider(requireActivity())[RoutesViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[RoutesListViewModel::class.java]
 
         viewModel.uiState.observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -127,7 +127,7 @@ class RoutesTabFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (!dataLoaded)
-            viewModel.onEvent(RoutesListEvent.LoadRoutes(currentRouteType))
+
+        viewModel.onEvent(RoutesListEvent.LoadRoutes(currentRouteType))
     }
 }

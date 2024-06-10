@@ -42,7 +42,7 @@
         android:id="@+id/spinnerOptionsVehicle"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:entries="@array/options"
+        android:entries="@array/optionsRole"
         android:background="@drawable/edit_text_custom_background"
         style="@style/SpinnerTextStyle"
         android:layout_marginBottom="24dp"/>
@@ -53,7 +53,7 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnYes"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -61,12 +61,13 @@
             android:text="@string/yes"
             android:textStyle="bold"
             android:textColor="@android:color/white"
-            android:backgroundTint="@color/colorSecundary"
+            android:textAllCaps="false"
+            android:background="@drawable/rounded_blue_button"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:layout_marginEnd="8dp"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnNo"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -74,7 +75,8 @@
             android:text="@string/no"
             android:textStyle="bold"
             android:textColor="@android:color/white"
-            android:backgroundTint="@color/colorBlue30"
+            android:textAllCaps="false"
+            android:background="@drawable/rounded_light_blue_button"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:layout_marginStart="8dp"/>

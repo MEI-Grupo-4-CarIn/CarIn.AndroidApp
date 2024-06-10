@@ -1,10 +1,12 @@
 package com.carin.data.repositories
 
 import com.carin.data.local.daos.VehicleDao
+import com.carin.data.mappers.toVehicleCreationRequest
 import com.carin.data.mappers.toVehicleEntity
 import com.carin.data.mappers.toVehicleModel
 import com.carin.data.remote.VehicleService
 import com.carin.domain.enums.VehicleStatus
+import com.carin.domain.models.VehicleCreationModel
 import com.carin.domain.models.VehicleModel
 import com.carin.utils.Resource
 import kotlinx.coroutines.Dispatchers
@@ -37,8 +39,7 @@ class VehicleRepository(
             if (localVehicles.isNotEmpty()) {
                 emit(
                     Resource.Success(
-                        data = localVehicles.map { it.toVehicleModel() },
-                        waitForRemote = isToFetchRemote
+                        data = localVehicles.map { it.toVehicleModel() }
                     )
                 )
             }
@@ -77,6 +78,37 @@ class VehicleRepository(
                     emit(Resource.Success(data = emptyList()))
                 }
 
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun createVehicle(vehicleCreationModel: VehicleCreationModel): Flow<Resource<String>> {
+        return flow {
+            emit(Resource.Loading())
+
+            val remoteVehicle = try {
+                val response = vehicleService.createVehicle(vehicleCreationModel.toVehicleCreationRequest()).execute()
+                if (response.isSuccessful) {
+                    response.body()
+                } else {
+                    emit(Resource.Error(response.message()))
+                    null
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't create vehicle"))
+                null
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't create vehicle"))
+                null
+            }
+
+            remoteVehicle?.let { vehicleDto ->
+                val vehicleEntity = vehicleDto.toVehicleEntity()
+                vehicleDao.insertVehicle(vehicleEntity)
+
+                emit(Resource.Success(remoteVehicle.id))
             }
         }.flowOn(Dispatchers.IO)
     }

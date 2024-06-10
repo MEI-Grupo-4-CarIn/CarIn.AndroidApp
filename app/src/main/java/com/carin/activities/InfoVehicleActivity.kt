@@ -92,16 +92,7 @@ class InfoVehicleActivity : AppCompatActivity() {
         recyclerView2.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         routesinfo = getRoutes()
-        adapterRoute = RouteInfoAdapter(routesinfo)
         recyclerView2.adapter = adapterRoute
-
-        adapterRoute.setOnItemClickListener(object : RouteInfoAdapter.OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                val intent = Intent(this@InfoVehicleActivity, InfoRouteActivity::class.java)
-                startActivity(intent)
-            }
-        })
-
 
         val informationText: TextView = findViewById(R.id.informationText)
         val carImageView: ImageView = findViewById(R.id.carImageView)
@@ -119,8 +110,7 @@ class InfoVehicleActivity : AppCompatActivity() {
 
         val iconImageView: ImageView = findViewById(R.id.iconImageView)
         iconImageView.setOnClickListener {
-            val intent = Intent(this, VehiclesListActivity::class.java)
-            startActivity(intent)
+          finish()
         }
 
         val optionsIcon = findViewById<ImageView>(R.id.optionsIcon)

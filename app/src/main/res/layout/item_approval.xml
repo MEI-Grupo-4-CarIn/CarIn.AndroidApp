@@ -15,56 +15,58 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="16dp">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/approveNameTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Rafael Campos de Azevedo"
                 android:textColor="@color/colorPrimary"
-                android:layout_marginStart="16dp" />
+                android:maxLines="1"
+                android:ellipsize="end"/>
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/approveEmailTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Condutor"
+                android:text="rafael@carin.com"
                 android:textColor="@color/colorPrimary"
-                android:layout_marginStart="16dp" />
+                android:maxLines="1"
+                android:ellipsize="end"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-        <Button
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp">
+
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button_check"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_weight="0.5"
-                android:backgroundTint="@color/colorSecundary"
-                android:drawablePadding="8dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/rounded_blue_button"
                 android:text="✔"
-                android:textAllCaps="false"
-                android:padding="8dp"/>
+                android:textColor="#FFFFFF"/>
 
-
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button_cross"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
-                android:layout_weight="0.5"
-                android:backgroundTint="@color/colorBlue30"
-                android:drawablePadding="8dp"
+                android:background="@drawable/rounded_light_blue_button"
                 android:text="✖"
-                android:textAllCaps="false"
-                android:padding="8dp"/>
+                android:textColor="#FFFFFF"/>
         </LinearLayout>
 
     </LinearLayout>

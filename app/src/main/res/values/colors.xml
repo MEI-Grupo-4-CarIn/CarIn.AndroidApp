@@ -3,7 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="colorPrimary">#063B61</color>
-    <color name="colorSecundary">#2F7FB8</color>
+    <color name="colorSecondary">#2F7FB8</color>
     <color name="colorGrey60">#9910273D</color>
     <color name="colorBlue30">#78C4FD</color>
     <color name="colorBlue20">#342F7FB8</color>
@@ -19,5 +19,6 @@
     <color name="colorCancelled">#E36255</color>
     <color name="colorCompleted">#4CAF50</color>
     <color name="colorGray">#CCCCCC</color>
-
+    <color name="inactiveText">#6610273D</color>
+    <color name="inactiveBackground">#0D10273D</color>
 </resources>

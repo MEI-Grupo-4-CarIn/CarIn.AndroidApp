@@ -1,5 +1,6 @@
 package com.carin.adapter
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.view.LayoutInflater
@@ -7,16 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.activities.InfoVehicleActivity
-import com.carin.domain.models.UserModel
 import com.carin.domain.models.VehicleModel
-import com.carin.fragments.VehiclesTabFragment
+import com.carin.utils.getStringResourceByName
 import java.io.ByteArrayOutputStream
 
-class VehiclesTabAdapter(private val vehicles: MutableList<VehicleModel>) : RecyclerView.Adapter<VehiclesTabAdapter.VehicleViewHolder>() {
+class VehiclesTabAdapter(private val context: Context, val vehicles: MutableList<VehicleModel>) : RecyclerView.Adapter<VehiclesTabAdapter.VehicleViewHolder>() {
 
     private val vehiclesIds = mutableSetOf<String>()
 
@@ -31,9 +32,9 @@ class VehiclesTabAdapter(private val vehicles: MutableList<VehicleModel>) : Recy
         holder.carImageView.setImageResource(vehicle.imageResource)
         holder.brandTextView.text = vehicle.brand
         holder.licensePlateTextView.text = vehicle.licensePlate
-        holder.fuelTextView.text = vehicle.fuelType.description
-        holder.consumptionTextView.text = "${vehicle.averageFuelConsumption}"
-        holder.autonomyTextView.text = "${vehicle.kms}"
+        holder.fuelTextView.text = context.getStringResourceByName(vehicle.fuelType.stringKey)
+        holder.consumptionTextView.text = "${vehicle.averageFuelConsumption} l/100km"
+        holder.autonomyTextView.text = "${vehicle.kms.toInt()} km"
     }
 
     override fun getItemCount(): Int = vehicles.size
@@ -61,10 +62,10 @@ class VehiclesTabAdapter(private val vehicles: MutableList<VehicleModel>) : Recy
         val fuelTextView: TextView = itemView.findViewById(R.id.fuelTextView)
         val consumptionTextView: TextView = itemView.findViewById(R.id.consumptionTextView)
         val autonomyTextView: TextView = itemView.findViewById(R.id.autonomyTextView)
-        val backgroundRectangleImageView: ImageView = itemView.findViewById(R.id.backgroundRectangle)
+        val vehicleItemLayout: ConstraintLayout = itemView.findViewById(R.id.vehicleItemLayout)
 
         init {
-            backgroundRectangleImageView.setOnClickListener {
+            vehicleItemLayout.setOnClickListener {
                 val context = itemView.context
                 val intent = Intent(context, InfoVehicleActivity::class.java)
                 val carBitmap: Bitmap = carImageView.drawable.toBitmap()
@@ -80,3 +81,5 @@ class VehiclesTabAdapter(private val vehicles: MutableList<VehicleModel>) : Recy
     }
 
 }
+
+

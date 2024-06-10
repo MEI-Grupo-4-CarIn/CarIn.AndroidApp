@@ -17,9 +17,11 @@ object RepositoryModule {
     fun provideRouteRepository(context: Context): RouteRepository {
         val routeDao = AppDatabase.invoke(context).routeDao()
         val userDao = AppDatabase.invoke(context).userDao()
+        val vehicleDao = AppDatabase.invoke(context).vehicleDao()
         val routeService = NetworkModule.provideRouteService(context)
         val userService = NetworkModule.provideUserService(context)
-        return RouteRepository(routeDao, userDao, routeService, userService)
+        val vehicleService = NetworkModule.provideVehicleService(context)
+        return RouteRepository(routeDao, userDao, vehicleDao, routeService, userService, vehicleService)
     }
 
     fun provideVehicleRepository(context: Context): VehicleRepository {

@@ -1,6 +1,7 @@
 package com.carin.data.local.daos
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.RawQuery
 import androidx.room.Upsert
@@ -13,7 +14,13 @@ import com.carin.domain.enums.VehicleStatus
 @Dao
 interface VehicleDao {
     @Query("SELECT * FROM vehicles WHERE id = :id LIMIT 1")
-    suspend fun getVehicleById(id: Int): VehicleEntity?
+    suspend fun getVehicleById(id: String): VehicleEntity?
+
+    @Insert
+    suspend fun insertVehicle(vehicles: VehicleEntity)
+
+    @Upsert
+    suspend fun upsertVehicle(vehicle: VehicleEntity)
 
     @Upsert
     suspend fun upsertVehicles(vehicles: List<VehicleEntity>)
