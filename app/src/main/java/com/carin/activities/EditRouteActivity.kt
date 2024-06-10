@@ -16,7 +16,8 @@ class EditRouteActivity : AppCompatActivity() {
 
         val iconImageView = findViewById<ImageView>(R.id.iconImageView)
         iconImageView.setOnClickListener {
-            startActivity(Intent(this, InfoRouteActivity::class.java))
+            Intent(this, InfoRouteActivity::class.java)
+            finish()
         }
 
         val editTextDateRegister = findViewById<EditText>(R.id.editTextDateRegister)

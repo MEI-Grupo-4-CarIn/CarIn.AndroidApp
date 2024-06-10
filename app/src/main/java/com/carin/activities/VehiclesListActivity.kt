@@ -13,6 +13,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -51,6 +52,13 @@ class VehiclesListActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .add(R.id.container, MainFragmentVehicle())
                 .commitNow()
+        }
+
+        val iconImageView = findViewById<ImageView>(R.id.iconImageView)
+        iconImageView.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
         val searchEditText: EditText = findViewById(R.id.searchEditText)

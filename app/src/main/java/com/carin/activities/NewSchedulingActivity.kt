@@ -2,7 +2,6 @@ package com.carin.activities
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageView
@@ -21,9 +20,7 @@ class NewSchedulingActivity : AppCompatActivity() {
 
         val iconImageView = findViewById<ImageView>(R.id.iconImageView)
         iconImageView.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(R.animator.slide_down, 0)
+            finish()
         }
 
         val switchButton = findViewById<MaterialSwitch>(R.id.switchButton)

@@ -1,7 +1,6 @@
 package com.carin.activities
 
 import android.app.DatePickerDialog
-import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageView
@@ -17,7 +16,6 @@ class NewVehicleActivity : AppCompatActivity() {
 
         val editTextDateRegister = findViewById<EditText>(R.id.editTextDateRegister)
         val editTextDateAcquisition = findViewById<EditText>(R.id.editTextDateAcquisition)
-        val iconImageView = findViewById<ImageView>(R.id.iconImageView)
 
         editTextDateRegister.setOnClickListener {
             showDatePickerDialog(editTextDateRegister)
@@ -27,10 +25,10 @@ class NewVehicleActivity : AppCompatActivity() {
             showDatePickerDialog(editTextDateAcquisition)
         }
 
+        val iconImageView = findViewById<ImageView>(R.id.iconImageView)
         iconImageView.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
             overridePendingTransition(R.animator.slide_down, 0)
+            finish()
         }
     }
 
