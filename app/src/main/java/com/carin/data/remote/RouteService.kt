@@ -6,6 +6,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface RouteService {
@@ -18,6 +19,9 @@ interface RouteService {
         @Query("userId") userId: Int? = null,
         @Query("vehicleId") vehicleId: String? = null,
     ): Call<List<RouteDto>>
+
+    @GET("/routes/{id}")
+    fun getRouteById(@Path("id") id: String): Call<RouteDto>
 
     @POST("/routes")
     fun createRoute(@Body routeCreationRequest: RouteCreationRequest): Call<RouteDto>

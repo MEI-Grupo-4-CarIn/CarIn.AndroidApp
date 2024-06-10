@@ -110,7 +110,7 @@
     <string name="currentkms">Current kms</string>
     <string name="capacity">Capacity</string>
     <string name="NºSeats">Nº of seats</string>
-    <string name="typeFuel">Type of fuel</string>
+    <string name="typeFuel">Fuel type</string>
     <string name="fuel">Fuel</string>
     <string name="averageConsumption">Average consumption</string>
     <string name="status">Status</string>
@@ -201,5 +201,11 @@
     <string name="avoidTolls">Avoid tolls</string>
     <string name="avoidHighways">Avoid highways</string>
     <string name="route_created_message">Route created with success!</string>
+    <string name="select_user_role">Select the user role</string>
+    <string name="admin_role">Administrator</string>
+    <string name="manager_role">Manager</string>
+    <string name="driver_role">Driver</string>
+    <string name="routeInformation">Route Information</string>
+    <string name="costs">Costs</string>
 
 </resources>

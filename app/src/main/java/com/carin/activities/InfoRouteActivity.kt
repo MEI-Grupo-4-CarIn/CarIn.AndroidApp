@@ -1,6 +1,7 @@
 package com.carin.activities
 
 import android.content.Intent
+import android.location.Geocoder
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -13,42 +14,150 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.carin.R
+import com.carin.di.RepositoryModule
 import com.carin.domain.enums.Role
 import com.carin.utils.AuthUtils
+import com.carin.utils.Resource
+import com.carin.utils.getStringResourceByName
+import com.carin.viewmodels.InfoRouteViewModel
+import com.carin.viewmodels.InfoRouteViewModelFactory
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolylineOptions
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Locale
+import kotlin.random.Random
 
-class InfoRouteActivity : AppCompatActivity() {
+class InfoRouteActivity : AppCompatActivity(), OnMapReadyCallback {
+
+    private lateinit var mMap: GoogleMap
+    private var startPoint: LatLng? = null
+    private var endPoint: LatLng? = null
+    private lateinit var viewModel: InfoRouteViewModel
+    private val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info_route)
 
-        val userAuths = AuthUtils.getUserAuth(this)
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
+        mapFragment.getMapAsync(this)
 
-        userAuths?.let {
+        val userAuth = AuthUtils.getUserAuth(this)
+        userAuth?.let {
             adjustUIBasedOnRole(it.role)
         }
 
-        val iconImageView = findViewById<ImageView>(R.id.iconImageView)
-        iconImageView.setOnClickListener {
-            startActivity(Intent(this, RoutesListActivity::class.java))
+        val routeIdFromIntent = intent.getStringExtra("routeId")
+
+        val infoRouteGoBackIcon = findViewById<ImageView>(R.id.infoRouteGoBackIcon)
+        infoRouteGoBackIcon.setOnClickListener {
+            finish()
         }
 
-        val textViewSeeMore = findViewById<TextView>(R.id.textViewSeeMore)
-        textViewSeeMore.setOnClickListener {
-            startActivity(Intent(this, InfoVehicleActivity::class.java))
+        prepareOptionsMenu()
+
+        val infoRouteDetailsDepartureTxt = findViewById<TextView>(R.id.infoRouteDetailsDepartureTxt)
+        val infoRouteDetailsDestinationTxt = findViewById<TextView>(R.id.infoRouteDetailsDestinationTxt)
+        val infoRouteDetailsDriverTxt = findViewById<TextView>(R.id.infoRouteDetailsDriverTxt)
+        val infoRouteDetailsVehicleTxt = findViewById<TextView>(R.id.infoRouteDetailsVehicleTxt)
+        val infoRouteDetailsBrandTxt = findViewById<TextView>(R.id.infoRouteDetailsBrandTxt)
+        val infoRouteDetailsModelTxt = findViewById<TextView>(R.id.infoRouteDetailsModelTxt)
+        val infoRouteDetailsFuelTypeTxt = findViewById<TextView>(R.id.infoRouteDetailsFuelTypeTxt)
+        val infoRouteDetailsLicensePlateTxt = findViewById<TextView>(R.id.infoRouteDetailsLicensePlateTxt)
+        val infoRouteDetailsNameTxt = findViewById<TextView>(R.id.infoRouteDetailsNameTxt)
+        val infoRouteDetailsBirthDateTxt = findViewById<TextView>(R.id.infoRouteDetailsBirthDateTxt)
+        val infoRouteDetailsAccidentsTxt = findViewById<TextView>(R.id.infoRouteDetailsAccidentsTxt)
+        val infoRouteDetailsAgeTxt = findViewById<TextView>(R.id.infoRouteDetailsAgeTxt)
+        val infoRouteDetailsEmailTxt = findViewById<TextView>(R.id.infoRouteDetailsEmailTxt)
+        val infoRouteDetailsFuelCostsTxt = findViewById<TextView>(R.id.infoRouteDetailsFuelCostsTxt)
+        val infoRouteDetailsTollsCostsTxt = findViewById<TextView>(R.id.infoRouteDetailsTollsCostsTxt)
+        val infoRouteDetailsOtherCostsTxt = findViewById<TextView>(R.id.infoRouteDetailsOtherCostsTxt)
+
+        // TODO: add kilometers and time
+
+        val progressBar = findViewById<View>(R.id.progressBar)
+        val errorTextView = findViewById<TextView>(R.id.errorTextView)
+
+        val userRepository = RepositoryModule.provideUserRepository(this)
+        val vehicleRepository = RepositoryModule.provideVehicleRepository(this)
+        val routeRepository = RepositoryModule.provideRouteRepository(this)
+        val factory = InfoRouteViewModelFactory(userRepository, vehicleRepository, routeRepository)
+        viewModel = ViewModelProvider(this, factory)[InfoRouteViewModel::class.java]
+
+        viewModel.uiDetailsState.observe(this) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    progressBar.visibility = View.VISIBLE
+                    errorTextView.visibility = View.GONE
+                }
+                is Resource.Success -> {
+                    errorTextView.visibility = View.GONE
+
+                    resource.data?.let { route ->
+                        infoRouteDetailsDepartureTxt.text = "${route.startPoint.city}, ${route.startPoint.country}"
+                        infoRouteDetailsDestinationTxt.text = "${route.endPoint.city}, ${route.endPoint.country}"
+                        infoRouteDetailsDriverTxt.text = "${route.user?.firstName} ${route.user?.lastName}"
+                        infoRouteDetailsVehicleTxt.text = "${route.vehicle?.brand} ${route.vehicle?.model}"
+                        infoRouteDetailsBrandTxt.text = route.vehicle?.brand
+                        infoRouteDetailsModelTxt.text = route.vehicle?.model
+                        infoRouteDetailsFuelTypeTxt.text = route.vehicle?.fuelType?.let {
+                            this.getStringResourceByName(it.stringKey)
+                        }
+                        infoRouteDetailsLicensePlateTxt.text = route.vehicle?.licensePlate
+                        infoRouteDetailsNameTxt.text = "${route.user?.firstName} ${route.user?.lastName}"
+                        infoRouteDetailsBirthDateTxt.text = formatter.format(route.user?.birthDate)
+                        infoRouteDetailsAccidentsTxt.text = "0"
+                        infoRouteDetailsAgeTxt.text = route.user?.age?.toString() ?: "N/A"
+                        infoRouteDetailsEmailTxt.text = route.user?.email
+                        infoRouteDetailsFuelCostsTxt.text = route.distance?.times(1.60)?.let { "%.2f €".format(it) } ?: "N/A"
+                        infoRouteDetailsTollsCostsTxt.text = if (!route.avoidTolls) {
+                            route.distance?.times(0.20)?.let { "%.2f €".format(it) } ?: "0 €"
+                        } else {
+                            "N/A"
+                        }
+                        val randomOtherCost = Random.nextDouble(1.00, 100.00)
+                        infoRouteDetailsOtherCostsTxt.text = "%.2f €".format(randomOtherCost)
+                    }
+
+                    setUpMapWithLocations()
+                    progressBar.visibility = View.GONE
+                }
+                is Resource.Error -> {
+                    progressBar.visibility = View.GONE
+                    errorTextView.visibility = View.VISIBLE
+                    val networkErrorMessage = getString(R.string.network_error)
+                    Toast.makeText(this, networkErrorMessage, Toast.LENGTH_LONG).show()
+                }
+            }
         }
 
-        val textViewSeeMoreDriver = findViewById<TextView>(R.id.textViewSeeMoreDriver)
-        textViewSeeMoreDriver.setOnClickListener {
-            startActivity(Intent(this, InfoUserActivity::class.java))
+        if (routeIdFromIntent != null) {
+            viewModel.loadRouteDetails(routeIdFromIntent)
         }
+    }
 
+    private fun prepareOptionsMenu() {
         val optionsIcon = findViewById<ImageView>(R.id.optionsIcon)
         optionsIcon.setOnClickListener { view ->
-
             val popupMenu = PopupMenu(ContextThemeWrapper(this, R.style.PopupMenu), view)
 
             val editItem = popupMenu.menu.add(Menu.NONE, R.id.edit, Menu.NONE, "Edit")
@@ -82,6 +191,64 @@ class InfoRouteActivity : AppCompatActivity() {
                 }
             }
             popupMenu.show()
+        }
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+        mMap.uiSettings.isZoomControlsEnabled = true
+    }
+
+    private fun setUpMapWithLocations() {
+        val infoRouteDetailsDepartureTxt = findViewById<TextView>(R.id.infoRouteDetailsDepartureTxt).text.toString()
+        val infoRouteDetailsDestinationTxt = findViewById<TextView>(R.id.infoRouteDetailsDestinationTxt).text.toString()
+
+        lifecycleScope.launch {
+            val startPointDeferred = async { geocodeAddress(infoRouteDetailsDepartureTxt) }
+            val endPointDeferred = async { geocodeAddress(infoRouteDetailsDestinationTxt) }
+
+            val results = awaitAll(startPointDeferred, endPointDeferred)
+
+            startPoint = results[0]
+            endPoint = results[1]
+
+            drawRoute()
+        }
+    }
+
+    private suspend fun geocodeAddress(address: String): LatLng? {
+        return withContext(Dispatchers.IO) {
+            val geocoder = Geocoder(this@InfoRouteActivity, Locale.getDefault())
+            try {
+                val addresses = geocoder.getFromLocationName(address, 1)
+                if (!addresses.isNullOrEmpty()) {
+                    val location = addresses[0]
+                    LatLng(location.latitude, location.longitude)
+                } else {
+                    null
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+                null
+            }
+        }
+    }
+
+    private fun drawRoute() {
+        mMap.clear()
+        startPoint?.let { start ->
+            mMap.addMarker(MarkerOptions().position(start).title("Start Point"))
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(start, 12f))
+
+            endPoint?.let { end ->
+                mMap.addMarker(MarkerOptions().position(end).title("End Point"))
+
+                val routePoints: List<LatLng> = listOf(start, end)
+                val polylineOptions = PolylineOptions().addAll(routePoints)
+                mMap.addPolyline(polylineOptions)
+                val bounds = LatLngBounds.Builder().include(start).include(end).build()
+                mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
+            }
         }
     }
 

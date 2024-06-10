@@ -114,9 +114,10 @@ class NewRouteActivity : AppCompatActivity(), OnMapReadyCallback {
         val editTextDriver = findViewById<EditText>(R.id.editTextDriver)
         val editTextDepartureDate = findViewById<EditText>(R.id.editTextDepartureDate)
         val editTextVehicle = findViewById<EditText>(R.id.editTextVehicle)
-        val buttonCreateRoute = findViewById<View>(R.id.buttonCreateRoute)
         val avoidTollsCheckBox = findViewById<CheckBox>(R.id.checkboxAvoidTolls)
         val avoidHighwaysCheckBox = findViewById<CheckBox>(R.id.checkboxAvoidHighways)
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        val buttonCreateRoute = findViewById<View>(R.id.buttonCreateRoute)
 
         editTextDriver.setOnClickListener {
             showSelectionDialog(true)
@@ -158,9 +159,11 @@ class NewRouteActivity : AppCompatActivity(), OnMapReadyCallback {
             when (resource) {
                 is Resource.Loading -> {
                     buttonCreateRoute.isEnabled = false
+                    progressBar.visibility = View.VISIBLE
                 }
                 is Resource.Success -> {
                     buttonCreateRoute.isEnabled = true
+                    progressBar.visibility = View.GONE
                     Toast.makeText(this, getString(R.string.route_created_message), Toast.LENGTH_SHORT).show()
 
                     val intent = Intent(this, InfoRouteActivity::class.java)
@@ -170,6 +173,7 @@ class NewRouteActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
                 is Resource.Error -> {
                     buttonCreateRoute.isEnabled = true
+                    progressBar.visibility = View.GONE
                     Toast.makeText(this, resource.message, Toast.LENGTH_LONG).show()
                 }
             }
@@ -185,12 +189,8 @@ class NewRouteActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun setUpMap() {
-        if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) !=
-            PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                LOCATION_PERMISSION_REQUEST_CODE)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
             return
         }
         mMap.isMyLocationEnabled = true
@@ -209,7 +209,6 @@ class NewRouteActivity : AppCompatActivity(), OnMapReadyCallback {
         val editTextDestinationCity = findViewById<EditText>(R.id.editTextDestinationCity)
         val editTextDestinationCountry = findViewById<EditText>(R.id.editTextDestinationCountry)
         val editTextDepartureDate = findViewById<EditText>(R.id.editTextDepartureDate)
-
 
         editTextDepartureDate.setOnClickListener {
             showDateTimePickerDialog(editTextDepartureDate)

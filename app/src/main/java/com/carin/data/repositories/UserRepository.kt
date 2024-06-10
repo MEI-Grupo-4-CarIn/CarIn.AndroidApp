@@ -98,6 +98,8 @@ class UserRepository(
             }
 
             if (isToFetchRemote || forceRefresh) {
+                emit(Resource.Loading())
+
                 val remoteUser = try {
                     val response =
                         userService.getUserById(id).execute()

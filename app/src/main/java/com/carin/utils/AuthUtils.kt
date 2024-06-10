@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.single
+import org.json.JSONObject
 import retrofit2.HttpException
 import java.io.IOException
 import java.util.Date
@@ -131,7 +132,15 @@ object AuthUtils {
                         emit(Resource.Success(true))
                     }
                 } else {
-                    emit(Resource.Error("Login failed: " + response.errorBody()?.string()))
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = errorBody?.let {
+                        try {
+                            JSONObject(it).getString("message")
+                        } catch (e: Exception) {
+                            response.message()
+                        }
+                    } ?: response.message()
+                    emit(Resource.Error("Login failed: $errorMessage"))
                 }
             } catch(e: IOException) {
                 e.printStackTrace()

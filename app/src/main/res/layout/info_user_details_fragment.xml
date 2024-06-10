@@ -67,7 +67,6 @@
                         android:text="@string/dateBirth"
                         android:textColor="@color/colorPrimary"/>
 
-
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

@@ -19,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import org.json.JSONObject
 import retrofit2.HttpException
 import java.io.IOException
 import java.util.Date
@@ -169,6 +170,58 @@ class RouteRepository(
         }.flowOn(Dispatchers.IO)
     }
 
+    suspend fun getRouteById(id: String, forceRefresh: Boolean = false): Flow<Resource<RouteModel>> {
+        return flow {
+            emit(Resource.Loading())
+
+            val localRoute = routeDao.getRouteById(id)
+            val isToFetchRemote = localRoute == null || localRoute.route.localLastUpdateDateUtc < Date(System.currentTimeMillis() - 15.minutes.inWholeMilliseconds)
+            if (localRoute != null) {
+                emit(Resource.Success(data = localRoute.toRouteModel()))
+            }
+
+            if (isToFetchRemote || forceRefresh) {
+                emit(Resource.Loading())
+
+                val remoteRoute = try {
+                    val response = routeService.getRouteById(id).execute()
+                    if (response.isSuccessful) {
+                        response.body()
+                    } else {
+                        val errorBody = response.errorBody()?.string()
+                        val errorMessage = errorBody?.let {
+                            try {
+                                JSONObject(it).getString("message")
+                            } catch (e: Exception) {
+                                response.message()
+                            }
+                        } ?: response.message()
+                        emit(Resource.Error(errorMessage))
+                        null
+                    }
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                    emit(Resource.Error("Couldn't create route"))
+                    null
+                } catch (e: HttpException) {
+                    e.printStackTrace()
+                    emit(Resource.Error("Couldn't create route"))
+                    null
+                }
+
+                remoteRoute?.let { routeDto ->
+                    val routeEntity = routeDto.toRouteEntity()
+                    routeDao.upsertRoute(routeEntity)
+
+                    val upsertedRoute = routeDao.getRouteById(id)
+                    if (upsertedRoute != null) {
+                        emit(Resource.Success(data = upsertedRoute.toRouteModel()))
+                    }
+                }
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
     suspend fun createRoute(routeCreationModel: RouteCreationModel): Flow<Resource<String>> {
         return flow {
             emit(Resource.Loading())
@@ -178,7 +231,15 @@ class RouteRepository(
                 if (response.isSuccessful) {
                     response.body()
                 } else {
-                    emit(Resource.Error(response.message()))
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = errorBody?.let {
+                        try {
+                            JSONObject(it).getString("message")
+                        } catch (e: Exception) {
+                            response.message()
+                        }
+                    } ?: response.message()
+                    emit(Resource.Error(errorMessage))
                     null
                 }
             } catch (e: IOException) {

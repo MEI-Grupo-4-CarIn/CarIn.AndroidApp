@@ -78,7 +78,7 @@ class RoutesTabAdapter(private val routes: MutableList<RouteModel>) : RecyclerVi
         }
     }
 
-    class RouteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class RouteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val originTextView: TextView = itemView.findViewById(R.id.originTextView)
         val destinationTextView: TextView = itemView.findViewById(R.id.destinationTextView)
         val driverNameTextView: TextView = itemView.findViewById(R.id.driverNameTextView)
@@ -94,10 +94,9 @@ class RoutesTabAdapter(private val routes: MutableList<RouteModel>) : RecyclerVi
             backgroundRectangleImageView.setOnClickListener {
                 val context = itemView.context
                 val intent = Intent(context, InfoRouteActivity::class.java)
+                intent.putExtra("routeId", routes[adapterPosition].id)
                 context.startActivity(intent)
             }
         }
-
     }
-
 }

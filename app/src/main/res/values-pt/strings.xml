@@ -200,6 +200,12 @@
     <string name="avoidTolls">Evitar portagens</string>
     <string name="avoidHighways">Evitar autoestradas</string>
     <string name="route_created_message">Rota criada com sucesso!</string>
+    <string name="select_user_role">Selecione a função do utilizador</string>
+    <string name="admin_role">Administrador</string>
+    <string name="manager_role">Gestor</string>
+    <string name="driver_role">Condutor</string>
+    <string name="routeInformation">Informação da Rota</string>
+    <string name="costs">Custos</string>
 
 
 </resources>
