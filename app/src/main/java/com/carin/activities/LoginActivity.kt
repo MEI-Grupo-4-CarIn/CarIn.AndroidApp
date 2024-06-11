@@ -1,12 +1,18 @@
 package com.carin.activities
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.carin.R
 import com.carin.utils.AuthUtils
@@ -16,6 +22,18 @@ import kotlinx.coroutines.launch
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var emailEditText: EditText
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            // Permission granted
+            Toast.makeText(this, getString(R.string.permission_notifications_granted), Toast.LENGTH_SHORT).show()
+        } else {
+            // Permission denied
+            Toast.makeText(this, getString(R.string.permission_notifications_denied), Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +45,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
         val buttonRegister: Button = findViewById(R.id.buttonRegister)
-
         buttonRegister.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
@@ -47,6 +64,11 @@ class LoginActivity : AppCompatActivity() {
         textViewForgotPassword.setOnClickListener {
             val intent = Intent(this, ConfirmPasswordActivity::class.java)
             startActivity(intent)
+        }
+
+        // Ask for notification permission on Android 13 and above
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            askNotificationPermission()
         }
     }
 
@@ -91,5 +113,24 @@ class LoginActivity : AppCompatActivity() {
         }
 
         return isValid
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun askNotificationPermission() {
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                // Permission granted
+            }
+            shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {
+                Toast.makeText(this, getString(R.string.notifications_is_required), Toast.LENGTH_LONG).show()
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+            else -> {
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
     }
 }

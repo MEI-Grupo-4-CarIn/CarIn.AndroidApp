@@ -214,6 +214,9 @@
     <string name="route_updated_success">Rota atualizada com sucesso!</string>
     <string name="vehicle_created_message">Veículo criado com sucesso!</string>
     <string name="vehicleInformation">Informação do Veículo</string>
+    <string name="permission_notifications_granted">Permissão para notificações concedida.</string>
+    <string name="permission_notifications_denied">Permissão para notificações negada.</string>
+    <string name="notifications_is_required">É necessária permissão para notificações, para mantê-lo atualizado.</string>
 
 
 </resources>

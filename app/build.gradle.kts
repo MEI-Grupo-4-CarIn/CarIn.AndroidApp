@@ -3,6 +3,7 @@ plugins {
     id("kotlin-kapt")
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -58,6 +59,9 @@ dependencies {
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.play.services.location)
     implementation(libs.play.services.places)
+    implementation(libs.firebase.messaging)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
     "kapt"(libs.androidx.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
