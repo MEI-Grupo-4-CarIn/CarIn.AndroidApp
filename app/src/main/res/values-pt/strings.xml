@@ -213,6 +213,7 @@
     <string name="date_should_be_future">A data deve ser no futuro</string>
     <string name="route_updated_success">Rota atualizada com sucesso!</string>
     <string name="vehicle_created_message">Veículo criado com sucesso!</string>
+    <string name="vehicleInformation">Informação do Veículo</string>
 
 
 </resources>
