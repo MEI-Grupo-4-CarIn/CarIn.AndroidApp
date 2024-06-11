@@ -2,20 +2,17 @@ package com.carin.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.activities.InfoVehicleActivity
 import com.carin.domain.models.VehicleModel
 import com.carin.utils.getStringResourceByName
-import java.io.ByteArrayOutputStream
 
 class VehiclesTabAdapter(private val context: Context, val vehicles: MutableList<VehicleModel>) : RecyclerView.Adapter<VehiclesTabAdapter.VehicleViewHolder>() {
 
@@ -30,7 +27,7 @@ class VehiclesTabAdapter(private val context: Context, val vehicles: MutableList
     override fun onBindViewHolder(holder: VehicleViewHolder, position: Int) {
         val vehicle = vehicles[position]
         holder.carImageView.setImageResource(vehicle.imageResource)
-        holder.brandTextView.text = vehicle.brand
+        holder.brandTextView.text = "${vehicle.brand} ${vehicle.model}"
         holder.licensePlateTextView.text = vehicle.licensePlate
         holder.fuelTextView.text = context.getStringResourceByName(vehicle.fuelType.stringKey)
         holder.consumptionTextView.text = "${vehicle.averageFuelConsumption} l/100km"
@@ -55,7 +52,7 @@ class VehiclesTabAdapter(private val context: Context, val vehicles: MutableList
         notifyDataSetChanged()
     }
 
-    class VehicleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class VehicleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val carImageView: ImageView = itemView.findViewById(R.id.carImageView)
         val brandTextView: TextView = itemView.findViewById(R.id.brandTextView)
         val licensePlateTextView: TextView = itemView.findViewById(R.id.licensePlateTextView)
@@ -68,12 +65,7 @@ class VehiclesTabAdapter(private val context: Context, val vehicles: MutableList
             vehicleItemLayout.setOnClickListener {
                 val context = itemView.context
                 val intent = Intent(context, InfoVehicleActivity::class.java)
-                val carBitmap: Bitmap = carImageView.drawable.toBitmap()
-                val byteArrayOutputStream = ByteArrayOutputStream()
-                carBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
-                val byteArray: ByteArray = byteArrayOutputStream.toByteArray()
-                intent.putExtra("car_image", byteArray)
-                intent.putExtra("brand_text", brandTextView.text.toString())
+                intent.putExtra("vehicleId", vehicles[adapterPosition].id)
                 context.startActivity(intent)
             }
         }
