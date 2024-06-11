@@ -1,7 +1,6 @@
 package com.carin.activities
 
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -13,107 +12,156 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.PopupMenu
+import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.adapter.RouteInfoAdapter
 import com.carin.adapter.SchedulingAdapter
 import com.carin.adapter.UserAdapter
+import com.carin.di.RepositoryModule
 import com.carin.domain.enums.Role
 import com.carin.utils.AuthUtils
 import com.carin.utils.ItemSpacingDecoration
+import com.carin.utils.Resource
+import com.carin.utils.getStringResourceByName
+import com.carin.viewmodels.InfoVehicleViewModel
+import com.carin.viewmodels.InfoVehicleViewModelFactory
+import com.carin.viewmodels.states.RoutesListState
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class InfoVehicleActivity : AppCompatActivity() {
 
+    private lateinit var viewModel: InfoVehicleViewModel
+    private lateinit var vehicleId: String
     private lateinit var adapterRoute: RouteInfoAdapter
-    private lateinit var routesinfo: List<RouteInfo>
-
     private lateinit var adapterUser: UserAdapter
     private lateinit var users: List<User>
-
     private lateinit var adapter: SchedulingAdapter
     private lateinit var schedulings: List<Scheduling>
+    private lateinit var progressBar: ProgressBar
+    private val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info_vehicle)
 
-        val userAuths = AuthUtils.getUserAuth(this)
-
-        userAuths?.let {
+        val userAuth = AuthUtils.getUserAuth(this)
+        userAuth?.let {
             adjustUIBasedOnRole(it.role)
+            if (it.role == Role.Manager) {
+                prepareOptionsMenu()
+            }
         }
 
-        val moreSchedulings: TextView = findViewById(R.id.textViewSeeMore)
+        val vehicleIdFromIntent = intent.getStringExtra("vehicleId") ?: ""
+        vehicleId = vehicleIdFromIntent
 
-        moreSchedulings.setOnClickListener {
+        val infoVehicleGoBackIcon: ImageView = findViewById(R.id.infoVehicleGoBackIcon)
+        infoVehicleGoBackIcon.setOnClickListener {
+            finish()
+        }
+
+        val textViewSeeMoreAppointments = findViewById<TextView>(R.id.textViewSeeMoreAppointments)
+        textViewSeeMoreAppointments.setOnClickListener {
             val intent = Intent(this, CalendarActivity::class.java)
             overridePendingTransition(R.animator.slide_in_right, R.animator.slide_out_left)
             startActivity(intent)
         }
 
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-        recyclerView.addItemDecoration(ItemSpacingDecoration(10))
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-        schedulings = getSchedulings()
-        adapter = SchedulingAdapter(schedulings)
-        recyclerView.adapter = adapter
-
-        adapter.setOnItemClickListener(object : SchedulingAdapter.OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                val intent = Intent(this@InfoVehicleActivity, InfoSchedulingActivity::class.java)
-                startActivity(intent)
-            }
-        })
-
-        val recyclerView1: RecyclerView = findViewById(R.id.recyclerView1)
-        recyclerView1.addItemDecoration(ItemSpacingDecoration(10))
-
-        recyclerView1.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-
-        users = getUsers()
-        adapterUser = UserAdapter(users)
-        recyclerView1.adapter = adapterUser
-
-        adapterUser.setOnItemClickListener(object : UserAdapter.OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                val intent = Intent(this@InfoVehicleActivity, InfoUserActivity::class.java)
-                startActivity(intent)
-            }
-        })
-
-        val recyclerView2: RecyclerView = findViewById(R.id.recyclerView2)
-        recyclerView2.addItemDecoration(ItemSpacingDecoration(10))
-
-        recyclerView2.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-
-        routesinfo = getRoutes()
-        recyclerView2.adapter = adapterRoute
-
-        val informationText: TextView = findViewById(R.id.informationText)
-        val carImageView: ImageView = findViewById(R.id.carImageView)
-
-        val brandText = intent.getStringExtra("brand_text")
-        val carImageByteArray: ByteArray? = intent.getByteArrayExtra("car_image")
-
-        informationText.text = brandText
-
-        if (carImageByteArray != null) {
-            val carBitmap = BitmapFactory.decodeByteArray(carImageByteArray, 0, carImageByteArray.size)
-
-            carImageView.setImageBitmap(carBitmap)
+        val textViewSeeMore1: TextView = findViewById(R.id.textViewSeeMore1)
+        textViewSeeMore1.setOnClickListener {
+            val intent = Intent(this, UsersListActivity::class.java)
+            startActivity(intent)
         }
 
-        val iconImageView: ImageView = findViewById(R.id.iconImageView)
-        iconImageView.setOnClickListener {
-          finish()
+        val textViewSeeMore3: TextView = findViewById(R.id.textViewSeeMore3)
+        textViewSeeMore3.setOnClickListener {
+            val intent = Intent(this, RoutesListActivity::class.java)
+            startActivity(intent)
         }
 
+        val vehicleImage = findViewById<ImageView>(R.id.vehicleImage)
+        val infoVehicleBrandTxt = findViewById<TextView>(R.id.infoVehicleBrandTxt)
+        val infoVehicleModelTxt = findViewById<TextView>(R.id.infoVehicleModelTxt)
+        val infoVehicleLicensePlateTxt = findViewById<TextView>(R.id.infoVehicleLicensePlateTxt)
+        val infoVehicleVinTxt = findViewById<TextView>(R.id.infoVehicleVinTxt)
+        val infoVehicleColorTxt = findViewById<TextView>(R.id.infoVehicleColorTxt)
+        val infoVehicleDateRegistrationTxt = findViewById<TextView>(R.id.infoVehicleDateRegistrationTxt)
+        val infoVehicleDateAcquisitionTxt = findViewById<TextView>(R.id.infoVehicleDateAcquisitionTxt)
+        val infoVehicleConsumptionTxt = findViewById<TextView>(R.id.infoVehicleConsumptionTxt)
+        val infoVehicleSeatsTxt = findViewById<TextView>(R.id.infoVehicleSeatsTxt)
+        val infoVehicleFuelTxt = findViewById<TextView>(R.id.infoVehicleFuelTxt)
+        val infoVehicleKilometersTxt = findViewById<TextView>(R.id.infoVehicleKilometersTxt)
+        val infoVehicleClassTxt = findViewById<TextView>(R.id.infoVehicleClassTxt)
+        progressBar = findViewById(R.id.progressBar)
+        val errorTextView = findViewById<TextView>(R.id.errorTextView)
+
+        val vehicleRepository = RepositoryModule.provideVehicleRepository(this)
+        val routeRepository = RepositoryModule.provideRouteRepository(this)
+        val factory = InfoVehicleViewModelFactory(vehicleRepository, routeRepository)
+        viewModel = ViewModelProvider(this, factory)[InfoVehicleViewModel::class.java]
+        viewModel.uiDetailsState.observe(this) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    progressBar.visibility = View.VISIBLE
+                    errorTextView.visibility = View.GONE
+                }
+                is Resource.Success -> {
+                    errorTextView.visibility = View.GONE
+
+                    resource.data?.let { vehicle ->
+                        vehicleImage.setImageResource(vehicle.imageResource)
+                        infoVehicleBrandTxt.text = vehicle.brand
+                        infoVehicleModelTxt.text = vehicle.model
+                        infoVehicleLicensePlateTxt.text = vehicle.licensePlate
+                        infoVehicleVinTxt.text = vehicle.vin
+                        infoVehicleColorTxt.text = vehicle.color
+                        infoVehicleDateRegistrationTxt.text = dateFormatter.format(vehicle.registerDate)
+                        infoVehicleDateAcquisitionTxt.text = dateFormatter.format(vehicle.acquisitionDate)
+                        infoVehicleConsumptionTxt.text = "${vehicle.averageFuelConsumption} l/100km"
+                        infoVehicleSeatsTxt.text = vehicle.capacity.toInt().toString()
+                        infoVehicleFuelTxt.text = this.getStringResourceByName(vehicle.fuelType.stringKey)
+                        infoVehicleKilometersTxt.text = "${vehicle.kms.toInt()} km"
+                        infoVehicleClassTxt.text = vehicle.category
+                    }
+
+                    progressBar.visibility = View.GONE
+                }
+                is Resource.Error -> {
+                    progressBar.visibility = View.GONE
+                    errorTextView.visibility = View.VISIBLE
+                    val networkErrorMessage = getString(R.string.network_error)
+                    Toast.makeText(this, networkErrorMessage, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+
+        prepareRecyclerViews()
+        prepareRoutesRecyclerView()
+
+        viewModel.loadVehicleDetails(vehicleId)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        vehicleId.let {
+            viewModel.loadVehicleDetails(it)
+            viewModel.loadRoutesForVehicle(it)
+        }
+    }
+
+    private fun prepareOptionsMenu() {
         val optionsIcon = findViewById<ImageView>(R.id.optionsIcon)
+        optionsIcon.visibility = View.VISIBLE
+
         optionsIcon.setOnClickListener { view ->
 
             val popupMenu = PopupMenu(ContextThemeWrapper(this, R.style.PopupMenu), view)
@@ -138,7 +186,9 @@ class InfoVehicleActivity : AppCompatActivity() {
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.edit -> {
-                        startActivity(Intent(this, EditVehicleActivity::class.java))
+                        val intent = Intent(this, EditVehicleActivity::class.java)
+                        intent.putExtra("vehicleId", vehicleId)
+                        startActivity(intent)
                         true
                     }
                     R.id.delete -> {
@@ -150,18 +200,76 @@ class InfoVehicleActivity : AppCompatActivity() {
             }
             popupMenu.show()
         }
+    }
 
-        val textViewSeeMore1: TextView = findViewById(R.id.textViewSeeMore1)
-        textViewSeeMore1.setOnClickListener {
-            val intent = Intent(this, UsersListActivity::class.java)
-            startActivity(intent)
+    private fun prepareRecyclerViews() {
+        val recyclerViewAppointments = findViewById<RecyclerView>(R.id.recyclerViewAppointments)
+        recyclerViewAppointments.addItemDecoration(ItemSpacingDecoration(10))
+        recyclerViewAppointments.layoutManager = LinearLayoutManager(this)
+
+        schedulings = getSchedulings()
+        adapter = SchedulingAdapter(schedulings)
+        recyclerViewAppointments.adapter = adapter
+
+        adapter.setOnItemClickListener(object : SchedulingAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val intent = Intent(this@InfoVehicleActivity, InfoSchedulingActivity::class.java)
+                startActivity(intent)
+            }
+        })
+
+        val recyclerViewLastDrivers = findViewById<RecyclerView>(R.id.recyclerViewLastDrivers)
+        recyclerViewLastDrivers.addItemDecoration(ItemSpacingDecoration(10))
+        recyclerViewLastDrivers.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        users = getUsers()
+        adapterUser = UserAdapter(users)
+        recyclerViewLastDrivers.adapter = adapterUser
+
+        adapterUser.setOnItemClickListener(object : UserAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val intent = Intent(this@InfoVehicleActivity, InfoUserActivity::class.java)
+                startActivity(intent)
+            }
+        })
+    }
+
+    private fun prepareRoutesRecyclerView() {
+        val recyclerViewRoutes = findViewById<RecyclerView>(R.id.recyclerViewRoutes)
+        val emptyTextViewRoutes = findViewById<TextView>(R.id.emptyTextViewRoutes)
+
+        recyclerViewRoutes.addItemDecoration(ItemSpacingDecoration(10))
+        recyclerViewRoutes.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        adapterRoute = RouteInfoAdapter(mutableListOf())
+        recyclerViewRoutes.adapter = adapterRoute
+
+        viewModel.uiRoutesState.observe(this) { state ->
+            when (state) {
+                is RoutesListState.Loading -> {
+                    progressBar.visibility = View.VISIBLE
+                    emptyTextViewRoutes.visibility = View.GONE
+                }
+                is RoutesListState.Success -> {
+                    if (state.isEmpty) {
+                        emptyTextViewRoutes.visibility = View.VISIBLE
+                        recyclerViewRoutes.visibility = View.GONE
+                    } else {
+                        emptyTextViewRoutes.visibility = View.GONE
+                        recyclerViewRoutes.visibility = View.VISIBLE
+                        adapterRoute.updateRoutes(state.routes)
+                    }
+
+                    progressBar.visibility = View.GONE
+                }
+                is RoutesListState.Error -> {
+                    emptyTextViewRoutes.visibility = View.GONE
+                    progressBar.visibility = View.GONE
+                }
+            }
         }
 
-        val textViewSeeMore3: TextView = findViewById(R.id.textViewSeeMore3)
-        textViewSeeMore3.setOnClickListener {
-            val intent = Intent(this, RoutesListActivity::class.java)
-            startActivity(intent)
-        }
+        viewModel.loadRoutesForVehicle(vehicleId)
     }
 
     private fun adjustUIBasedOnRole(role: Role) {
@@ -182,14 +290,13 @@ class InfoVehicleActivity : AppCompatActivity() {
     private fun showDriverComponents() {
         findViewById<View>(R.id.optionsIcon).visibility = View.GONE
         findViewById<View>(R.id.thirdLinearLayout).visibility = View.GONE
-        findViewById<View>(R.id.recyclerView).visibility = View.GONE
+        findViewById<View>(R.id.recyclerViewAppointments).visibility = View.GONE
         findViewById<View>(R.id.line2LinearLayout).visibility = View.GONE
         findViewById<View>(R.id.fourLinearLayout).visibility = View.GONE
-        findViewById<View>(R.id.textViewLastDrivers).visibility = View.GONE
-        findViewById<View>(R.id.recyclerView1).visibility = View.GONE
+        findViewById<View>(R.id.recyclerViewLastDrivers).visibility = View.GONE
         findViewById<View>(R.id.line3LinearLayout).visibility = View.GONE
         findViewById<View>(R.id.fiveLinearLayout).visibility = View.GONE
-        findViewById<View>(R.id.recyclerView2).visibility = View.GONE
+        findViewById<View>(R.id.recyclerViewRoutes).visibility = View.GONE
     }
 
     private fun getSchedulings(): List<Scheduling> {
@@ -211,16 +318,6 @@ class InfoVehicleActivity : AppCompatActivity() {
         return users
     }
     data class User(val image: Int, val firstName: String, val lastName: String)
-
-    private fun getRoutes(): List<RouteInfo> {
-
-        val routes = mutableListOf<RouteInfo>()
-        routes.add(RouteInfo("Porto", "Luxemburgo", "12 Fevereiro", "INFINITY Vision Qe", "18H30m", "1700"))
-        routes.add(RouteInfo("Lisboa", "Luxemburgo", "13 Fevereiro", "INFINITY Vision Qe", "18H30m", "1700"))
-
-        return routes
-    }
-    data class RouteInfo(val origin: String, val destination: String, val date: String, val brand: String, val hour: String, val km: String)
 
     private fun showDeleteConfirmationDialog() {
         val builder = AlertDialog.Builder(this)

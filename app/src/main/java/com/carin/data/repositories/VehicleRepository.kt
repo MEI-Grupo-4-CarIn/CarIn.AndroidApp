@@ -82,6 +82,58 @@ class VehicleRepository(
         }.flowOn(Dispatchers.IO)
     }
 
+    suspend fun getVehicleById(id: String, forceRefresh: Boolean = false): Flow<Resource<VehicleModel>> {
+        return flow {
+            emit(Resource.Loading())
+
+            val localVehicle = vehicleDao.getVehicleById(id)
+            val isToFetchRemote = localVehicle == null || localVehicle.localLastUpdateDateUtc < Date(System.currentTimeMillis() - 15.minutes.inWholeMilliseconds)
+            if (localVehicle != null) {
+                emit(Resource.Success(data = localVehicle.toVehicleModel()))
+            }
+
+            if (isToFetchRemote || forceRefresh) {
+                emit(Resource.Loading())
+
+                val remoteVehicle = try {
+                    val response = vehicleService.getVehicleById(id).execute()
+                    if (response.isSuccessful) {
+                        response.body()
+                    } else {
+                        val errorBody = response.errorBody()?.string()
+                        val errorMessage = errorBody?.let {
+                            try {
+                                org.json.JSONObject(it).getString("message")
+                            } catch (e: Exception) {
+                                response.message()
+                            }
+                        } ?: response.message()
+                        emit(Resource.Error(errorMessage))
+                        null
+                    }
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                    emit(Resource.Error("Couldn't create route"))
+                    null
+                } catch (e: HttpException) {
+                    e.printStackTrace()
+                    emit(Resource.Error("Couldn't create route"))
+                    null
+                }
+
+                remoteVehicle?.let { vehicleDto ->
+                    val vehicleEntity = vehicleDto.toVehicleEntity()
+                    vehicleDao.upsertVehicle(vehicleEntity)
+
+                    val upsertedVehicle = vehicleDao.getVehicleById(id)
+                    if (upsertedVehicle != null) {
+                        emit(Resource.Success(data = upsertedVehicle.toVehicleModel()))
+                    }
+                }
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
     suspend fun createVehicle(vehicleCreationModel: VehicleCreationModel): Flow<Resource<String>> {
         return flow {
             emit(Resource.Loading())
