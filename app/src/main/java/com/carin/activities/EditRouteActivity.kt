@@ -99,7 +99,7 @@ class EditRouteActivity : AppCompatActivity(), OnMapReadyCallback {
         val infoUserFactory = InfoUserViewModelFactory(userRepository, routeRepository)
         infoUserViewModel = ViewModelProvider(this, infoUserFactory)[InfoUserViewModel::class.java]
 
-        val infoVehicleFactory = InfoVehicleViewModelFactory(vehicleRepository)
+        val infoVehicleFactory = InfoVehicleViewModelFactory(vehicleRepository, routeRepository)
         infoVehicleViewModel = ViewModelProvider(this, infoVehicleFactory)[InfoVehicleViewModel::class.java]
 
         val infoRouteFactory = InfoRouteViewModelFactory(routeRepository)
