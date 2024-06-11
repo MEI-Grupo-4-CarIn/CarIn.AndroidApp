@@ -29,29 +29,18 @@
                 android:layout_marginStart="16dp"/>
 
             <TextView
-                android:id="@+id/firstNameViewTime"
+                android:id="@+id/nameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/circularImageView"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:text="Bruno"
+                android:layout_centerVertical="true"
+                android:text="Bruno Ferreira"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimary"/>
 
-            <TextView
-                android:id="@+id/lastNameViewTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/firstNameViewTime"
-                android:layout_toEndOf="@id/circularImageView"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:text="Ferreira"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/colorPrimary"/>
         </RelativeLayout>
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

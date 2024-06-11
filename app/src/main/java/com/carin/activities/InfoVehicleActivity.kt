@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.adapter.RouteInfoAdapter
 import com.carin.adapter.SchedulingAdapter
-import com.carin.adapter.UserAdapter
+import com.carin.adapter.UserInfoAdapter
 import com.carin.di.RepositoryModule
 import com.carin.domain.enums.Role
 import com.carin.utils.AuthUtils
@@ -42,8 +42,7 @@ class InfoVehicleActivity : AppCompatActivity() {
     private lateinit var viewModel: InfoVehicleViewModel
     private lateinit var vehicleId: String
     private lateinit var adapterRoute: RouteInfoAdapter
-    private lateinit var adapterUser: UserAdapter
-    private lateinit var users: List<User>
+    private lateinit var adapterUser: UserInfoAdapter
     private lateinit var adapter: SchedulingAdapter
     private lateinit var schedulings: List<Scheduling>
     private lateinit var progressBar: ProgressBar
@@ -145,6 +144,7 @@ class InfoVehicleActivity : AppCompatActivity() {
 
         prepareRecyclerViews()
         prepareRoutesRecyclerView()
+        prepareUsersRecyclerView()
 
         viewModel.loadVehicleDetails(vehicleId)
     }
@@ -155,6 +155,7 @@ class InfoVehicleActivity : AppCompatActivity() {
         vehicleId.let {
             viewModel.loadVehicleDetails(it)
             viewModel.loadRoutesForVehicle(it)
+            viewModel.loadUsersForVehicle(it)
         }
     }
 
@@ -217,21 +218,6 @@ class InfoVehicleActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         })
-
-        val recyclerViewLastDrivers = findViewById<RecyclerView>(R.id.recyclerViewLastDrivers)
-        recyclerViewLastDrivers.addItemDecoration(ItemSpacingDecoration(10))
-        recyclerViewLastDrivers.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-
-        users = getUsers()
-        adapterUser = UserAdapter(users)
-        recyclerViewLastDrivers.adapter = adapterUser
-
-        adapterUser.setOnItemClickListener(object : UserAdapter.OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                val intent = Intent(this@InfoVehicleActivity, InfoUserActivity::class.java)
-                startActivity(intent)
-            }
-        })
     }
 
     private fun prepareRoutesRecyclerView() {
@@ -272,6 +258,45 @@ class InfoVehicleActivity : AppCompatActivity() {
         viewModel.loadRoutesForVehicle(vehicleId)
     }
 
+    private fun prepareUsersRecyclerView() {
+        val recyclerViewUsers = findViewById<RecyclerView>(R.id.recyclerViewLastDrivers)
+        val emptyTextViewUsers = findViewById<TextView>(R.id.emptyTextViewUsers)
+
+        recyclerViewUsers.addItemDecoration(ItemSpacingDecoration(10))
+        recyclerViewUsers.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        adapterUser = UserInfoAdapter(mutableListOf())
+        recyclerViewUsers.adapter = adapterUser
+
+        viewModel.uiUsersState.observe(this) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    progressBar.visibility = View.VISIBLE
+                    emptyTextViewUsers.visibility = View.GONE
+                }
+                is Resource.Success -> {
+                    val users = resource.data
+                    if (users.isNullOrEmpty()) {
+                        emptyTextViewUsers.visibility = View.VISIBLE
+                        recyclerViewUsers.visibility = View.GONE
+                    } else {
+                        emptyTextViewUsers.visibility = View.GONE
+                        recyclerViewUsers.visibility = View.VISIBLE
+                        adapterUser.updateUsers(users)
+                    }
+                    progressBar.visibility = View.GONE
+                }
+                is Resource.Error -> {
+                    emptyTextViewUsers.visibility = View.GONE
+                    progressBar.visibility = View.GONE
+                }
+            }
+        }
+
+
+        viewModel.loadUsersForVehicle(vehicleId)
+    }
+
     private fun adjustUIBasedOnRole(role: Role) {
         when (role) {
             Role.Admin -> showAdminComponents()
@@ -308,16 +333,6 @@ class InfoVehicleActivity : AppCompatActivity() {
         return schedulings
     }
     data class Scheduling(val hour: String, val inf: String, val otherHour: String)
-
-    private fun getUsers(): List<User> {
-
-        val users = mutableListOf<User>()
-        users.add(User(R.drawable.ic_person_blue,"Bruno", "Ferreira"))
-        users.add(User(R.drawable.ic_person_blue,"Alexandre", "Matos"))
-
-        return users
-    }
-    data class User(val image: Int, val firstName: String, val lastName: String)
 
     private fun showDeleteConfirmationDialog() {
         val builder = AlertDialog.Builder(this)

@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.carin.data.repositories.RouteRepository
 import com.carin.data.repositories.VehicleRepository
 import com.carin.domain.enums.VehicleStatus
+import com.carin.domain.models.UserModel
 import com.carin.domain.models.VehicleModel
 import com.carin.utils.Resource
 import com.carin.viewmodels.states.RoutesListState
@@ -24,6 +25,9 @@ class InfoVehicleViewModel(
     val uiDetailsState: LiveData<Resource<VehicleModel>> get() = _uiDetailsState
     private val _uiRoutesState = MutableLiveData<RoutesListState>()
     val uiRoutesState: LiveData<RoutesListState> get() = _uiRoutesState
+
+    private val _uiUsersState = MutableLiveData<Resource<List<UserModel>>>()
+    val uiUsersState: LiveData<Resource<List<UserModel>>> get() = _uiUsersState
 
     fun loadVehicles(status: VehicleStatus, search: String?, page: Int, pageSize: Int) {
         viewModelScope.launch {
@@ -72,11 +76,35 @@ class InfoVehicleViewModel(
             }
         }
     }
+
+    fun loadUsersForVehicle(vehicleId: String, quantity: Int = 6) {
+        viewModelScope.launch {
+            routeRepository.getRoutesList(
+                null,
+                null,
+                1,
+                quantity,
+                null,
+                vehicleId
+            ).collect { result ->
+                when (result) {
+                    is Resource.Loading -> _uiUsersState.value = Resource.Loading()
+                    is Resource.Success -> {
+                        val routes = result.data ?: emptyList()
+                        val users = routes.mapNotNull { it.user }
+                        _uiUsersState.value = Resource.Success(users)
+                    }
+                    is Resource.Error -> _uiUsersState.value = Resource.Error(result.message ?: "Unknown error")
+                }
+            }
+        }
+    }
+
 }
 
 class InfoVehicleViewModelFactory(
     private val vehicleRepository: VehicleRepository,
-    private val routeRepository: RouteRepository
+    private val routeRepository: RouteRepository,
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

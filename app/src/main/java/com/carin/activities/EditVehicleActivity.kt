@@ -1,10 +1,8 @@
 package com.carin.activities
 
 import android.app.DatePickerDialog
-import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.carin.R
 import java.util.Calendar
@@ -13,13 +11,6 @@ class EditVehicleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_vehicle)
-
-        val iconImageView: ImageView = findViewById(R.id.iconImageView)
-
-        iconImageView.setOnClickListener {
-            Intent(this, InfoVehicleActivity::class.java)
-            finish()
-        }
 
         val editTextDateRegister = findViewById<EditText>(R.id.editTextDateRegister)
         val editTextDateAcquisition = findViewById<EditText>(R.id.editTextDateAcquisition)

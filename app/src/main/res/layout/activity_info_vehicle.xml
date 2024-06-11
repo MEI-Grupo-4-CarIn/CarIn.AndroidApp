@@ -548,6 +548,26 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/messageLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/fourLinearLayout">
+
+                <TextView
+                    android:id="@+id/emptyTextViewUsers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_results"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:textSize="14sp"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@android:color/darker_gray"
+                    app:layout_constraintTop_toTopOf="parent"/>
+            </LinearLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewLastDrivers"
                 android:layout_width="0dp"
@@ -563,10 +583,11 @@
                 android:id="@+id/line3LinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="30dp"
                 android:background="@drawable/rectangle_shape"
                 android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerViewLastDrivers"/>
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewLastDrivers"
+                app:layout_constraintBottom_toTopOf="@+id/fiveLinearLayout"/>
 
             <LinearLayout
                 android:id="@+id/fiveLinearLayout"
