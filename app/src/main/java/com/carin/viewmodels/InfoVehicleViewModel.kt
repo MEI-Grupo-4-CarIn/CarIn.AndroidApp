@@ -10,6 +10,7 @@ import com.carin.data.repositories.VehicleRepository
 import com.carin.domain.enums.VehicleStatus
 import com.carin.domain.models.UserModel
 import com.carin.domain.models.VehicleModel
+import com.carin.domain.models.VehicleUpdateModel
 import com.carin.utils.Resource
 import com.carin.viewmodels.states.RoutesListState
 import kotlinx.coroutines.launch
@@ -29,6 +30,10 @@ class InfoVehicleViewModel(
     private val _uiUsersState = MutableLiveData<Resource<List<UserModel>>>()
     val uiUsersState: LiveData<Resource<List<UserModel>>> get() = _uiUsersState
 
+    private val _vehicleUpdateState = MutableLiveData<Resource<Boolean>>()
+    val vehicleUpdateState: LiveData<Resource<Boolean>> get() = _vehicleUpdateState
+
+
     fun loadVehicles(status: VehicleStatus, search: String?, page: Int, pageSize: Int) {
         viewModelScope.launch {
             vehicleRepository.getVehiclesList(search, status, page, pageSize).collect { result ->
@@ -45,6 +50,14 @@ class InfoVehicleViewModel(
         viewModelScope.launch {
             vehicleRepository.getVehicleById(vehicleId, true).collect { result ->
                 _uiDetailsState.value = result
+            }
+        }
+    }
+
+    fun updateVehicle(vehicleUpdateModel: VehicleUpdateModel) {
+        viewModelScope.launch {
+            vehicleRepository.updateVehicle(vehicleUpdateModel).collect { result ->
+                _vehicleUpdateState.value = result
             }
         }
     }

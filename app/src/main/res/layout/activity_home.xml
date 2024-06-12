@@ -57,7 +57,7 @@
                 <TextView
                     android:id="@+id/textViewSquare1"
                     android:layout_width="match_parent"
-                    android:layout_height="70dp"
+                    android:layout_height="80dp"
                     android:layout_weight="1"
                     android:background="@drawable/custom_rounded_corner"
                     android:gravity="top|start"
@@ -74,7 +74,7 @@
                 <TextView
                     android:id="@+id/textViewSquare2"
                     android:layout_width="match_parent"
-                    android:layout_height="70dp"
+                    android:layout_height="80dp"
                     android:layout_weight="0.98"
                     android:background="@drawable/custom_rounded_corner"
                     android:gravity="top|start"
@@ -90,7 +90,7 @@
                 <TextView
                     android:id="@+id/textViewSquare3"
                     android:layout_width="match_parent"
-                    android:layout_height="70dp"
+                    android:layout_height="80dp"
                     android:layout_weight="1"
                     android:background="@drawable/custom_rounded_corner"
                     android:gravity="top|start"
@@ -107,7 +107,7 @@
                 <TextView
                     android:id="@+id/textViewSquare4"
                     android:layout_width="match_parent"
-                    android:layout_height="70dp"
+                    android:layout_height="80dp"
                     android:layout_weight="1"
                     android:background="@drawable/custom_rounded_corner"
                     android:gravity="top|start"

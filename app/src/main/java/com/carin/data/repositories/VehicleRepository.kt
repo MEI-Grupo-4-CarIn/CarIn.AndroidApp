@@ -4,10 +4,12 @@ import com.carin.data.local.daos.VehicleDao
 import com.carin.data.mappers.toVehicleCreationRequest
 import com.carin.data.mappers.toVehicleEntity
 import com.carin.data.mappers.toVehicleModel
+import com.carin.data.mappers.toVehicleUpdateRequest
 import com.carin.data.remote.VehicleService
 import com.carin.domain.enums.VehicleStatus
 import com.carin.domain.models.VehicleCreationModel
 import com.carin.domain.models.VehicleModel
+import com.carin.domain.models.VehicleUpdateModel
 import com.carin.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -161,6 +163,51 @@ class VehicleRepository(
                 vehicleDao.insertVehicle(vehicleEntity)
 
                 emit(Resource.Success(remoteVehicle.id))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun updateVehicle(vehicleUpdateModel: VehicleUpdateModel): Flow<Resource<Boolean>> {
+        return flow {
+            emit(Resource.Loading())
+
+            val remoteVehicle = try {
+                val response =
+                    vehicleService.updateVehicle(vehicleUpdateModel.id, vehicleUpdateModel.toVehicleUpdateRequest()).execute()
+                if (response.isSuccessful) {
+                    response.body()
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = errorBody?.let {
+                        try {
+                            org.json.JSONObject(it).getString("message")
+                        } catch (e: Exception) {
+                            response.message()
+                        }
+                    } ?: response.message()
+                    emit(Resource.Error(errorMessage))
+                    null
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error("ERROR"))
+                null
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                emit(Resource.Error("ERROR"))
+                null
+            }
+
+            if (remoteVehicle != null) {
+                vehicleDao.updatePartialVehicle(
+                    vehicleUpdateModel.id,
+                    vehicleUpdateModel.color,
+                    vehicleUpdateModel.kms,
+                    vehicleUpdateModel.averageFuelConsumption,
+                    vehicleUpdateModel.status
+                )
+
+                emit(Resource.Success(true))
             }
         }.flowOn(Dispatchers.IO)
     }
