@@ -221,5 +221,7 @@
     <string name="none">Nenhum</string>
     <string name="in_use">Em Uso</string>
     <string name="repairing">Reparação</string>
+    <string name="user_approved_success">Utilizador aprovado com sucesso!</string>
+
 
 </resources>

@@ -222,4 +222,6 @@
     <string name="none">None</string>
     <string name="in_use">In Use</string>
     <string name="repairing">Repairing</string>
+    <string name="user_approved_success">User approved with success!</string>
+
 </resources>
