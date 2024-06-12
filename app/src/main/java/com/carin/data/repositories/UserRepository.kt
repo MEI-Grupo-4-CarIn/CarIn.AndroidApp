@@ -56,7 +56,15 @@ class UserRepository(
                     if (response.isSuccessful) {
                         response.body()
                     } else {
-                        emit(Resource.Error(response.message()))
+                        val errorBody = response.errorBody()?.string()
+                        val errorMessage = errorBody?.let {
+                            try {
+                                JSONObject(it).getString("message")
+                            } catch (e: Exception) {
+                                response.message()
+                            }
+                        } ?: response.message()
+                        emit(Resource.Error(errorMessage))
                         null
                     }
                 } catch(e: IOException) {
@@ -88,6 +96,73 @@ class UserRepository(
         }.flowOn(Dispatchers.IO)
     }
 
+    suspend fun getWaitingForApprovalUsersList(
+        page: Int = 1,
+        perPage: Int = 10
+    ): Flow<Resource<List<UserModel>>> {
+        return flow {
+            emit(Resource.Loading())
+
+            val localUsers = userDao.getWaitingForApprovalUsers(page, perPage)
+            val isToFetchRemote = localUsers.isEmpty()
+                    || localUsers.size < perPage
+                    || localUsers.first().localLastUpdateDateUtc < Date(System.currentTimeMillis() - 15.minutes.inWholeMilliseconds)
+            if (localUsers.isNotEmpty()) {
+                emit(
+                    Resource.Success(
+                        data = localUsers.map { it.toUserModel() }
+                    )
+                )
+            }
+
+            if (isToFetchRemote) {
+                emit(Resource.Loading())
+                val remoteUsers = try {
+                    val response = userService.getWaitingForApprovalUsers(page, perPage).execute()
+                    if (response.isSuccessful) {
+                        response.body()
+                    } else {
+                        val errorBody = response.errorBody()?.string()
+                        val errorMessage = errorBody?.let {
+                            try {
+                                JSONObject(it).getString("message")
+                            } catch (e: Exception) {
+                                response.message()
+                            }
+                        } ?: response.message()
+                        emit(Resource.Error(errorMessage))
+                        null
+                    }
+                } catch(e: IOException) {
+                    e.printStackTrace()
+                    emit(Resource.Error("Couldn't load data"))
+                    null
+                } catch (e: HttpException) {
+                    e.printStackTrace()
+                    emit(Resource.Error("Couldn't load data"))
+                    null
+                }
+
+                remoteUsers?.let { userDtoList ->
+                    val userEntities = userDtoList.map { it.toUserEntity() }
+                    userDao.upsertUsers(userEntities)
+
+                    emit(
+                        Resource.Success(
+                            data =  userDao.getWaitingForApprovalUsers(page, perPage).map { it.toUserModel() }
+                        )
+                    )
+                }
+
+                if (remoteUsers.isNullOrEmpty() && localUsers.isEmpty()) {
+                    emit(Resource.Success(data = emptyList()))
+                }
+
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+
     suspend fun getUserById(id: Int, forceRefresh: Boolean = false): Flow<Resource<UserModel>> {
         return flow {
             emit(Resource.Loading())
@@ -107,7 +182,15 @@ class UserRepository(
                     if (response.isSuccessful) {
                         response.body()
                     } else {
-                        emit(Resource.Error("Couldn't fetch user: " + response.message()))
+                        val errorBody = response.errorBody()?.string()
+                        val errorMessage = errorBody?.let {
+                            try {
+                                JSONObject(it).getString("message")
+                            } catch (e: Exception) {
+                                response.message()
+                            }
+                        } ?: response.message()
+                        emit(Resource.Error(errorMessage))
                         null
                     }
                 } catch (e: IOException) {
@@ -141,7 +224,15 @@ class UserRepository(
                 if (response.isSuccessful) {
                     response.body()
                 } else {
-                    emit(Resource.Error("Couldn't register user: " + response.message()))
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = errorBody?.let {
+                        try {
+                            JSONObject(it).getString("message")
+                        } catch (e: Exception) {
+                            response.message()
+                        }
+                    } ?: response.message()
+                    emit(Resource.Error(errorMessage))
                     null
                 }
             } catch(e: IOException) {
@@ -201,6 +292,45 @@ class UserRepository(
                     userUpdateModel.lastName,
                     userUpdateModel.email
                 )
+
+                emit(Resource.Success(true))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun approveUser(userId: Int, role: Role?): Flow<Resource<Boolean>> {
+        return flow {
+            emit(Resource.Loading())
+
+            val isApproved = try {
+                val response =
+                    userService.approveUser(userId, role?.roleId).execute()
+                if (response.isSuccessful) {
+                    true
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = errorBody?.let {
+                        try {
+                            JSONObject(it).getString("message")
+                        } catch (e: Exception) {
+                            response.message()
+                        }
+                    } ?: response.message()
+                    emit(Resource.Error(errorMessage))
+                    false
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error("ERROR"))
+                false
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                emit(Resource.Error("ERROR"))
+                false
+            }
+
+            if (isApproved) {
+                userDao.approveUser(userId, role)
 
                 emit(Resource.Success(true))
             }

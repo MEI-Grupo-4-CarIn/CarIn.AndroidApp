@@ -1,9 +1,9 @@
 package com.carin.domain.enums
 
-enum class Role(val roleId: Int, val description: String) {
-    Admin(1, "Administrator"),
-    Manager(2, "Manager"),
-    Driver(3, "Driver");
+enum class Role(val roleId: Int, val description: String, val stringKey: String) {
+    Admin(1, "Administrator", "admin_role"),
+    Manager(2, "Manager", "manager_role"),
+    Driver(3, "Driver", "driver_role");
 
     companion object {
         private val mapById = entries.associateBy(Role::roleId)

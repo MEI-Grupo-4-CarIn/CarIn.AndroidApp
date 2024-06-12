@@ -46,6 +46,9 @@ interface RouteDao {
         avoidHighways: Boolean?
     )
 
+    @Query("UPDATE routes SET isDeleted = 1 WHERE id = :id")
+    suspend fun deleteRoute(id: String)
+
     @RawQuery
     suspend fun getRoutes(query: SupportSQLiteQuery): List<RouteWithInfoEntity>
 

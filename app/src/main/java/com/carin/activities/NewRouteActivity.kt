@@ -102,7 +102,7 @@ class NewRouteActivity : AppCompatActivity(), OnMapReadyCallback {
         val infoUserFactory = InfoUserViewModelFactory(userRepository, routeRepository)
         infoUserViewModel = ViewModelProvider(this, infoUserFactory)[InfoUserViewModel::class.java]
 
-        val infoVehicleFactory = InfoVehicleViewModelFactory(vehicleRepository)
+        val infoVehicleFactory = InfoVehicleViewModelFactory(vehicleRepository, routeRepository)
         infoVehicleViewModel = ViewModelProvider(this, infoVehicleFactory)[InfoVehicleViewModel::class.java]
 
         val createRouteFactory = CreateRouteViewModelFactory(routeRepository)
@@ -188,6 +188,17 @@ class NewRouteActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
         mMap.uiSettings.isZoomControlsEnabled = true
         setUpMap()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            LOCATION_PERMISSION_REQUEST_CODE -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    setUpMap()
+                }
+            }
+        }
     }
 
     private fun setUpMap() {

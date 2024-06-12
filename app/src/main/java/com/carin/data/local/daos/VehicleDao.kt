@@ -25,6 +25,25 @@ interface VehicleDao {
     @Upsert
     suspend fun upsertVehicles(vehicles: List<VehicleEntity>)
 
+    @Query("""
+        UPDATE vehicles SET
+        color = CASE WHEN :color IS NOT NULL THEN :color ELSE color END,
+        kms = CASE WHEN :kms IS NOT NULL THEN :kms ELSE Kms END,
+        averageFuelConsumption = CASE WHEN :averageFuelConsumption IS NOT NULL THEN :averageFuelConsumption ELSE averageFuelConsumption END,
+        status = CASE WHEN :status IS NOT NULL THEN :status ELSE status END
+        WHERE id = :id
+    """)
+    suspend fun updatePartialVehicle(
+        id: String,
+        color: String?,
+        kms: Double?,
+        averageFuelConsumption: Double?,
+        status: VehicleStatus?
+    )
+
+    @Query("UPDATE vehicles SET isDeleted = 1 WHERE id = :id")
+    suspend fun deleteVehicle(id: String)
+
     @RawQuery
     suspend fun getVehicles(query: SupportSQLiteQuery): List<VehicleEntity>
 

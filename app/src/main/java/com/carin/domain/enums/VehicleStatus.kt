@@ -9,7 +9,7 @@ enum class VehicleStatus(
 ) {
     None(0, "None", "none", "none"),
     InUse(1, "InUse", "in_use", "inUse"),
-    Repairing(2, "Repairing", "Repairing", "repairing");
+    Repairing(2, "Repairing", "repairing", "repairing");
 
     companion object {
         private val mapById = entries.associateBy(VehicleStatus::statusId)

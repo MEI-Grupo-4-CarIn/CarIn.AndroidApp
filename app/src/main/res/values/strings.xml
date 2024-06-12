@@ -214,5 +214,19 @@
     <string name="date_should_be_future">The date should be in the future</string>
     <string name="route_updated_success">Route updated with success!</string>
     <string name="vehicle_created_message">Vehicle created with success!</string>
+    <string name="vehicle_updated_success">Vehicle updated with success!</string>
+    <string name="vehicleInformation">Vehicle Information</string>
+    <string name="permission_notifications_granted">Permission for notifications granted.</string>
+    <string name="permission_notifications_denied">Permission for notifications denied.</string>
+    <string name="notifications_is_required">Permission for notifications is required to keep you updated.</string>
+    <string name="none">None</string>
+    <string name="in_use">In Use</string>
+    <string name="repairing">Repairing</string>
+    <string name="user_approved_success">User approved with success!</string>
+    <string name="error_vehicle_cannot_be_deleted">Vehicle cannot be deleted!</string>
+    <string name="vehicle_successfully_deleted">Vehicle successfully eliminated!</string>
+    <string name="route_successfully_deleted">Route successfully eliminated!</string>
+
+
 
 </resources>

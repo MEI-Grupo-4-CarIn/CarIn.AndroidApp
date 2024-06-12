@@ -3,8 +3,10 @@ package com.carin.data.remote
 import com.carin.data.remote.dto.RouteCreationRequest
 import com.carin.data.remote.dto.RouteDto
 import com.carin.data.remote.dto.RouteUpdateRequest
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -30,4 +32,7 @@ interface RouteService {
 
     @PATCH("/routes/{id}")
     fun updateRoute(@Path("id") id: String, @Body routeUpdateRequest: RouteUpdateRequest): Call<RouteDto>
+
+    @DELETE("/routes/{id}")
+    fun deleteRoute(@Path("id") id: String): Call<ResponseBody>
 }

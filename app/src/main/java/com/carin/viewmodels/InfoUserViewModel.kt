@@ -23,12 +23,17 @@ class InfoUserViewModel(
 
     private val _uiUsersState = MutableLiveData<Resource<List<UserModel>>>()
     val uiUsersState: LiveData<Resource<List<UserModel>>> get() = _uiUsersState
+    private val _uiPendingUsersState = MutableLiveData<Resource<List<UserModel>>>()
+    val uiPendingUsersState: LiveData<Resource<List<UserModel>>> get() = _uiPendingUsersState
     private val _uiDetailsState = MutableLiveData<Resource<UserModel>>()
     val uiDetailsState: LiveData<Resource<UserModel>> get() = _uiDetailsState
     private val _uiRoutesState = MutableLiveData<RoutesListState>()
     val uiRoutesState: LiveData<RoutesListState> get() = _uiRoutesState
     private val _userUpdateState = MutableLiveData<Resource<Boolean>>()
     val userUpdateState: LiveData<Resource<Boolean>> get() = _userUpdateState
+
+    private val _userApprovalState = MutableLiveData<Resource<Boolean>>()
+    val userApprovalState: LiveData<Resource<Boolean>> get() = _userApprovalState
 
     fun loadUsers(role: Role, search: String?, page: Int, pageSize: Int) {
         viewModelScope.launch {
@@ -90,6 +95,26 @@ class InfoUserViewModel(
         viewModelScope.launch {
             userRepository.updateUser(userUpdateModel).collect { result ->
                 _userUpdateState.value = result
+            }
+        }
+    }
+
+    fun loadUsersForApproval() {
+        viewModelScope.launch {
+            userRepository.getWaitingForApprovalUsersList(1, 6).collect { result ->
+                if (result is Resource.Success) {
+                    _uiPendingUsersState.value = Resource.Success(result.data ?: emptyList())
+                } else {
+                    _uiPendingUsersState.value = result
+                }
+            }
+        }
+    }
+
+    fun approveUser(userId: Int, role: Role?) {
+        viewModelScope.launch {
+            userRepository.approveUser(userId, role).collect { result ->
+                _userApprovalState.value = result
             }
         }
     }

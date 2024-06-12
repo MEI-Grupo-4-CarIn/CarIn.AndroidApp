@@ -213,6 +213,18 @@
     <string name="date_should_be_future">A data deve ser no futuro</string>
     <string name="route_updated_success">Rota atualizada com sucesso!</string>
     <string name="vehicle_created_message">Veículo criado com sucesso!</string>
+    <string name="vehicle_updated_success">Veículo atualizado com sucesso!</string>
+    <string name="vehicleInformation">Informação do Veículo</string>
+    <string name="permission_notifications_granted">Permissão para notificações concedida.</string>
+    <string name="permission_notifications_denied">Permissão para notificações negada.</string>
+    <string name="notifications_is_required">É necessária permissão para notificações, para mantê-lo atualizado.</string>
+    <string name="none">Nenhum</string>
+    <string name="in_use">Em Uso</string>
+    <string name="repairing">Reparação</string>
+    <string name="user_approved_success">Utilizador aprovado com sucesso!</string>
+    <string name="error_vehicle_cannot_be_deleted">O veículo não pode ser eliminado!</string>
+    <string name="vehicle_successfully_deleted">Veículo eliminado com sucesso!</string>
+    <string name="route_successfully_deleted">Rota eliminada com sucesso!</string>
 
 
 </resources>

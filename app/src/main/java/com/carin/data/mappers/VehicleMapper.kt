@@ -4,10 +4,12 @@ import com.carin.R
 import com.carin.data.local.entities.VehicleEntity
 import com.carin.data.remote.dto.VehicleCreationRequest
 import com.carin.data.remote.dto.VehicleDto
+import com.carin.data.remote.dto.VehicleUpdateRequest
 import com.carin.domain.enums.FuelType
 import com.carin.domain.enums.VehicleStatus
 import com.carin.domain.models.VehicleCreationModel
 import com.carin.domain.models.VehicleModel
+import com.carin.domain.models.VehicleUpdateModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -74,5 +76,14 @@ fun VehicleCreationModel.toVehicleCreationRequest(): VehicleCreationRequest {
         fuelType = fuelType.toString().lowercase(),
         averageFuelConsumption = averageFuelConsumption,
         status = status.toString().lowercase()
+    )
+}
+
+fun VehicleUpdateModel.toVehicleUpdateRequest(): VehicleUpdateRequest {
+    return VehicleUpdateRequest(
+        color = color,
+        kms = kms,
+        averageFuelConsumption = averageFuelConsumption,
+        status = status?.externalKey
     )
 }

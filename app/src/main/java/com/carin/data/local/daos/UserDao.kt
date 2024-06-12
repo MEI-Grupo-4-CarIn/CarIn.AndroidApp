@@ -38,6 +38,17 @@ interface UserDao {
         email: String?
     )
 
+    @Query("""
+        UPDATE users SET
+        status = 1,
+        roleId = CASE WHEN :role IS NOT NULL THEN :role ELSE roleId END
+        WHERE id = :id
+    """)
+    suspend fun approveUser(id: Int, role: Role?)
+
+    @Query("UPDATE users SET status = 0 WHERE id = :id")
+    suspend fun deleteUser(id: Int)
+
     @RawQuery
     suspend fun getUsers(query: SupportSQLiteQuery): List<UserEntity>
 
@@ -57,6 +68,21 @@ interface UserDao {
             queryBuilder.append(" AND roleId = ?")
             args.add(role.roleId)
         }
+
+        queryBuilder.append(" ORDER BY id DESC")
+
+        val offset = (page - 1) * perPage
+        queryBuilder.append(" LIMIT ? OFFSET ?")
+        args.add(perPage)
+        args.add(offset)
+
+        val query = SimpleSQLiteQuery(queryBuilder.toString(), args.toTypedArray())
+        return getUsers(query)
+    }
+
+    suspend fun getWaitingForApprovalUsers(page: Int = 1, perPage: Int = 10): List<UserEntity> {
+        val queryBuilder = StringBuilder("SELECT * FROM users WHERE status = 0")
+        val args = mutableListOf<Any?>()
 
         queryBuilder.append(" ORDER BY id DESC")
 

@@ -101,13 +101,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_inactive_background"
-                        android:singleLine="true"
-                        android:inputType="none"
-                        android:textColor="@color/inactiveText"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:hint="@string/city"
+                        android:inputType="none"
                         android:padding="10dp"
-                        android:hint="@string/city"/>
+                        android:singleLine="true"
+                        android:textColor="@color/inactiveText" />
                 </LinearLayout>
 
                 <LinearLayout

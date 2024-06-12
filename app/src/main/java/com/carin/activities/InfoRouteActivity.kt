@@ -319,7 +319,7 @@ class InfoRouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val btnYes = dialogView.findViewById<Button>(R.id.btnYes)
         btnYes.setOnClickListener {
-
+            inactivateRoute()
             dialog.dismiss()
         }
 
@@ -327,6 +327,26 @@ class InfoRouteActivity : AppCompatActivity(), OnMapReadyCallback {
         btnNo.setOnClickListener {
             dialog.dismiss()
         }
+    }
+
+    private fun inactivateRoute() {
+        viewModel.uiRouteDeleteState.observe(this) { result ->
+            when (result) {
+                is Resource.Loading -> {
+                }
+                is Resource.Success -> {
+                    if (result.data == true) {
+                        Toast.makeText(this@InfoRouteActivity, getString(R.string.route_successfully_deleted), Toast.LENGTH_SHORT).show()
+
+                        finish()
+                    }
+                }
+                is Resource.Error -> {
+                    Toast.makeText(this@InfoRouteActivity, result.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        viewModel.deleteRoute(routeId)
     }
 }
 
