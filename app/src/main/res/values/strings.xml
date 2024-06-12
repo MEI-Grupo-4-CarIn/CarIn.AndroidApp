@@ -223,5 +223,10 @@
     <string name="in_use">In Use</string>
     <string name="repairing">Repairing</string>
     <string name="user_approved_success">User approved with success!</string>
+    <string name="error_vehicle_cannot_be_deleted">Vehicle cannot be deleted!</string>
+    <string name="vehicle_successfully_deleted">Vehicle successfully eliminated!</string>
+    <string name="route_successfully_deleted">Route successfully eliminated!</string>
+
+
 
 </resources>

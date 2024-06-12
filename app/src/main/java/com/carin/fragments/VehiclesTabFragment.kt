@@ -125,7 +125,6 @@ class VehiclesTabFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (!dataLoaded)
             viewModel.onEvent(VehiclesListEvent.LoadVehicles(currentVehicleType))
     }
 }

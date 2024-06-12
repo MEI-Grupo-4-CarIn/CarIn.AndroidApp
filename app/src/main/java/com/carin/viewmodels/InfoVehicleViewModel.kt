@@ -34,6 +34,7 @@ class InfoVehicleViewModel(
     val uiVehicleDeleteState: LiveData<Resource<Boolean>> get() = _uiVehicleDeleteState
 
 
+
     fun loadVehicles(status: VehicleStatus, search: String?, page: Int, pageSize: Int) {
         viewModelScope.launch {
             vehicleRepository.getVehiclesList(search, status, page, pageSize).collect { result ->
@@ -133,7 +134,7 @@ class InfoVehicleViewModel(
                         canDelete = result.data?.isEmpty() == true
                     }
                     is Resource.Error -> {
-                        _uiVehicleDeleteState.value = Resource.Error(result.message ?: "Unknown error")
+                        _uiVehicleDeleteState.value = Resource.Error("error_fetch_routes_for_vehicle")
                     }
                 }
                 if (result is Resource.Success) {
@@ -147,6 +148,8 @@ class InfoVehicleViewModel(
                 vehicleRepository.deleteVehicle(vehicleId).collect { result ->
                     _uiVehicleDeleteState.value = result
                 }
+            } else {
+                _uiVehicleDeleteState.value = Resource.Error("error_vehicle_cannot_be_deleted")
             }
         }
     }

@@ -22,6 +22,9 @@ class InfoRouteViewModel(
     private val _routeUpdateState = MutableLiveData<Resource<Boolean>>()
     val routeUpdateState: LiveData<Resource<Boolean>> get() = _routeUpdateState
 
+    private val _uiRouteDeleteState = MutableLiveData<Resource<Boolean>>()
+    val uiRouteDeleteState: LiveData<Resource<Boolean>> get() = _uiRouteDeleteState
+
     fun loadRouteDetails(routeId: String) {
         viewModelScope.launch {
             routeRepository.getRouteById(routeId, true).collect { result ->
@@ -54,6 +57,14 @@ class InfoRouteViewModel(
         }
 
         return age
+    }
+
+    fun deleteRoute(routeId: String) {
+        viewModelScope.launch {
+            routeRepository.deleteRoute(routeId).collect { result ->
+                _uiRouteDeleteState.value = result
+            }
+        }
     }
 }
 

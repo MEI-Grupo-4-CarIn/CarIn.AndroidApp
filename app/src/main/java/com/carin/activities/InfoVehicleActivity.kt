@@ -345,7 +345,7 @@ class InfoVehicleActivity : AppCompatActivity() {
 
         val btnYes = dialogView.findViewById<Button>(R.id.btnYes)
         btnYes.setOnClickListener {
-            // Implement delete logic
+            inactivateVehicle()
             dialog.dismiss()
         }
 
@@ -353,5 +353,26 @@ class InfoVehicleActivity : AppCompatActivity() {
         btnNo.setOnClickListener {
             dialog.dismiss()
         }
+    }
+
+    private fun inactivateVehicle() {
+        viewModel.uiVehicleDeleteState.observe(this) { result ->
+            when (result) {
+                is Resource.Loading -> {
+                }
+                is Resource.Success -> {
+                    if (result.data == true) {
+                        Toast.makeText(this@InfoVehicleActivity, getString(R.string.vehicle_successfully_deleted), Toast.LENGTH_SHORT).show()
+
+                        finish()
+                    }
+                }
+                is Resource.Error -> {
+                    Toast.makeText(this@InfoVehicleActivity,
+                        result.message?.let { this.getStringResourceByName(it) }, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        viewModel.deleteVehicle(vehicleId)
     }
 }

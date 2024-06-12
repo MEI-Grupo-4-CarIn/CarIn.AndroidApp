@@ -311,4 +311,41 @@ class RouteRepository(
         }.flowOn(Dispatchers.IO)
     }
 
+    suspend fun deleteRoute(id: String): Flow<Resource<Boolean>> {
+        return flow {
+            emit(Resource.Loading())
+
+            val isDeleted = try {
+                val response = routeService.deleteRoute(id).execute()
+                if (response.isSuccessful) {
+                    true
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = errorBody?.let {
+                        try {
+                            org.json.JSONObject(it).getString("message")
+                        } catch (e: Exception) {
+                            response.message()
+                        }
+                    } ?: response.message()
+                    emit(Resource.Error(errorMessage))
+                    false
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't delete route"))
+                false
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't delete route"))
+                false
+            }
+
+            if (isDeleted) {
+                routeDao.deleteRoute(id)
+                emit(Resource.Success(true))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
 }

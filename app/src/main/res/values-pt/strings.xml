@@ -222,6 +222,9 @@
     <string name="in_use">Em Uso</string>
     <string name="repairing">Reparação</string>
     <string name="user_approved_success">Utilizador aprovado com sucesso!</string>
+    <string name="error_vehicle_cannot_be_deleted">O veículo não pode ser eliminado!</string>
+    <string name="vehicle_successfully_deleted">Veículo eliminado com sucesso!</string>
+    <string name="route_successfully_deleted">Rota eliminada com sucesso!</string>
 
 
 </resources>
