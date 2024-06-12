@@ -319,7 +319,7 @@ class InfoRouteActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val btnYes = dialogView.findViewById<Button>(R.id.btnYes)
         btnYes.setOnClickListener {
-            inactivateRoute(routeId)
+            inactivateRoute()
             dialog.dismiss()
         }
 
@@ -329,8 +329,7 @@ class InfoRouteActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun inactivateRoute(id: String) {
-
+    private fun inactivateRoute() {
         viewModel.uiRouteDeleteState.observe(this) { result ->
             when (result) {
                 is Resource.Loading -> {
