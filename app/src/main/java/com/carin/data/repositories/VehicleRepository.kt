@@ -53,9 +53,18 @@ class VehicleRepository(
                     if (response.isSuccessful) {
                         response.body()
                     } else {
+                        val errorBody = response.errorBody()?.string()
+                        val errorMessage = errorBody?.let {
+                            try {
+                                org.json.JSONObject(it).getString("message")
+                            } catch (e: Exception) {
+                                response.message()
+                            }
+                        } ?: response.message()
+                        emit(Resource.Error(errorMessage))
                         null
                     }
-                } catch(e: IOException) {
+                } catch (e: IOException) {
                     e.printStackTrace()
                     emit(Resource.Error("Couldn't load data"))
                     null
@@ -115,11 +124,11 @@ class VehicleRepository(
                     }
                 } catch (e: IOException) {
                     e.printStackTrace()
-                    emit(Resource.Error("Couldn't create route"))
+                    emit(Resource.Error("Couldn't load data"))
                     null
                 } catch (e: HttpException) {
                     e.printStackTrace()
-                    emit(Resource.Error("Couldn't create route"))
+                    emit(Resource.Error("Couldn't load data"))
                     null
                 }
 
@@ -145,7 +154,15 @@ class VehicleRepository(
                 if (response.isSuccessful) {
                     response.body()
                 } else {
-                    emit(Resource.Error(response.message()))
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = errorBody?.let {
+                        try {
+                            org.json.JSONObject(it).getString("message")
+                        } catch (e: Exception) {
+                            response.message()
+                        }
+                    } ?: response.message()
+                    emit(Resource.Error(errorMessage))
                     null
                 }
             } catch (e: IOException) {
@@ -207,6 +224,43 @@ class VehicleRepository(
                     vehicleUpdateModel.status
                 )
 
+                emit(Resource.Success(true))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun deleteVehicle(id: String): Flow<Resource<Boolean>> {
+        return flow {
+            emit(Resource.Loading())
+
+            val isDeleted = try {
+                val response = vehicleService.deleteVehicle(id).execute()
+                if (response.isSuccessful) {
+                    true
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = errorBody?.let {
+                        try {
+                            org.json.JSONObject(it).getString("message")
+                        } catch (e: Exception) {
+                            response.message()
+                        }
+                    } ?: response.message()
+                    emit(Resource.Error(errorMessage))
+                    false
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't delete vehicle"))
+                false
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't delete vehicle"))
+                false
+            }
+
+            if (isDeleted) {
+                vehicleDao.deleteVehicle(id)
                 emit(Resource.Success(true))
             }
         }.flowOn(Dispatchers.IO)

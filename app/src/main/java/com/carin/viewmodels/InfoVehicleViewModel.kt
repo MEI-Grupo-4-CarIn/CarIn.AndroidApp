@@ -26,12 +26,12 @@ class InfoVehicleViewModel(
     val uiDetailsState: LiveData<Resource<VehicleModel>> get() = _uiDetailsState
     private val _uiRoutesState = MutableLiveData<RoutesListState>()
     val uiRoutesState: LiveData<RoutesListState> get() = _uiRoutesState
-
     private val _uiUsersState = MutableLiveData<Resource<List<UserModel>>>()
     val uiUsersState: LiveData<Resource<List<UserModel>>> get() = _uiUsersState
-
     private val _vehicleUpdateState = MutableLiveData<Resource<Boolean>>()
     val vehicleUpdateState: LiveData<Resource<Boolean>> get() = _vehicleUpdateState
+    private val _uiVehicleDeleteState = MutableLiveData<Resource<Boolean>>()
+    val uiVehicleDeleteState: LiveData<Resource<Boolean>> get() = _uiVehicleDeleteState
 
 
     fun loadVehicles(status: VehicleStatus, search: String?, page: Int, pageSize: Int) {
@@ -113,6 +113,43 @@ class InfoVehicleViewModel(
         }
     }
 
+    fun deleteVehicle(vehicleId: String) {
+        viewModelScope.launch {
+            var canDelete = true
+
+            routeRepository.getRoutesList(
+                null,
+                null,
+                1,
+                1,
+                null,
+                vehicleId
+            ).collect { result ->
+                when (result) {
+                    is Resource.Loading -> {
+                        _uiVehicleDeleteState.value = Resource.Loading()
+                    }
+                    is Resource.Success -> {
+                        canDelete = result.data?.isEmpty() == true
+                    }
+                    is Resource.Error -> {
+                        _uiVehicleDeleteState.value = Resource.Error(result.message ?: "Unknown error")
+                    }
+                }
+                if (result is Resource.Success) {
+                    if (result.data?.isNotEmpty() == true) {
+                        canDelete = false
+                    }
+                }
+            }
+
+            if (canDelete) {
+                vehicleRepository.deleteVehicle(vehicleId).collect { result ->
+                    _uiVehicleDeleteState.value = result
+                }
+            }
+        }
+    }
 }
 
 class InfoVehicleViewModelFactory(

@@ -41,6 +41,9 @@ interface VehicleDao {
         status: VehicleStatus?
     )
 
+    @Query("UPDATE vehicles SET isDeleted = 1 WHERE id = :id")
+    suspend fun deleteVehicle(id: String)
+
     @RawQuery
     suspend fun getVehicles(query: SupportSQLiteQuery): List<VehicleEntity>
 
