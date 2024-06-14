@@ -131,7 +131,32 @@ class InfoUserViewModel(
 
         return age
     }
+
+    fun loadUsersHome(userId: String, quantity: Int = 6) {
+        viewModelScope.launch {
+            routeRepository.getRoutesList(
+                null,
+                null,
+                1,
+                quantity,
+                null,
+                userId
+            ).collect { result ->
+                when (result) {
+                    is Resource.Loading -> _uiUsersState.value = Resource.Loading()
+                    is Resource.Success -> {
+                        val routes = result.data ?: emptyList()
+                        val users = routes.mapNotNull { it.user }
+                        _uiUsersState.value = Resource.Success(users)
+                    }
+                    is Resource.Error -> _uiUsersState.value = Resource.Error(result.message ?: "Unknown error")
+                }
+            }
+        }
+    }
+
 }
+
 
 class InfoUserViewModelFactory(
     private val userRepository: UserRepository,

@@ -430,8 +430,28 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/messageLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/fourLinearLayout">
+
+                <TextView
+                    android:id="@+id/emptyTextViewUsers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_results"
+                    android:gravity="center"
+                    android:textSize="14sp"
+                    android:visibility="gone"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@android:color/darker_gray"
+                    app:layout_constraintTop_toTopOf="parent"/>
+            </LinearLayout>
+
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView4"
+                android:id="@+id/recyclerViewUsers"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -457,5 +477,16 @@
         <include layout="@layout/menu_layout"/>
 
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

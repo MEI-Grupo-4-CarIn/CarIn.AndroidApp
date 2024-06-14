@@ -17,10 +17,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.adapter.ApprovalAdapter
-import com.carin.adapter.EmployeesHomeAdapter
 import com.carin.adapter.HomeNotificationAdapter
 import com.carin.adapter.LatestInformationAdapter
 import com.carin.adapter.SchedulingHomeAdapter
+import com.carin.adapter.UsersHomeAdapter
 import com.carin.di.RepositoryModule
 import com.carin.domain.enums.Role
 import com.carin.domain.models.UserModel
@@ -34,15 +34,16 @@ class HomeActivity : AppCompatActivity() {
 
     private var isRotated = false
     private lateinit var adapter: HomeNotificationAdapter
+    private lateinit var userId: String
     private lateinit var notifications: List<Notification>
     private lateinit var adapterInformation: LatestInformationAdapter
     private lateinit var latestInformations: List<LatestInformation>
     private lateinit var adapterApproval: ApprovalAdapter
     private lateinit var adapterscheduling: SchedulingHomeAdapter
     private lateinit var schedulings: List<Schedulings>
-    private lateinit var adapterEmployee: EmployeesHomeAdapter
-    private lateinit var employees: List<Employee>
-    lateinit var infoUserViewModel: InfoUserViewModel
+    private lateinit var adapterUser: UsersHomeAdapter
+    private lateinit var infoUserViewModel: InfoUserViewModel
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +55,11 @@ class HomeActivity : AppCompatActivity() {
             adjustUIBasedOnRole(it.role)
         }
 
+        val userIdFromIntent = intent.getStringExtra("userId") ?: ""
+        userId = userIdFromIntent
+
+        progressBar = findViewById(R.id.progressBar)
+        val errorTextView = findViewById<TextView>(R.id.errorTextView)
         val helloTextView: TextView = findViewById(R.id.textViewHello)
         val userAuth = AuthUtils.getUserAuth(this)
         val helloText = getString(R.string.hello, userAuth?.firstName)
@@ -99,18 +105,7 @@ class HomeActivity : AppCompatActivity() {
             }
         })
 
-        val recyclerView4: RecyclerView = findViewById(R.id.recyclerView4)
-        recyclerView4.addItemDecoration(ItemSpacingDecoration(10))
-        recyclerView4.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        employees = getEmployees()
-        adapterEmployee = EmployeesHomeAdapter(employees)
-        recyclerView4.adapter = adapterEmployee
-        adapterEmployee.setOnItemClickListener(object : EmployeesHomeAdapter.OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                val intent = Intent(this@HomeActivity, InfoUserActivity::class.java)
-                startActivity(intent)
-            }
-        })
+        prepareUsersRecyclerView()
 
         val imageViewInfo = findViewById<ImageView>(R.id.imageViewInfo)
         imageViewInfo.setOnClickListener {
@@ -280,6 +275,44 @@ class HomeActivity : AppCompatActivity() {
         infoUserViewModel.loadUsersForApproval()
     }
 
+    private fun prepareUsersRecyclerView() {
+        val recyclerViewUsers = findViewById<RecyclerView>(R.id.recyclerViewUsers)
+        val emptyTextViewUsers = findViewById<TextView>(R.id.emptyTextViewUsers)
+
+        recyclerViewUsers.addItemDecoration(ItemSpacingDecoration(10))
+        recyclerViewUsers.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        adapterUser = UsersHomeAdapter(mutableListOf())
+        recyclerViewUsers.adapter = adapterUser
+
+        infoUserViewModel.uiUsersState.observe(this) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    progressBar.visibility = View.VISIBLE
+                }
+                is Resource.Success -> {
+                    val users = resource.data
+                    if (users.isNullOrEmpty()) {
+                        emptyTextViewUsers.visibility = View.VISIBLE
+                        recyclerViewUsers.visibility = View.GONE
+                    } else {
+                        emptyTextViewUsers.visibility = View.GONE
+                        recyclerViewUsers.visibility = View.VISIBLE
+                        adapterUser.updateUsers(users)
+                    }
+                    progressBar.visibility = View.GONE
+                }
+                is Resource.Error -> {
+                    emptyTextViewUsers.visibility = View.GONE
+                    progressBar.visibility = View.GONE
+                }
+            }
+        }
+
+        infoUserViewModel.loadUsersHome(userId)
+    }
+
+
     private fun adjustUIBasedOnRole(role: Role) {
         when (role) {
             Role.Admin -> showAdminComponents()
@@ -344,18 +377,6 @@ class HomeActivity : AppCompatActivity() {
         return schedulings
     }
     data class Schedulings(val hour: String, val inf: String, val otherHour: String)
-
-    private fun getEmployees(): List<Employee> {
-
-        val employees = mutableListOf<Employee>()
-        employees.add(Employee(R.drawable.ic_person_blue, "Bruno Ferreira", "Condutor", "brunoferreira@empresa.pt", "26 de fevereiro de 2002", "145", "50d12h30m", "25000"))
-        employees.add(Employee(R.drawable.ic_person_blue, "Bruno Ferreira", "Condutor", "brunoferreira@empresa.pt", "26 de fevereiro de 2002", "145", "50d12h30m", "25000"))
-        employees.add(Employee(R.drawable.ic_person_blue, "Bruno Ferreira", "Condutor", "brunoferreira@empresa.pt", "26 de fevereiro de 2002", "145", "50d12h30m", "25000"))
-        employees.add(Employee(R.drawable.ic_person_blue, "Bruno Ferreira", "Condutor", "brunoferreira@empresa.pt", "26 de fevereiro de 2002", "145", "50d12h30m", "25000"))
-        return employees
-    }
-    data class Employee(val image: Int, val name: String,  val function: String, val email: String, val birthday: String, val journeys: String, val hours: String, val kms: String)
-
 }
 
 
