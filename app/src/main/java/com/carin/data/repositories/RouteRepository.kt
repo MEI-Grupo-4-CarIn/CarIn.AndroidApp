@@ -72,7 +72,7 @@ class RouteRepository(
                         vehicleId
                     ).execute()
                     if (response.isSuccessful) {
-                        response.body()
+                        response.body()?.data
                     } else {
                         null
                     }

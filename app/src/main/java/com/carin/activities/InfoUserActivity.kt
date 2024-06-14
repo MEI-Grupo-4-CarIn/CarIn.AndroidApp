@@ -83,6 +83,8 @@ class InfoUserActivity : AppCompatActivity() {
 
             prepareMenu()
             prepareOptionsMenu()
+
+            setImageForUser()
         }
 
         if(savedInstanceState == null){
@@ -103,8 +105,6 @@ class InfoUserActivity : AppCompatActivity() {
         val routeRepository = RepositoryModule.provideRouteRepository(this)
         val factory = InfoUserViewModelFactory(userRepository, routeRepository)
         viewModel = ViewModelProvider(this, factory)[InfoUserViewModel::class.java]
-
-        setImageForUser()
     }
 
     override fun onResume() {
@@ -114,11 +114,12 @@ class InfoUserActivity : AppCompatActivity() {
         if (isOwnProfile) {
             userAuth = AuthUtils.getUserAuth(this)
             infoUserNameTxt.text = "${userAuth?.firstName} ${userAuth?.lastName}"
+
+            setImageForUser()
         } else {
             val userName = intent.getStringExtra("name")
             infoUserNameTxt.text = userName
         }
-        setImageForUser()
     }
 
     private fun prepareMenu() {
@@ -286,8 +287,9 @@ class InfoUserActivity : AppCompatActivity() {
             imageView.setImageResource(R.drawable.ic_person_blue)
         }
     }
+
     private fun getCircularBitmap(bitmap: Bitmap): Bitmap {
-        val size = Math.max(bitmap.width, bitmap.height)
+        val size = bitmap.width.coerceAtLeast(bitmap.height)
         val scale = 2
         val scaledBitmap = Bitmap.createScaledBitmap(bitmap, size * scale, size * scale, true)
         val circleBitmap = Bitmap.createBitmap(size * scale, size * scale, Bitmap.Config.ARGB_8888)
@@ -300,6 +302,4 @@ class InfoUserActivity : AppCompatActivity() {
         canvas.drawCircle(radius, radius, radius, paint)
         return circleBitmap
     }
-
-
 }

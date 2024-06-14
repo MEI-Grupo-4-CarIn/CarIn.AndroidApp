@@ -51,7 +51,7 @@ class VehicleRepository(
                 val remoteVehicles = try {
                     val response = vehicleService.getVehicles(search, status?.description, page, perPage).execute()
                     if (response.isSuccessful) {
-                        response.body()
+                        response.body()?.data
                     } else {
                         val errorBody = response.errorBody()?.string()
                         val errorMessage = errorBody?.let {

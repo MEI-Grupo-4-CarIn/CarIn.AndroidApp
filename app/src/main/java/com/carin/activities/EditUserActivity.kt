@@ -2,7 +2,6 @@ package com.carin.activities
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -20,6 +19,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -42,13 +42,27 @@ import java.util.Locale
 
 class EditUserActivity : AppCompatActivity() {
 
-    private val PICK_IMAGE_REQUEST = 1
-    private val CAMERA_REQUEST = 2
     private lateinit var viewModel: InfoUserViewModel
     private lateinit var userModel: UserModel
     private val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     private var selectedImageUri: Uri? = null
     private var userAuth: UserAuth? = null
+
+    private val pickImageLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                selectedImageUri = it
+                displaySelectedImage(it)
+            }
+        }
+
+    private val captureImageLauncher =
+        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap: Bitmap? ->
+            bitmap?.let {
+                selectedImageUri = getImageUriFromBitmap(it)
+                displaySelectedImage(selectedImageUri)
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,9 +83,9 @@ class EditUserActivity : AppCompatActivity() {
         val birthDateEditText = findViewById<EditText>(R.id.editTextDateOfBirth)
         val emailEditText = findViewById<EditText>(R.id.editTextEmail)
 
-        val updatedFirstName: String? = null
-        val updatedLastName: String? = null
-        val updatedEmail: String? = null
+        var updatedFirstName: String? = null
+        var updatedLastName: String? = null
+        var updatedEmail: String? = null
 
         val userRepository = RepositoryModule.provideUserRepository(this)
         val routeRepository = RepositoryModule.provideRouteRepository(this)
@@ -86,6 +100,7 @@ class EditUserActivity : AppCompatActivity() {
                     progressBar.visibility = View.VISIBLE
                     errorTextView.visibility = View.GONE
                 }
+
                 is Resource.Success -> {
                     progressBar.visibility = View.GONE
                     errorTextView.visibility = View.GONE
@@ -99,6 +114,7 @@ class EditUserActivity : AppCompatActivity() {
                         setImageForUser(photoUploadImageView, user.id)
                     }
                 }
+
                 is Resource.Error -> {
                     progressBar.visibility = View.GONE
                     errorTextView.visibility = View.VISIBLE
@@ -115,7 +131,23 @@ class EditUserActivity : AppCompatActivity() {
             val email = emailEditText.text.toString()
 
             if (validateInputs(firstName, lastName, email)) {
-                saveUser(firstName, lastName, email)
+                updatedFirstName = if (firstName != userModel.firstName) firstName else null
+                updatedLastName = if (lastName != userModel.lastName) lastName else null
+                updatedEmail = if (email != userModel.email) email else null
+
+                if (selectedImageUri != null) {
+                    val bitmap = getBitmapFromUri(selectedImageUri!!)
+                    saveImageToInternalStorage(bitmap)
+                }
+
+                val userUpdateModel = UserUpdateModel(
+                    id = userModel.id,
+                    firstName = updatedFirstName,
+                    lastName = updatedLastName,
+                    email = updatedEmail,
+                )
+
+                viewModel.updateUser(userUpdateModel)
             }
         }
 
@@ -128,6 +160,7 @@ class EditUserActivity : AppCompatActivity() {
                     progressBar.visibility = View.VISIBLE
                     errorTextView.visibility = View.GONE
                 }
+
                 is Resource.Success -> {
                     progressBar.visibility = View.GONE
                     errorTextView.visibility = View.GONE
@@ -137,6 +170,7 @@ class EditUserActivity : AppCompatActivity() {
                     AuthUtils.updateUserAuth(this, updatedFirstName, updatedLastName, updatedEmail)
                     finish()
                 }
+
                 is Resource.Error -> {
                     progressBar.visibility = View.GONE
                     errorTextView.visibility = View.VISIBLE
@@ -145,31 +179,17 @@ class EditUserActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveUser(firstName: String, lastName: String, email: String) {
-
-        val userUpdateModel = UserUpdateModel(
-            id = userModel.id,
-            firstName = firstName,
-            lastName = lastName,
-            email = email,
-        )
-
-        viewModel.updateUser(userUpdateModel)
-    }
-
-    private fun saveImageToInternalStorage(bitmap: Bitmap): String? {
+    private fun saveImageToInternalStorage(bitmap: Bitmap) {
         val directory = getDir("profile_pics", MODE_PRIVATE)
         userAuth = AuthUtils.getUserAuth(this)
         val fileName = "${userAuth?.userId}.png"
         val file = File(directory, fileName)
-        return try {
+        try {
             FileOutputStream(file).use { fos ->
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
             }
-            file.absolutePath
         } catch (e: IOException) {
             e.printStackTrace()
-            null
         }
     }
 
@@ -195,21 +215,6 @@ class EditUserActivity : AppCompatActivity() {
         return isValid
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
-            selectedImageUri = data.data
-            displaySelectedImage(selectedImageUri)
-        } else if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && data != null) {
-            val imageBitmap = data.extras?.get("data") as? Bitmap
-            imageBitmap?.let {
-                selectedImageUri = getImageUriFromBitmap(it)
-                displaySelectedImage(selectedImageUri)
-            }
-        }
-    }
-
     private fun showImageDialog() {
         val items = arrayOf<CharSequence>(getString(R.string.gallery), getString(R.string.camera))
         val builder = AlertDialog.Builder(this)
@@ -219,6 +224,7 @@ class EditUserActivity : AppCompatActivity() {
                 0 -> {
                     openGallery()
                 }
+
                 1 -> {
                     openCamera()
                 }
@@ -227,11 +233,8 @@ class EditUserActivity : AppCompatActivity() {
         builder.show()
     }
 
-
     private fun openGallery() {
-        val galleryIntent = Intent(Intent.ACTION_PICK)
-        galleryIntent.type = "image/*"
-        startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST)
+        pickImageLauncher.launch("image/*")
     }
 
     private fun openCamera() {
@@ -241,11 +244,10 @@ class EditUserActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(android.Manifest.permission.CAMERA),
-                CAMERA_REQUEST
+                1
             )
         } else {
-            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(cameraIntent, CAMERA_REQUEST)
+            captureImageLauncher.launch(null)
         }
     }
 
@@ -253,17 +255,7 @@ class EditUserActivity : AppCompatActivity() {
         val photoUploadImageView = findViewById<ImageView>(R.id.photoUploadImageView)
         selectedImageUri?.let {
             val bitmap = getBitmapFromUri(selectedImageUri)
-            val size = Math.max(bitmap.width, bitmap.height)
-            val scale = 2
-            val scaledBitmap = Bitmap.createScaledBitmap(bitmap, size * scale, size * scale, true)
-            val circleBitmap = Bitmap.createBitmap(size * scale, size * scale, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(circleBitmap)
-            val paint = Paint().apply {
-                isAntiAlias = true
-                shader = BitmapShader(scaledBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
-            }
-            val radius = (size * scale / 2).toFloat()
-            canvas.drawCircle(radius, radius, radius, paint)
+            val circleBitmap = getCircularBitmap(bitmap)
             photoUploadImageView.setImageBitmap(circleBitmap)
         }
     }
@@ -294,8 +286,9 @@ class EditUserActivity : AppCompatActivity() {
             imageView.setImageBitmap(getCircularBitmap(bitmap))
         }
     }
+
     private fun getCircularBitmap(bitmap: Bitmap): Bitmap {
-        val size = Math.max(bitmap.width, bitmap.height)
+        val size = bitmap.width.coerceAtLeast(bitmap.height)
         val scale = 2
         val scaledBitmap = Bitmap.createScaledBitmap(bitmap, size * scale, size * scale, true)
         val circleBitmap = Bitmap.createBitmap(size * scale, size * scale, Bitmap.Config.ARGB_8888)

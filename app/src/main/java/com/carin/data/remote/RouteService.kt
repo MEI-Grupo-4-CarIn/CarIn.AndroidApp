@@ -1,5 +1,6 @@
 package com.carin.data.remote
 
+import com.carin.data.remote.dto.DetailedResponse
 import com.carin.data.remote.dto.RouteCreationRequest
 import com.carin.data.remote.dto.RouteDto
 import com.carin.data.remote.dto.RouteUpdateRequest
@@ -22,7 +23,7 @@ interface RouteService {
         @Query("perPage") perPage: Int? = null,
         @Query("userId") userId: Int? = null,
         @Query("vehicleId") vehicleId: String? = null,
-    ): Call<List<RouteDto>>
+    ): Call<DetailedResponse<List<RouteDto>>>
 
     @GET("/routes/{id}")
     fun getRouteById(@Path("id") id: String): Call<RouteDto>
