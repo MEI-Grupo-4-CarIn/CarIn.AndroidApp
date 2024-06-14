@@ -35,7 +35,7 @@ interface UserDao {
         id: Int,
         firstName: String?,
         lastName: String?,
-        email: String?
+        email: String?,
     )
 
     @Query("""

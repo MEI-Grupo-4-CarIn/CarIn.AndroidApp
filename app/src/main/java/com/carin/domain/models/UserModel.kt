@@ -14,5 +14,5 @@ data class UserModel(
     val role: Role,
     val status: Boolean,
     val creationDateUtc: Date,
-    val lastUpdateDateUtc: Date?
+    val lastUpdateDateUtc: Date?,
 )
