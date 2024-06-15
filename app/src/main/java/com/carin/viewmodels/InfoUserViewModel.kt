@@ -35,7 +35,7 @@ class InfoUserViewModel(
     private val _userApprovalState = MutableLiveData<Resource<Boolean>>()
     val userApprovalState: LiveData<Resource<Boolean>> get() = _userApprovalState
 
-    fun loadUsers(role: Role, search: String?, page: Int, pageSize: Int) {
+    fun loadUsers(role: Role?, search: String?, page: Int, pageSize: Int) {
         viewModelScope.launch {
             userRepository.getUsersList(search, role, page, pageSize).collect { result ->
                 if (result is Resource.Success) {
@@ -131,30 +131,6 @@ class InfoUserViewModel(
 
         return age
     }
-
-    fun loadUsersHome(userId: String, quantity: Int = 6) {
-        viewModelScope.launch {
-            routeRepository.getRoutesList(
-                null,
-                null,
-                1,
-                quantity,
-                null,
-                userId
-            ).collect { result ->
-                when (result) {
-                    is Resource.Loading -> _uiUsersState.value = Resource.Loading()
-                    is Resource.Success -> {
-                        val routes = result.data ?: emptyList()
-                        val users = routes.mapNotNull { it.user }
-                        _uiUsersState.value = Resource.Success(users)
-                    }
-                    is Resource.Error -> _uiUsersState.value = Resource.Error(result.message ?: "Unknown error")
-                }
-            }
-        }
-    }
-
 }
 
 

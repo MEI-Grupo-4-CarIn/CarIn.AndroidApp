@@ -20,7 +20,7 @@ class UsersHomeAdapter(
     RecyclerView.Adapter<UsersHomeAdapter.UserHomeViewHolder>() {
 
     private val userIds = mutableSetOf<Int>()
-    private val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+    private val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsersHomeAdapter.UserHomeViewHolder {
         val view = LayoutInflater.from(parent.context)

@@ -59,7 +59,6 @@ class HomeActivity : AppCompatActivity() {
         userId = userIdFromIntent
 
         progressBar = findViewById(R.id.progressBar)
-        val errorTextView = findViewById<TextView>(R.id.errorTextView)
         val helloTextView: TextView = findViewById(R.id.textViewHello)
         val userAuth = AuthUtils.getUserAuth(this)
         val helloText = getString(R.string.hello, userAuth?.firstName)
@@ -309,9 +308,8 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        infoUserViewModel.loadUsersHome(userId)
+        infoUserViewModel.loadUsers(null, null, 1, 6)
     }
-
 
     private fun adjustUIBasedOnRole(role: Role) {
         when (role) {
@@ -332,14 +330,11 @@ class HomeActivity : AppCompatActivity() {
         findViewById<View>(R.id.linearLayout6).visibility = View.GONE
         findViewById<View>(R.id.recyclerViewApprovals).visibility = View.GONE
         findViewById<View>(R.id.thirdLineLinearLayout).visibility = View.GONE
-
         findViewById<View>(R.id.linearLayout2).visibility = View.GONE
         findViewById<View>(R.id.linear_layout_latest_information).visibility = View.GONE
         findViewById<View>(R.id.recyclerView).visibility = View.GONE
         findViewById<View>(R.id.fourthLineLinearLayout).visibility = View.GONE
-
         findViewById<View>(R.id.buttonMore).visibility = View.GONE
-
     }
 
     private fun getNotifications(): List<Notification> {
