@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.carin.data.repositories.RouteRepository
 import com.carin.domain.enums.RouteType
+import com.carin.domain.models.UserAuth
 import com.carin.utils.Resource
 import com.carin.viewmodels.events.RoutesListEvent
 import com.carin.viewmodels.states.RoutesListState
@@ -50,7 +51,7 @@ class RoutesListViewModel(private val repository: RouteRepository) : ViewModel()
         }
     }
 
-    private fun loadRoutes(routeType: RouteType, page: Int = 1) {
+    private fun loadRoutes(routeType: RouteType, page: Int = 1, userAuth: UserAuth? = null) {
         routeType.let { type ->
             currentPage[type] = page
             hasMoreData[type] = true
@@ -81,7 +82,7 @@ class RoutesListViewModel(private val repository: RouteRepository) : ViewModel()
         }
     }
 
-    private fun loadMoreRoutes(routeType: RouteType) {
+    private fun loadMoreRoutes(routeType: RouteType, userAuth: UserAuth? = null) {
         routeType.let { type ->
             if (isLoadingMore[type] == true
                 || hasMoreData[type] == false

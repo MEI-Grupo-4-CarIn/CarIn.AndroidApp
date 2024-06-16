@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.carin.R
 import com.carin.adapter.RoutesTabAdapter
 import com.carin.domain.enums.RouteType
+import com.carin.utils.AuthUtils
 import com.carin.utils.ItemSpacingDecoration
 import com.carin.viewmodels.RoutesListViewModel
 import com.carin.viewmodels.events.RoutesListEvent
@@ -54,6 +55,8 @@ class RoutesTabFragment : Fragment() {
 
         // Obtain the ViewModel from the Activity's ViewModelProvider
         viewModel = ViewModelProvider(requireActivity())[RoutesListViewModel::class.java]
+
+        val userAuth = AuthUtils.getUserAuth(requireContext())
 
         viewModel.uiState.observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -97,7 +100,7 @@ class RoutesTabFragment : Fragment() {
 
         viewModel.searchQuery.observe(viewLifecycleOwner) {
             // Reload data based on the new search query
-            viewModel.onEvent(RoutesListEvent.LoadRoutes(currentRouteType))
+            viewModel.onEvent(RoutesListEvent.LoadRoutes(currentRouteType, 1, userAuth))
         }
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -115,7 +118,7 @@ class RoutesTabFragment : Fragment() {
 
                     if (!recyclerView.canScrollVertically(1)
                         && lastVisibleItemPosition >= totalItemCount - 1) {
-                        viewModel.onEvent(RoutesListEvent.LoadMoreRoutes(currentRouteType))
+                        viewModel.onEvent(RoutesListEvent.LoadMoreRoutes(currentRouteType, userAuth))
                     }
                 }
                 handler.postDelayed(runnable!!, 300)
@@ -128,6 +131,6 @@ class RoutesTabFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        viewModel.onEvent(RoutesListEvent.LoadRoutes(currentRouteType))
+        viewModel.onEvent(RoutesListEvent.LoadRoutes(currentRouteType, 1, AuthUtils.getUserAuth(requireContext())))
     }
 }
