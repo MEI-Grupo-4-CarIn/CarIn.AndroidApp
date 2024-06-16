@@ -1,5 +1,6 @@
 package com.carin.data.remote
 
+import com.carin.data.remote.dto.DetailedResponse
 import com.carin.data.remote.dto.VehicleCreationRequest
 import com.carin.data.remote.dto.VehicleDto
 import com.carin.data.remote.dto.VehicleUpdateRequest
@@ -20,7 +21,7 @@ interface VehicleService {
         @Query("status") status: String? = null,
         @Query("page") page: Int? = null,
         @Query("perPage") perPage: Int? = null
-    ): Call<List<VehicleDto>>
+    ): Call<DetailedResponse<List<VehicleDto>>>
 
     @GET("/vehicles/{id}")
     fun getVehicleById(@Path("id") id: String): Call<VehicleDto>

@@ -35,7 +35,7 @@ class InfoUserViewModel(
     private val _userApprovalState = MutableLiveData<Resource<Boolean>>()
     val userApprovalState: LiveData<Resource<Boolean>> get() = _userApprovalState
 
-    fun loadUsers(role: Role, search: String?, page: Int, pageSize: Int) {
+    fun loadUsers(role: Role?, search: String?, page: Int, pageSize: Int) {
         viewModelScope.launch {
             userRepository.getUsersList(search, role, page, pageSize).collect { result ->
                 if (result is Resource.Success) {
@@ -132,6 +132,7 @@ class InfoUserViewModel(
         return age
     }
 }
+
 
 class InfoUserViewModelFactory(
     private val userRepository: UserRepository,

@@ -79,7 +79,7 @@
                         android:layout_height="45dp"
                         android:layout_marginTop="25dp"
                         android:hint="@string/enterFirstName"
-                        android:inputType="textPersonName"
+                        android:inputType="textCapWords"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
                         android:background="@drawable/edit_text_custom_background"/>
@@ -99,9 +99,9 @@
                         android:layout_below="@id/editTextFirstName"
                         android:layout_marginTop="40dp"
                         android:hint="@string/enterLastName"
+                        android:inputType="textCapWords"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
-                        android:inputType="textPersonName"
                         android:background="@drawable/edit_text_custom_background"/>
 
                     <TextView
@@ -189,12 +189,15 @@
                         android:background="@drawable/edit_text_custom_background"/>
                 </RelativeLayout>
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonRegister"
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
                     android:text="@string/register"
                     android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:textAllCaps="false"
+                    android:background="@drawable/rounded_blue_button"
                     app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

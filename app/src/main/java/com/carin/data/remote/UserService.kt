@@ -1,5 +1,6 @@
 package com.carin.data.remote
 
+import com.carin.data.remote.dto.DetailedResponse
 import com.carin.data.remote.dto.UserDto
 import com.carin.data.remote.dto.UserUpdateRequest
 import com.carin.domain.enums.Role
@@ -20,7 +21,7 @@ interface UserService {
         @Query("role") role: Role? = null,
         @Query("page") page: Int? = null,
         @Query("perPage") perPage: Int? = null
-    ): Call<List<UserDto>>
+    ): Call<DetailedResponse<List<UserDto>>>
 
     @GET("/users/waiting-for-approval")
     fun getWaitingForApprovalUsers(

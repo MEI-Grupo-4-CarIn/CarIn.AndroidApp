@@ -143,8 +143,8 @@ class InfoVehicleActivity : AppCompatActivity() {
         }
 
         prepareRecyclerViews()
-        prepareRoutesRecyclerView()
         prepareUsersRecyclerView()
+        prepareRoutesRecyclerView()
 
         viewModel.loadVehicleDetails(vehicleId)
     }

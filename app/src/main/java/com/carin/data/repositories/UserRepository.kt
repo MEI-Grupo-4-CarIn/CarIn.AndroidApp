@@ -54,7 +54,7 @@ class UserRepository(
                 val remoteUsers = try {
                     val response = userService.getUsers(search, role, page, perPage).execute()
                     if (response.isSuccessful) {
-                        response.body()
+                        response.body()?.data
                     } else {
                         val errorBody = response.errorBody()?.string()
                         val errorMessage = errorBody?.let {

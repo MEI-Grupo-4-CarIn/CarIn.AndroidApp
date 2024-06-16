@@ -4,6 +4,12 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.BitmapShader
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Shader
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -30,12 +36,14 @@ import com.carin.fragments.MainFragmentUserInfo
 import com.carin.utils.AuthUtils
 import com.carin.viewmodels.InfoUserViewModel
 import com.carin.viewmodels.InfoUserViewModelFactory
+import java.io.File
 
 class InfoUserActivity : AppCompatActivity() {
 
     private var isRotated = false
     private lateinit var infoUserContainer: FrameLayout
     private lateinit var optionsIcon: ImageView
+    private lateinit var infoUserImageView: ImageView
     private lateinit var viewModel: InfoUserViewModel
     private var userAuth: UserAuth? = null
     private var isOwnProfile = false
@@ -55,6 +63,7 @@ class InfoUserActivity : AppCompatActivity() {
 
         infoUserContainer = findViewById(R.id.infoUserContainer)
         optionsIcon = findViewById(R.id.optionsIcon)
+        infoUserImageView = findViewById(R.id.infoUserImageView)
         val goBackIcon = findViewById<ImageView>(R.id.infoUserGoBackIcon)
         goBackIcon.setOnClickListener {
             finish()
@@ -74,6 +83,8 @@ class InfoUserActivity : AppCompatActivity() {
 
             prepareMenu()
             prepareOptionsMenu()
+
+            setImageForUser()
         }
 
         if(savedInstanceState == null){
@@ -103,6 +114,8 @@ class InfoUserActivity : AppCompatActivity() {
         if (isOwnProfile) {
             userAuth = AuthUtils.getUserAuth(this)
             infoUserNameTxt.text = "${userAuth?.firstName} ${userAuth?.lastName}"
+
+            setImageForUser()
         } else {
             val userName = intent.getStringExtra("name")
             infoUserNameTxt.text = userName
@@ -258,5 +271,35 @@ class InfoUserActivity : AppCompatActivity() {
     private fun dpToPx(dp: Int, context: Context): Int {
         val density = context.resources.displayMetrics.density
         return (dp * density).toInt()
+    }
+
+    private fun setImageForUser() {
+        val imageView = findViewById<ImageView>(R.id.infoUserImageView)
+        val userId = userAuth?.userId ?: return
+
+        val profilePicDirectory = getDir("profile_pics", Context.MODE_PRIVATE)
+        val imagePath = File(profilePicDirectory, "$userId.png").absolutePath
+
+        if (File(imagePath).exists()) {
+            val bitmap = BitmapFactory.decodeFile(imagePath)
+            imageView.setImageBitmap(getCircularBitmap(bitmap))
+        } else {
+            imageView.setImageResource(R.drawable.ic_person_blue)
+        }
+    }
+
+    private fun getCircularBitmap(bitmap: Bitmap): Bitmap {
+        val size = bitmap.width.coerceAtLeast(bitmap.height)
+        val scale = 2
+        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, size * scale, size * scale, true)
+        val circleBitmap = Bitmap.createBitmap(size * scale, size * scale, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(circleBitmap)
+        val paint = Paint().apply {
+            isAntiAlias = true
+            shader = BitmapShader(scaledBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
+        }
+        val radius = (size * scale / 2).toFloat()
+        canvas.drawCircle(radius, radius, radius, paint)
+        return circleBitmap
     }
 }
