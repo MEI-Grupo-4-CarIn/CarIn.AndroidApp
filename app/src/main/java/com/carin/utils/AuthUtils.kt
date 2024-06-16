@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Base64
 import com.carin.R
+import com.carin.data.remote.dto.TokenRequest
 import com.carin.data.remote.dto.auth.AuthLoginRequest
 import com.carin.data.remote.dto.auth.AuthRefreshTokenRequest
 import com.carin.data.remote.dto.auth.AuthTokenDto
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.single
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import retrofit2.HttpException
 import java.io.IOException
@@ -129,6 +131,14 @@ object AuthUtils {
                     val authLoginResponse = response.body()
                     if (authLoginResponse != null) {
                         saveUserOnSharedPreferences(context, authLoginResponse)
+
+                        val fcmToken = getFCMToken(context)
+                        if (fcmToken != null) {
+                            withContext(Dispatchers.IO) {
+                                sendFCMToken(context, fcmToken)
+                            }
+                        }
+
                         emit(Resource.Success(true))
                     }
                 } else {
@@ -152,6 +162,37 @@ object AuthUtils {
         }.flowOn(Dispatchers.IO)
     }
 
+    private fun getFCMToken(context: Context): String? {
+        val sharedPreferences = context.getSharedPreferences("app_prefs",  Context.MODE_PRIVATE)
+        return sharedPreferences.getString("fcm_token", null)
+    }
+
+    suspend fun sendFCMToken(context: Context, token: String) {
+        val tokenService = NetworkModule.provideTokenService(context)
+
+        try {
+            val userAuth = getUserAuth(context)
+            if (userAuth != null) {
+                val response = tokenService.addToken(TokenRequest(userAuth.userId.toString(), token)).execute()
+                if (response.isSuccessful) {
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val errorMessage = errorBody?.let {
+                        try {
+                            JSONObject(it).getString("message")
+                        } catch (e: Exception) {
+                            response.message()
+                        }
+                    } ?: response.message()
+                }
+            }
+        } catch(e: IOException) {
+            e.printStackTrace()
+        } catch (e: HttpException) {
+            e.printStackTrace()
+        }
+    }
+
     fun getUserAuth(context: Context): UserAuth? {
         val sharedPreferences = getSharedPreferences(context)
         val userJson = sharedPreferences.getString("user", "")
@@ -168,9 +209,9 @@ object AuthUtils {
         val userAuth = getUserAuth(context)
 
         val updatedUserAuth = userAuth?.copy(
-            firstName = firstName?: userAuth.firstName,
-            lastName = lastName?: userAuth.lastName,
-            email = email?: userAuth.email
+            firstName = firstName ?: userAuth.firstName,
+            lastName = lastName ?: userAuth.lastName,
+            email = email ?: userAuth.email
         )
 
         val sharedPreferences = getSharedPreferences(context)
