@@ -16,6 +16,7 @@ import com.carin.domain.enums.RouteStatus
 import com.carin.domain.models.RouteCreationModel
 import com.carin.domain.models.RouteModel
 import com.carin.domain.models.RouteUpdateModel
+import com.carin.domain.models.UserAuth
 import com.carin.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -43,12 +44,13 @@ class RouteRepository(
         perPage: Int = 30,
         userId: Int? = null,
         vehicleId: String? = null,
-        forceRefresh: Boolean = false
+        forceRefresh: Boolean = false,
+        userAuth: UserAuth? = null
     ): Flow<Resource<List<RouteModel>>> {
         return flow {
             emit(Resource.Loading())
 
-            val localRoutes = routeDao.getListOfRoutes(search, status, page, perPage, userId, vehicleId)
+            val localRoutes = routeDao.getListOfRoutes(search, status, page, perPage, userId, vehicleId, userAuth)
             val isToFetchRemote = localRoutes.isEmpty()
                     || localRoutes.size < perPage
                     || localRoutes.first().route.localLastUpdateDateUtc < Date(System.currentTimeMillis() - 15.minutes.inWholeMilliseconds)
@@ -160,7 +162,7 @@ class RouteRepository(
 
                     emit(
                         Resource.Success(
-                            data = routeDao.getListOfRoutes(search, status, page, perPage, userId, vehicleId).map { it.toRouteModel() }
+                            data = routeDao.getListOfRoutes(search, status, page, perPage, userId, vehicleId, userAuth).map { it.toRouteModel() }
                         )
                     )
                 } else {

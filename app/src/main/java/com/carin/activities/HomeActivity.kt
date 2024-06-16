@@ -51,10 +51,6 @@ class HomeActivity : AppCompatActivity() {
 
        val userAuths = AuthUtils.getUserAuth(this)
 
-        userAuths?.let {
-            adjustUIBasedOnRole(it.role)
-        }
-
         val userIdFromIntent = intent.getStringExtra("userId") ?: ""
         userId = userIdFromIntent
 
@@ -67,7 +63,7 @@ class HomeActivity : AppCompatActivity() {
         val userRepository = RepositoryModule.provideUserRepository(this)
         val routeRepository = RepositoryModule.provideRouteRepository(this)
         val infoUserViewModelFactory = InfoUserViewModelFactory(userRepository, routeRepository)
-        infoUserViewModel = ViewModelProvider(this, infoUserViewModelFactory).get(InfoUserViewModel::class.java)
+        infoUserViewModel = ViewModelProvider(this, infoUserViewModelFactory)[InfoUserViewModel::class.java]
 
         val recyclerView1: RecyclerView = findViewById(R.id.recyclerView1)
         recyclerView1.addItemDecoration(ItemSpacingDecoration(10))
@@ -81,8 +77,6 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         })
-
-        prepareApprovalsRecyclerView()
 
         val recyclerView2: RecyclerView = findViewById(R.id.recyclerView)
         recyclerView2.addItemDecoration(ItemSpacingDecoration(10))
@@ -135,12 +129,17 @@ class HomeActivity : AppCompatActivity() {
 
         // Prepare the Menu
         prepareMenu()
+
+        userAuths?.let {
+            adjustUIBasedOnRole(it.role)
+        }
     }
 
     override fun onResume() {
         super.onResume()
 
-        infoUserViewModel.loadUsersForApproval()
+        if (AuthUtils.getUserAuth(this)?.role != Role.Driver)
+            infoUserViewModel.loadUsersForApproval()
     }
 
     private fun prepareMenu() {
@@ -320,10 +319,10 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun showAdminComponents() {
-
+        prepareApprovalsRecyclerView()
     }
     private fun showManagerComponents() {
-
+        prepareApprovalsRecyclerView()
     }
 
     private fun showDriverComponents() {

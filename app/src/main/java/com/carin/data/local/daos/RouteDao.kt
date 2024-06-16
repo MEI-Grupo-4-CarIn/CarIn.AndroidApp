@@ -9,7 +9,9 @@ import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.carin.data.local.entities.RouteEntity
 import com.carin.data.local.entities.RouteWithInfoEntity
+import com.carin.domain.enums.Role
 import com.carin.domain.enums.RouteStatus
+import com.carin.domain.models.UserAuth
 import java.util.Date
 
 @Dao
@@ -58,7 +60,8 @@ interface RouteDao {
         page: Int = 1,
         perPage: Int = 10,
         userId: Int?,
-        vehicleId: String?
+        vehicleId: String?,
+        userAuth: UserAuth?
     ): List<RouteWithInfoEntity> {
         val queryBuilder = StringBuilder("SELECT * FROM routes WHERE isDeleted = 0")
         val args = mutableListOf<Any?>()
@@ -85,6 +88,11 @@ interface RouteDao {
         if (!vehicleId.isNullOrEmpty()) {
             queryBuilder.append(" AND vehicleId = ?")
             args.add(vehicleId)
+        }
+
+        if (userAuth?.role == Role.Driver) {
+            queryBuilder.append(" AND userId = ?")
+            args.add(userAuth.userId)
         }
 
         queryBuilder.append(" ORDER BY creationDateUtc DESC")
